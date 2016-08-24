@@ -1,19 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.juhezi.citymemory"
-        minSdkVersion 15
-        targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        applicationId rootProject.ext.applicationId
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled rootProject.ext.minifyEnabled
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -22,5 +22,17 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile rootProject.ext.libSupportAppcomponent
+    compile rootProject.ext.libSupportDesign
+    compile rootProject.ext.libSupportRecyclerView
+    compile rootProject.ext.libSupportCardView
+    compile rootProject.ext.libSupportV4
+    compile rootProject.ext.libGson
+    compile rootProject.ext.libRetrofit
+    compile rootProject.ext.libRxJava
+    compile rootProject.ext.libRxAndroid
+    compile rootProject.ext.libGlide
+    compile rootProject.ext.libRebound
+    compile rootProject.ext.libEasypermissions
+    compile rootProject.ext.libConverterGson
 }
