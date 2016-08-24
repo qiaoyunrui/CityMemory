@@ -1,5 +1,6 @@
 package com.juhezi.citymemory.map;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -24,6 +26,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.juhezi.citymemory.R;
+import com.juhezi.citymemory.search.SearchActivity;
 
 /**
  * Created by qiaoyunrui on 16-8-24.
@@ -39,12 +42,14 @@ public class MapFragment extends Fragment implements MapContract.View {
     private AMapLocationClientOption mLocationOption;
 
     private FloatingActionButton mFabLocate;
+    private RelativeLayout mRlSearch;
 
     private String currentAddress;
     private double currentLatitude;
     private double currentLongitude;
     private float mapScale = 17f;
     private Marker mMarker;
+    private Intent searchIntent;
 
     @Nullable
     @Override
@@ -53,7 +58,9 @@ public class MapFragment extends Fragment implements MapContract.View {
         rootView = inflater.inflate(R.layout.map_frag, container, false);
         mMV_map = (MapView) rootView.findViewById(R.id.mv_map);
         mFabLocate = (FloatingActionButton) rootView.findViewById(R.id.fab_locate);
+        mRlSearch = (RelativeLayout) rootView.findViewById(R.id.rl_search);
         mMV_map.onCreate(savedInstanceState);
+        searchIntent = new Intent(getContext(), SearchActivity.class);
         initMap();
         initEvent();
         return rootView;
@@ -91,6 +98,12 @@ public class MapFragment extends Fragment implements MapContract.View {
             @Override
             public void onClick(View v) {
                 mLocationClient.startLocation();
+            }
+        });
+        mRlSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                turn2SearchAct();
             }
         });
     }
@@ -149,4 +162,9 @@ public class MapFragment extends Fragment implements MapContract.View {
         }
         mMarker = mAMap.addMarker(markerOptions);
     }
+
+    private void turn2SearchAct() {
+        startActivity(searchIntent);
+    }
+
 }

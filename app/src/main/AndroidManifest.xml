@@ -24,6 +24,7 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="4ce3c6be30942ca643339a6b3ddd40fe"></meta-data>
+
         <activity android:name=".map.MapActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,6 +32,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".search.SearchActivity"></activity>
+
         <service android:name="com.amap.api.location.APSService">
 
         </service>
