@@ -2,6 +2,7 @@ package com.juhezi.citymemory.map;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,10 +38,13 @@ public class MapFragment extends Fragment implements MapContract.View {
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
 
+    private FloatingActionButton mFabLocate;
+
     private String currentAddress;
     private double currentLatitude;
     private double currentLongitude;
     private float mapScale = 17f;
+    private Marker mMarker;
 
     @Nullable
     @Override
@@ -48,15 +52,16 @@ public class MapFragment extends Fragment implements MapContract.View {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.map_frag, container, false);
         mMV_map = (MapView) rootView.findViewById(R.id.mv_map);
+        mFabLocate = (FloatingActionButton) rootView.findViewById(R.id.fab_locate);
         mMV_map.onCreate(savedInstanceState);
         initMap();
+        initEvent();
         return rootView;
     }
 
     private void initMap() {
         mAMap = mMV_map.getMap();
         mAMap.getUiSettings().setZoomPosition(AMapOptions.ZOOM_POSITION_RIGHT_CENTER);
-        mAMap.getUiSettings().setCompassEnabled(true);
         mAMap.getUiSettings().setScaleControlsEnabled(true);
         mLocationClient = new AMapLocationClient(getContext());
         mLocationOption = new AMapLocationClientOption();
@@ -79,6 +84,15 @@ public class MapFragment extends Fragment implements MapContract.View {
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         mLocationClient.setLocationOption(mLocationOption);
         mLocationClient.startLocation();
+    }
+
+    private void initEvent() {
+        mFabLocate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLocationClient.startLocation();
+            }
+        });
     }
 
     @Override
@@ -123,13 +137,16 @@ public class MapFragment extends Fragment implements MapContract.View {
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
         mAMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mAMap.moveCamera(CameraUpdateFactory.zoomTo(mapScale));
-        MarkerOptions marker = new MarkerOptions()
+        MarkerOptions markerOptions = new MarkerOptions()
                 .position(latLng)
                 .title(currentAddress)
                 .snippet("当前所在的位置")
                 .icon(BitmapDescriptorFactory
                         .fromResource(R.drawable.locate_sign)
                 );
-        mAMap.addMarker(marker);
+        if (mMarker != null) {
+            mMarker.destroy();
+        }
+        mMarker = mAMap.addMarker(markerOptions);
     }
 }
