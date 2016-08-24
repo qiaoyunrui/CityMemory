@@ -13,6 +13,8 @@ import com.juhezi.citymemory.R;
 public class MapActivity extends AppCompatActivity {
 
     private DrawerLayout mDLayout;
+    private MapPresenter mPresenter;
+    private MapFragment mFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,18 @@ public class MapActivity extends AppCompatActivity {
         initActionBar();
 
         initDrawLayout();
+
+        mFragment = (MapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.rl_map_frag);
+        if (mFragment == null) {
+            mFragment = new MapFragment();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.rl_map_frag, mFragment)
+                    .commit();
+        }
+
+        mPresenter = new MapPresenter(mFragment);
 
     }
 
