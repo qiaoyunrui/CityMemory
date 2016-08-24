@@ -26,6 +26,8 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.juhezi.citymemory.R;
+import com.juhezi.citymemory.data.Location;
+import com.juhezi.citymemory.other.Config;
 import com.juhezi.citymemory.search.SearchActivity;
 
 /**
@@ -49,7 +51,9 @@ public class MapFragment extends Fragment implements MapContract.View {
     private double currentLongitude;
     private float mapScale = 17f;
     private Marker mMarker;
+    private Marker mRemoteMarker;
     private Intent searchIntent;
+    private String currentCityCode;
 
     @Nullable
     @Override
@@ -79,6 +83,7 @@ public class MapFragment extends Fragment implements MapContract.View {
                     currentAddress = aMapLocation.getAddress();
                     currentLatitude = aMapLocation.getLatitude();
                     currentLongitude = aMapLocation.getLongitude();
+                    currentCityCode = aMapLocation.getCityCode();
                     locate();
                 } else {
                     Log.d(TAG, "onLocationChanged: " +
@@ -163,8 +168,34 @@ public class MapFragment extends Fragment implements MapContract.View {
         mMarker = mAMap.addMarker(markerOptions);
     }
 
-    private void turn2SearchAct() {
-        startActivity(searchIntent);
+    @Override
+    public void locateRemote(double latitude, double longitude) {
+        LatLng latLng = new LatLng(latitude, longitude);
+        mAMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mAMap.moveCamera(CameraUpdateFactory.zoomTo(mapScale));
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(latLng);
+        if (mRemoteMarker != null) {
+            mRemoteMarker.destroy();
+        }
+        mRemoteMarker = mAMap.addMarker(markerOptions);
     }
+
+    private void turn2SearchAct() {
+        searchIntent.putExtra(Config.CITY_CODE, currentCityCode);
+        startActivityForResult(searchIntent, Config.SEARCH_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Config.SEARCH_CODE) {
+            Location location = (Location) data.getSerializableExtra(Config.LOCATION_KEY);
+            if (location != null) {
+                locateRemote(location.getLatitude(), location.getLongitude());
+            }
+        }
+    }
+
 
 }

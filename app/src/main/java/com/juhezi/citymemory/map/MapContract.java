@@ -14,6 +14,8 @@ public interface MapContract {
 
     interface View extends BaseView<Presenter> {
         void locate();
+
+        void locateRemote(double latitude, double longitude);
     }
 
 }
