@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CityMemory</string>
+    <string name="app_name">城市记忆</string>
     <string name="info">消息中心</string>
     <string name="setting">设置</string>
     <string name="about">关于</string>
