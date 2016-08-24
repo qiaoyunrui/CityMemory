@@ -13,7 +13,7 @@ public interface MapContract {
     }
 
     interface View extends BaseView<Presenter> {
-        
+        void locate();
     }
 
 }

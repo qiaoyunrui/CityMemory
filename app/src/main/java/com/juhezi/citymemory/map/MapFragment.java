@@ -12,8 +12,16 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.AMapOptions;
+import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.GroundOverlayOptions;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
 import com.juhezi.citymemory.R;
 
 /**
@@ -25,11 +33,18 @@ public class MapFragment extends Fragment implements MapContract.View {
     private MapContract.Presenter mPresenter;
     private View rootView;
     private MapView mMV_map;
-    private AMapLocationClientOption mLocationOption;
+    private AMap mAMap;
     private AMapLocationClient mLocationClient;
+    private AMapLocationClientOption mLocationOption;
+
+    private String currentAddress;
+    private double currentLatitude;
+    private double currentLongitude;
+    private float mapScale = 17f;
 
     @Nullable
     @Override
+
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.map_frag, container, false);
         mMV_map = (MapView) rootView.findViewById(R.id.mv_map);
@@ -39,6 +54,31 @@ public class MapFragment extends Fragment implements MapContract.View {
     }
 
     private void initMap() {
+        mAMap = mMV_map.getMap();
+        mAMap.getUiSettings().setZoomPosition(AMapOptions.ZOOM_POSITION_RIGHT_CENTER);
+        mAMap.getUiSettings().setCompassEnabled(true);
+        mAMap.getUiSettings().setScaleControlsEnabled(true);
+        mLocationClient = new AMapLocationClient(getContext());
+        mLocationOption = new AMapLocationClientOption();
+        mLocationClient.setLocationListener(new AMapLocationListener() {
+            @Override
+            public void onLocationChanged(AMapLocation aMapLocation) {
+                if (aMapLocation.getErrorCode() == 0) {
+                    currentAddress = aMapLocation.getAddress();
+                    currentLatitude = aMapLocation.getLatitude();
+                    currentLongitude = aMapLocation.getLongitude();
+                    locate();
+                } else {
+                    Log.d(TAG, "onLocationChanged: " +
+                            aMapLocation.getErrorCode() +
+                            " ," + aMapLocation.getErrorInfo());
+                }
+            }
+        });
+        mLocationOption.setOnceLocation(true);
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        mLocationClient.setLocationOption(mLocationOption);
+        mLocationClient.startLocation();
     }
 
     @Override
@@ -68,6 +108,7 @@ public class MapFragment extends Fragment implements MapContract.View {
     public void onDestroy() {
         mPresenter = null;
         mMV_map.onDestroy();
+        mLocationClient.stopLocation();
         super.onDestroy();
     }
 
@@ -75,5 +116,20 @@ public class MapFragment extends Fragment implements MapContract.View {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mMV_map.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void locate() {
+        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
+        mAMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mAMap.moveCamera(CameraUpdateFactory.zoomTo(mapScale));
+        MarkerOptions marker = new MarkerOptions()
+                .position(latLng)
+                .title(currentAddress)
+                .snippet("当前所在的位置")
+                .icon(BitmapDescriptorFactory
+                        .fromResource(R.drawable.locate_sign)
+                );
+        mAMap.addMarker(marker);
     }
 }

@@ -18,6 +18,5 @@ public class MapPresenter implements MapContract.Presenter {
 
     @Override
     public void start() {
-        Log.d(TAG, "start: HelloWorld");
     }
 }
