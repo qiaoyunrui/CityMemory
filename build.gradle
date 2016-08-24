@@ -12,7 +12,7 @@ buildscript {
     }
 }
 
-def supportVersion = "23.0.0"
+def supportVersion = "23.1.1"
 def gsonVersion = "2.7"
 def retrofitVersion = "2.1.0"
 def rxJavaVersion = "1.1.8"
