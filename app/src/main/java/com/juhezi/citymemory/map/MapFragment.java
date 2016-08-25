@@ -1,5 +1,8 @@
 package com.juhezi.citymemory.map;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,8 +10,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.RelativeLayout;
 
 import com.amap.api.location.AMapLocation;
@@ -21,6 +26,7 @@ import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.GroundOverlayOptions;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
@@ -45,6 +51,7 @@ public class MapFragment extends Fragment implements MapContract.View {
 
     private FloatingActionButton mFabLocate;
     private RelativeLayout mRlSearch;
+    private RelativeLayout mRlView;
 
     private String currentAddress;
     private double currentLatitude;
@@ -54,6 +61,9 @@ public class MapFragment extends Fragment implements MapContract.View {
     private Marker mRemoteMarker;
     private Intent searchIntent;
     private String currentCityCode;
+    private boolean isPlay;
+    private AnimatorSet animShowSet;
+    private AnimatorSet animHideSet;
 
     @Nullable
     @Override
@@ -63,6 +73,7 @@ public class MapFragment extends Fragment implements MapContract.View {
         mMV_map = (MapView) rootView.findViewById(R.id.mv_map);
         mFabLocate = (FloatingActionButton) rootView.findViewById(R.id.fab_locate);
         mRlSearch = (RelativeLayout) rootView.findViewById(R.id.rl_search);
+        mRlView = (RelativeLayout) rootView.findViewById(R.id.rl_view);
         mMV_map.onCreate(savedInstanceState);
         searchIntent = new Intent(getContext(), SearchActivity.class);
         initMap();
@@ -109,6 +120,19 @@ public class MapFragment extends Fragment implements MapContract.View {
             @Override
             public void onClick(View v) {
                 turn2SearchAct();
+            }
+        });
+        mAMap.setOnCameraChangeListener(new AMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                mRlSearch.setVisibility(View.GONE);
+                mRlView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCameraChangeFinish(CameraPosition cameraPosition) {
+                mRlSearch.setVisibility(View.VISIBLE);
+                mRlView.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -190,12 +214,13 @@ public class MapFragment extends Fragment implements MapContract.View {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Config.SEARCH_CODE) {
-            Location location = (Location) data.getSerializableExtra(Config.LOCATION_KEY);
-            if (location != null) {
-                locateRemote(location.getLatitude(), location.getLongitude());
+            if (data != null) {
+                Location location = (Location) data.getSerializableExtra(Config.LOCATION_KEY);
+                if (location != null) {
+                    locateRemote(location.getLatitude(), location.getLongitude());
+                }
             }
         }
     }
-
 
 }

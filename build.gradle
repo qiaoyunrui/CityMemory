@@ -20,6 +20,7 @@ def rxAndroidVersion = "1.2.1"
 def glideVersion = "3.7.0"
 def reboundVersion = "0.3.8"
 def easypermissionsVersion = "0.1.9"
+def juwidgetVersion = "1.1"
 
 project.ext {
     applicationId = "com.juhezi.citymemory"
@@ -45,11 +46,13 @@ project.ext {
     libRebound = "com.facebook.rebound:rebound:${reboundVersion}"
     libEasypermissions = "pub.devrel:easypermissions:${easypermissionsVersion}"
     libConverterGson = "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
+    libJuWidget = "com.github.qiaoyunrui:JuWidgets:${juwidgetVersion}"
 }
 
 allprojects {
     repositories {
         jcenter()
+        maven { url "https://jitpack.io" }
     }
 }
 

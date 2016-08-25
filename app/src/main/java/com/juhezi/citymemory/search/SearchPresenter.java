@@ -53,6 +53,7 @@ public class SearchPresenter implements SearchContract.Presenter {
             }
         });
         poiSearch.searchPOIAsyn();
+        mView.showProgressbar();
     }
 
     @Override
@@ -61,7 +62,6 @@ public class SearchPresenter implements SearchContract.Presenter {
         observable.map(new Func1<PoiItem, Location>() {
             @Override
             public Location call(PoiItem poiItem) {
-
                 return new Location(poiItem.getLatLonPoint().getLongitude(),
                         poiItem.getLatLonPoint().getLatitude(),
                         poiItem.getCityName(),
@@ -84,6 +84,7 @@ public class SearchPresenter implements SearchContract.Presenter {
                     @Override
                     public void onNext(List<Location> locations) {
                         mView.refresh(locations);
+                        mView.hideProgressbar();
                     }
                 })
                 .unsubscribe();

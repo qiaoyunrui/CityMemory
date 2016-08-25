@@ -41,6 +41,51 @@
 
     </com.amap.api.maps.MapView>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/img_place"
+            android:layout_width="@dimen/ic_place_size"
+            android:layout_height="@dimen/ic_place_size"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_place" />
+
+        <RelativeLayout
+            android:id="@+id/rl_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/img_place"
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/white"
+            android:clickable="true"
+            android:elevation="@dimen/action_evelation"
+            android:foreground="?android:attr/selectableItemBackground">
+
+            <ImageView
+                android:id="@+id/img_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:src="@drawable/ic_view" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:layout_toRightOf="@+id/img_view"
+                android:text="@string/view" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_locate"
         android:layout_width="wrap_content"

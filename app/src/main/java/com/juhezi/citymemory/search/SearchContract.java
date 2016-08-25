@@ -20,6 +20,10 @@ public interface SearchContract {
 
         void refresh(List<Location> observable);
 
+        void showProgressbar();
+
+        void hideProgressbar();
+
     }
 
     interface Presenter extends BasePresenter {

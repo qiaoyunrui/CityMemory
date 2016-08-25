@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.amap.api.services.core.PoiItem;
 import com.juhezi.citymemory.R;
@@ -32,6 +33,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
 
     private SearchContract.Presenter mPresenter;
     private RecyclerView mRvList;
+    private ProgressBar mPbSearch;
     private View rootView;
     private LocationAdapter mAdapter;
 
@@ -40,6 +42,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.search_frag, container, false);
         mRvList = (RecyclerView) rootView.findViewById(R.id.rv_list);
+        mPbSearch = (ProgressBar) rootView.findViewById(R.id.pb_search);
         initRecyclerView();
         return rootView;
     }
@@ -88,5 +91,15 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     @Override
     public void refresh(List<Location> list) {
         mAdapter.refresh(list);
+    }
+
+    @Override
+    public void showProgressbar() {
+        mPbSearch.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressbar() {
+        mPbSearch.setVisibility(View.INVISIBLE);
     }
 }
