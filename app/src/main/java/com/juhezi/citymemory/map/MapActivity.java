@@ -39,7 +39,7 @@ public class MapActivity extends AppCompatActivity {
                     .commit();
         }
 
-        mPresenter = new MapPresenter(mFragment);
+        mPresenter = new MapPresenter(mFragment, this);
 
     }
 

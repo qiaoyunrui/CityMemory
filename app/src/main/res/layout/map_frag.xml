@@ -85,15 +85,43 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/board_height_double"
+        android:layout_gravity="bottom"
+        android:layout_margin="@dimen/activity_horizontal_margin">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_locate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:clickable="true"
-        android:src="@drawable/ic_locate"
-        app:fabSize="normal" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/board_height"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/white"
+            android:elevation="@dimen/board_elevation">
+
+            <TextView
+                android:id="@+id/tv_board"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:singleLine="true"
+                android:text="@string/move_pin"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/nav_header_name_text_size" />
+
+        </RelativeLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_locate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:clickable="true"
+            android:src="@drawable/ic_locate"
+            app:fabSize="normal" />
+
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

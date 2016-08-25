@@ -5,4 +5,5 @@
     <string name="about">关于</string>
     <string name="search_content">寻找想去的地方</string>
     <string name="view">查看</string>
+    <string name="move_pin">移动图钉</string>
 </resources>

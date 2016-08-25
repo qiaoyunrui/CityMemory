@@ -3,7 +3,10 @@ package com.juhezi.citymemory.map;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -13,8 +16,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -24,6 +29,7 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapOptions;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.Projection;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
@@ -31,10 +37,19 @@ import com.amap.api.maps.model.GroundOverlayOptions;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.services.geocoder.RegeocodeAddress;
+import com.amap.api.services.geocoder.RegeocodeResult;
 import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.data.Location;
 import com.juhezi.citymemory.other.Config;
 import com.juhezi.citymemory.search.SearchActivity;
+import com.juhezi.citymemory.util.OperateCallback;
+
+import java.util.List;
+
+import rx.Observable;
+import rx.Observer;
+import rx.functions.Func1;
 
 /**
  * Created by qiaoyunrui on 16-8-24.
@@ -52,6 +67,7 @@ public class MapFragment extends Fragment implements MapContract.View {
     private FloatingActionButton mFabLocate;
     private RelativeLayout mRlSearch;
     private RelativeLayout mRlView;
+    private TextView mTvBoard;
 
     private String currentAddress;
     private double currentLatitude;
@@ -64,6 +80,9 @@ public class MapFragment extends Fragment implements MapContract.View {
     private boolean isPlay;
     private AnimatorSet animShowSet;
     private AnimatorSet animHideSet;
+    private Projection mProjection;
+    private int mapHeight;
+    private int mapWidth;
 
     @Nullable
     @Override
@@ -74,6 +93,7 @@ public class MapFragment extends Fragment implements MapContract.View {
         mFabLocate = (FloatingActionButton) rootView.findViewById(R.id.fab_locate);
         mRlSearch = (RelativeLayout) rootView.findViewById(R.id.rl_search);
         mRlView = (RelativeLayout) rootView.findViewById(R.id.rl_view);
+        mTvBoard = (TextView) rootView.findViewById(R.id.tv_board);
         mMV_map.onCreate(savedInstanceState);
         searchIntent = new Intent(getContext(), SearchActivity.class);
         initMap();
@@ -85,6 +105,7 @@ public class MapFragment extends Fragment implements MapContract.View {
         mAMap = mMV_map.getMap();
         mAMap.getUiSettings().setZoomPosition(AMapOptions.ZOOM_POSITION_RIGHT_CENTER);
         mAMap.getUiSettings().setScaleControlsEnabled(true);
+        mProjection = mAMap.getProjection();
         mLocationClient = new AMapLocationClient(getContext());
         mLocationOption = new AMapLocationClientOption();
         mLocationClient.setLocationListener(new AMapLocationListener() {
@@ -109,6 +130,7 @@ public class MapFragment extends Fragment implements MapContract.View {
         mLocationClient.startLocation();
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void initEvent() {
         mFabLocate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,12 +149,48 @@ public class MapFragment extends Fragment implements MapContract.View {
             public void onCameraChange(CameraPosition cameraPosition) {
                 mRlSearch.setVisibility(View.GONE);
                 mRlView.setVisibility(View.GONE);
+                setBoardContent("移动中");
             }
 
             @Override
             public void onCameraChangeFinish(CameraPosition cameraPosition) {
                 mRlSearch.setVisibility(View.VISIBLE);
                 mRlView.setVisibility(View.VISIBLE);
+                mPresenter.getAddress(getPointAddress(mapWidth / 2, mapHeight / 2),
+                        new OperateCallback<Observable<RegeocodeResult>>() {
+                            @Override
+                            public void onOperate(Observable<RegeocodeResult> regeocodeResultObservable) {
+                                regeocodeResultObservable
+                                        .map(new Func1<RegeocodeResult, RegeocodeAddress>() {
+                                            @Override
+                                            public RegeocodeAddress call(RegeocodeResult regeocodeResult) {
+                                                return regeocodeResult.getRegeocodeAddress();
+                                            }
+                                        }).subscribe(new Observer<RegeocodeAddress>() {
+                                    @Override
+                                    public void onCompleted() {
+
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+
+                                    }
+
+                                    @Override
+                                    public void onNext(RegeocodeAddress regeocodeAddress) {
+                                        setBoardContent(regeocodeAddress.getFormatAddress());
+                                    }
+                                });
+                            }
+                        });
+            }
+        });
+        mMV_map.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                mapHeight = mMV_map.getHeight();
+                mapWidth = mMV_map.getWidth();
             }
         });
     }
@@ -205,6 +263,11 @@ public class MapFragment extends Fragment implements MapContract.View {
         mRemoteMarker = mAMap.addMarker(markerOptions);
     }
 
+    @Override
+    public void setBoardContent(String address) {
+        mTvBoard.setText(address);
+    }
+
     private void turn2SearchAct() {
         searchIntent.putExtra(Config.CITY_CODE, currentCityCode);
         startActivityForResult(searchIntent, Config.SEARCH_CODE);
@@ -221,6 +284,11 @@ public class MapFragment extends Fragment implements MapContract.View {
                 }
             }
         }
+    }
+
+    private LatLng getPointAddress(int x, int y) {
+        LatLng latLng = mProjection.fromScreenLocation(new Point(x, y));
+        return latLng;
     }
 
 }

@@ -9,4 +9,7 @@
     <dimen name="location_item_height">80dp</dimen>
     <dimen name="ic_place_size">50dp</dimen>
     <dimen name="action_evelation">10dp</dimen>
+    <dimen name="board_height">58dp</dimen>
+    <dimen name="board_height_double">116dp</dimen>
+    <dimen name="board_elevation">6dp</dimen>
 </resources>
