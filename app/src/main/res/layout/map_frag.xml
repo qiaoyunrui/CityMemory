@@ -50,7 +50,7 @@
             android:layout_width="@dimen/ic_place_size"
             android:layout_height="@dimen/ic_place_size"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_place" />
+            android:src="@drawable/ic_location" />
 
         <RelativeLayout
             android:id="@+id/rl_view"
