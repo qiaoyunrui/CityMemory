@@ -3,6 +3,7 @@ package com.juhezi.citymemory;
 import android.app.Application;
 
 import com.avos.avoscloud.AVOSCloud;
+import com.avos.avoscloud.AVObject;
 import com.juhezi.citymemory.other.Config;
 
 
