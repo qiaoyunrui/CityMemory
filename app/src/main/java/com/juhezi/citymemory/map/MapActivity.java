@@ -11,9 +11,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.avos.avoscloud.AVAnalytics;
+import com.avos.avoscloud.AVUser;
+import com.bumptech.glide.Glide;
 import com.juhezi.citymemory.R;
+import com.juhezi.citymemory.data.User;
+import com.juhezi.citymemory.other.Config;
 import com.juhezi.citymemory.sign.SignActivity;
 
 public class MapActivity extends AppCompatActivity {
@@ -23,9 +29,11 @@ public class MapActivity extends AppCompatActivity {
     private MapFragment mFragment;
     private NavigationView mNView;
     private View mVHeader;
-    private Intent signIntent;
-
     private static final String TAG = "MapActivity";
+
+    private ImageView mImgHeaderAvatar;
+    private TextView mTvHeaderName;
+    private ImageView mImgHeaderSign;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +62,14 @@ public class MapActivity extends AppCompatActivity {
         mNView = (NavigationView) findViewById(R.id.nav_view);
         mVHeader = mNView.getHeaderView(0);
         if (mVHeader != null) {
+            mImgHeaderAvatar = (ImageView) mVHeader.findViewById(R.id.img_header_avatar);
+            mTvHeaderName = (TextView) mVHeader.findViewById(R.id.tv_header_name);
+            mImgHeaderSign = (ImageView) mVHeader.findViewById(R.id.img_header_sign);
             mVHeader.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (signIntent == null) {
-                        signIntent = new Intent(MapActivity.this, SignActivity.class);
-                    }
-                    startActivity(signIntent);
+                    mFragment.turn2SignACtivity();
+                    mDLayout.closeDrawers();
                 }
             });
         }
@@ -92,5 +101,26 @@ public class MapActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void showUserInfo(AVUser user) {
+        mVHeader.setClickable(false);
+        mTvHeaderName.setText(user.get(Config.USER_PICK_NAME).toString());
+        if ((int) user.get(Config.USER_TYPE) == User.USER_TYPE_GROUP) {
+            mImgHeaderSign.setVisibility(View.VISIBLE);
+        } else {
+            mImgHeaderSign.setVisibility(View.INVISIBLE);
+        }
+        Log.i(TAG, "showUserInfo: " + user.get(Config.USER_AVATAR)
+                .toString());
+        Glide.with(this)
+                .load(user.get(Config.USER_AVATAR)
+                        .toString())
+                .error(R.drawable.ic_avatar)
+                .into(mImgHeaderAvatar);
+    }
 
+    public void cleanUserInfo() {
+        mVHeader.setClickable(true);
+        mImgHeaderAvatar.setImageResource(R.drawable.ic_avatar);
+        mTvHeaderName.setText("点击登录");
+    }
 }

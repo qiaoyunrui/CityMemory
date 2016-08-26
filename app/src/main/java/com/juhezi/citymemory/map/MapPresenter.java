@@ -11,6 +11,7 @@ import com.amap.api.services.geocoder.GeocodeResult;
 import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeQuery;
 import com.amap.api.services.geocoder.RegeocodeResult;
+import com.avos.avoscloud.AVUser;
 import com.juhezi.citymemory.util.OperateCallback;
 
 import rx.Observable;
@@ -34,6 +35,7 @@ public class MapPresenter implements MapContract.Presenter {
 
     @Override
     public void start() {
+        mView.initUser(getCurrUserData());
     }
 
     @Override
@@ -61,6 +63,11 @@ public class MapPresenter implements MapContract.Presenter {
                         latlng.latitude, latlng.longitude),
                 100, GeocodeSearch.AMAP);
         mGeocodeSearch.getFromLocationAsyn(query);
+    }
+
+    @Override
+    public AVUser getCurrUserData() {
+        return AVUser.getCurrentUser();
     }
 
 }

@@ -1,5 +1,6 @@
 package com.juhezi.citymemory.search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -8,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.BaseKeyListener;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
 
@@ -100,5 +102,11 @@ public class SearchActivity extends AppCompatActivity {
         if (getIntent() != null) {
             cityName = getIntent().getStringExtra(Config.CITY_CODE);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i(TAG, "onActivityResult: " + requestCode);
     }
 }

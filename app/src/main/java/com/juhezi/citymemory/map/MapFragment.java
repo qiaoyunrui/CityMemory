@@ -39,10 +39,12 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.services.geocoder.RegeocodeAddress;
 import com.amap.api.services.geocoder.RegeocodeResult;
+import com.avos.avoscloud.AVUser;
 import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.data.Location;
 import com.juhezi.citymemory.other.Config;
 import com.juhezi.citymemory.search.SearchActivity;
+import com.juhezi.citymemory.sign.SignActivity;
 import com.juhezi.citymemory.util.OperateCallback;
 
 import java.util.List;
@@ -77,12 +79,10 @@ public class MapFragment extends Fragment implements MapContract.View {
     private Marker mRemoteMarker;
     private Intent searchIntent;
     private String currentCityCode;
-    private boolean isPlay;
-    private AnimatorSet animShowSet;
-    private AnimatorSet animHideSet;
     private Projection mProjection;
     private int mapHeight;
     private int mapWidth;
+    private Intent signIntent;
 
     @Nullable
     @Override
@@ -276,13 +276,25 @@ public class MapFragment extends Fragment implements MapContract.View {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Config.SEARCH_CODE) {
-            if (data != null) {
-                Location location = (Location) data.getSerializableExtra(Config.LOCATION_KEY);
-                if (location != null) {
-                    locateRemote(location.getLatitude(), location.getLongitude());
+        switch (requestCode) {
+            case Config.SIGN_CODE:
+                initUser(mPresenter.getCurrUserData());
+                break;
+            case Config.SEARCH_CODE:
+                if (data != null) {
+                    Location location = (Location) data.getSerializableExtra(Config.LOCATION_KEY);
+                    if (location != null) {
+                        locateRemote(location.getLatitude(), location.getLongitude());
+                    }
                 }
-            }
+                break;
+        }
+    }
+
+    @Override
+    public void initUser(AVUser user) {
+        if (user != null) {
+            ((MapActivity) getActivity()).showUserInfo(user);
         }
     }
 
@@ -290,5 +302,13 @@ public class MapFragment extends Fragment implements MapContract.View {
         LatLng latLng = mProjection.fromScreenLocation(new Point(x, y));
         return latLng;
     }
+
+    public void turn2SignACtivity() {
+        if (signIntent == null) {
+            signIntent = new Intent(getContext(), SignActivity.class);
+        }
+        startActivityForResult(signIntent, Config.SIGN_CODE);
+    }
+
 
 }

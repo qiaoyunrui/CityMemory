@@ -7,8 +7,8 @@ import java.util.List;
  */
 public class User {
 
-    private static final int USER_TYPE_PERSON = 1;
-    private static final int USER_TYPE_GROUP = 2;
+    public static final int USER_TYPE_PERSON = 1;
+    public static final int USER_TYPE_GROUP = 2;
 
     private String username;    //用户名
     private String pickName;    //昵称

@@ -19,6 +19,7 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
 import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.map.MapContract;
+import com.juhezi.citymemory.other.Config;
 
 /**
  * Created by qiaoyunrui on 16-8-26.
@@ -114,6 +115,7 @@ public class SigninFragment extends Fragment implements SigninContract.View {
                                 hideProgressBar();
                                 if (e == null) {
                                     showSnackBar("登陆成功");
+                                    getActivity().setResult(Config.SIGN_CODE, null);
                                     getActivity().finish();
                                 } else {
                                     switch (e.getCode()) {

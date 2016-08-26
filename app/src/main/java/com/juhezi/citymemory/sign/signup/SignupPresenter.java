@@ -5,6 +5,8 @@ import android.util.Log;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SignUpCallback;
+import com.juhezi.citymemory.data.User;
+import com.juhezi.citymemory.other.Config;
 
 /**
  * Created by qiaoyunrui on 16-8-26.
@@ -32,7 +34,9 @@ public class SignupPresenter implements SignupContract.Presenter {
         AVUser user = new AVUser();
         user.setUsername(username);
         user.setPassword(passwd);
+        user.put(Config.USER_PICK_NAME, username);
+        user.put(Config.USER_TYPE, User.USER_TYPE_PERSON);
+        user.put(Config.USER_AVATAR, "");
         user.signUpInBackground(callback);
-
     }
 }
