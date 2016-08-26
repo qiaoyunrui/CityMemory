@@ -36,6 +36,7 @@
         </activity>
         <activity android:name=".search.SearchActivity"></activity>
         <activity android:name=".sign.SignActivity"></activity>
+        <activity android:name=".setting.SettingActivity"></activity>
 
         <service android:name="com.amap.api.location.APSService">
 

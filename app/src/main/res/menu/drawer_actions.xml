@@ -3,12 +3,12 @@
 
 
     <item
-        android:id="@+id/nav_own_memories"
+        android:id="@+id/nav_menu_own_memories"
         android:icon="@drawable/ic_sign"
         android:title="@string/own_memories" />
 
     <item
-        android:id="@+id/nav_pip_memories"
+        android:id="@+id/nav_menu_pip_memories"
         android:icon="@drawable/ic_sign"
         android:title="@string/pip_memories" />
 

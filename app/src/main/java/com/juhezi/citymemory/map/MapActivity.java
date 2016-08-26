@@ -40,7 +40,6 @@ public class MapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_act);
         initActionBar();
-
         initDrawLayout();
 
         mFragment = (MapFragment) getSupportFragmentManager()
@@ -68,7 +67,7 @@ public class MapActivity extends AppCompatActivity {
             mVHeader.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mFragment.turn2SignACtivity();
+                    mFragment.turn2SignActivity();
                     mDLayout.closeDrawers();
                 }
             });
@@ -77,6 +76,11 @@ public class MapActivity extends AppCompatActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.nav_menu_setting:
+                                mFragment.turn2SettingActivity();
+                                break;
+                        }
                         mDLayout.closeDrawers();
                         return true;
                     }
@@ -109,8 +113,6 @@ public class MapActivity extends AppCompatActivity {
         } else {
             mImgHeaderSign.setVisibility(View.INVISIBLE);
         }
-        Log.i(TAG, "showUserInfo: " + user.get(Config.USER_AVATAR)
-                .toString());
         Glide.with(this)
                 .load(user.get(Config.USER_AVATAR)
                         .toString())

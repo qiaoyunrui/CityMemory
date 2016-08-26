@@ -1,12 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Text" />
+    <ImageView
+        android:id="@+id/img_setting_frag"
+        android:layout_width="@dimen/nav_header_avatar_size"
+        android:layout_height="@dimen/nav_header_avatar_size"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/sign_avatar_margin_top"
+        android:layout_marginTop="@dimen/sign_avatar_margin_top"
+        android:clickable="true"
+        android:src="@drawable/ic_avatar_primary" />
 
-</LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/img_setting_frag"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:elevation="8dp">
+
+        <RelativeLayout
+            android:id="@+id/rl_setting_pick_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_setting_pick_name_title"
+                android:layout_width="@dimen/setting_title_width"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:text="@string/pick_name"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/nav_header_name_text_size" />
+
+            <TextView
+                android:id="@+id/tv_setting_pick_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_toRightOf="@+id/tv_setting_pick_name_title"
+                android:text="居合子"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/setting_pick_name_size" />
+
+            <ImageView
+                android:id="@+id/img_setting_pick_name_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:clickable="true"
+                android:src="@drawable/ic_edit" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/setting_memories_board_height"
+            android:layout_below="@+id/rl_setting_pick_name"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:gravity="center"
+                    android:text="@string/own_memories" />
+
+                <TextView
+                    android:id="@+id/tv_setting_own_mem_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/setting_memories_num_text_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorPrimaryDark"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:gravity="center"
+                    android:text="@string/pip_memories" />
+
+                <TextView
+                    android:id="@+id/tv_setting_pip_mem_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/setting_memories_num_text_size" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_setting_sign_out"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="@color/colorAccent"
+            android:text="@string/sign_out"
+            android:textColor="@android:color/white" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

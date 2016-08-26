@@ -12,4 +12,6 @@
     <string name="intput_username">请输入用户名</string>
     <string name="input_passwd">请输入密码</string>
     <string name="input_passwd_again">再次输入密码</string>
+    <string name="pick_name">昵称</string>
+    <string name="sign_out">退出登录</string>
 </resources>

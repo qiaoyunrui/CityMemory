@@ -14,4 +14,8 @@
     <dimen name="board_elevation">6dp</dimen>
     <dimen name="sign_avatar_margin_top">40dp</dimen>
     <dimen name="wall_pic_height">200dp</dimen>
+    <dimen name="setting_title_width">50dp</dimen>
+    <dimen name="setting_pick_name_size">30sp</dimen>
+    <dimen name="setting_memories_board_height">140dp</dimen>
+    <dimen name="setting_memories_num_text_size">50sp</dimen>
 </resources>

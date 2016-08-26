@@ -44,6 +44,7 @@ import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.data.Location;
 import com.juhezi.citymemory.other.Config;
 import com.juhezi.citymemory.search.SearchActivity;
+import com.juhezi.citymemory.setting.SettingActivity;
 import com.juhezi.citymemory.sign.SignActivity;
 import com.juhezi.citymemory.util.OperateCallback;
 
@@ -83,6 +84,7 @@ public class MapFragment extends Fragment implements MapContract.View {
     private int mapHeight;
     private int mapWidth;
     private Intent signIntent;
+    private Intent settingIntent;
 
     @Nullable
     @Override
@@ -303,12 +305,18 @@ public class MapFragment extends Fragment implements MapContract.View {
         return latLng;
     }
 
-    public void turn2SignACtivity() {
+    public void turn2SignActivity() {
         if (signIntent == null) {
             signIntent = new Intent(getContext(), SignActivity.class);
         }
         startActivityForResult(signIntent, Config.SIGN_CODE);
     }
 
+    public void turn2SettingActivity() {
+        if (settingIntent == null) {
+            settingIntent = new Intent(getContext(), SettingActivity.class);
+        }
+        startActivity(settingIntent);
+    }
 
 }
