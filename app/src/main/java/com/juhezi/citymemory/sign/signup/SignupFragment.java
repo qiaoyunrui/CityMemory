@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.juhezi.citymemory.R;
+
 /**
  * Created by qiaoyunrui on 16-8-26.
  */
@@ -21,6 +23,7 @@ public class SignupFragment extends Fragment implements SignupContract.View {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.signup_frag, container, false);
         return rootView;
     }
 

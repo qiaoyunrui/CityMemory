@@ -11,6 +11,7 @@ public class SignupPresenter implements SignupContract.Presenter {
 
     public SignupPresenter(SignupContract.View view) {
         mView = view;
+        mView.setPresenter(this);
     }
 
     @Override
