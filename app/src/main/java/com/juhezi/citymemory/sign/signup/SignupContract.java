@@ -1,4 +1,4 @@
-package com.juhezi.citymemory.signup;
+package com.juhezi.citymemory.sign.signup;
 
 import com.juhezi.citymemory.BasePresenter;
 import com.juhezi.citymemory.BaseView;

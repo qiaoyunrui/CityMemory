@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
     android:background="@color/colorPrimaryDark"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     android:padding="@dimen/activity_horizontal_margin">
 
     <ImageView
@@ -19,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/img_header_avatar"
-        android:text="居合子"
+        android:text="@string/click_to_signin"
         android:textColor="@android:color/white"
         android:textSize="@dimen/nav_header_name_text_size" />
 

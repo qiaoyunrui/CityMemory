@@ -1,4 +1,4 @@
-package com.juhezi.citymemory.signup;
+package com.juhezi.citymemory.sign.signup;
 
 /**
  * Created by qiaoyunrui on 16-8-26.

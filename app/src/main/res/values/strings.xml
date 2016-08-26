@@ -6,4 +6,7 @@
     <string name="search_content">寻找想去的地方</string>
     <string name="view">查看</string>
     <string name="move_pin">定位中..</string>
+    <string name="click_to_signin">点击登录</string>
+    <string name="own_memories">创建的回忆</string>
+    <string name="pip_memories">见证的回忆</string>
 </resources>

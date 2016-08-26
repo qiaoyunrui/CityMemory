@@ -1,4 +1,4 @@
-package com.juhezi.citymemory.signup;
+package com.juhezi.citymemory.sign.signup;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
