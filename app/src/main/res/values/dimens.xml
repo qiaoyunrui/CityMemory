@@ -12,4 +12,6 @@
     <dimen name="board_height">58dp</dimen>
     <dimen name="board_height_double">116dp</dimen>
     <dimen name="board_elevation">6dp</dimen>
+    <dimen name="sign_avatar_margin_top">40dp</dimen>
+    <dimen name="wall_pic_height">200dp</dimen>
 </resources>

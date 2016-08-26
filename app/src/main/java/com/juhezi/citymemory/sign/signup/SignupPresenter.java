@@ -1,5 +1,11 @@
 package com.juhezi.citymemory.sign.signup;
 
+import android.util.Log;
+
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.SignUpCallback;
+
 /**
  * Created by qiaoyunrui on 16-8-26.
  */
@@ -16,6 +22,17 @@ public class SignupPresenter implements SignupContract.Presenter {
 
     @Override
     public void start() {
+        mView.hideProgressBar();
+        mView.unenableSignup();
+    }
+
+    @Override
+    public void signup(String username, String passwd, SignUpCallback callback) {
+        mView.showProgressBar();
+        AVUser user = new AVUser();
+        user.setUsername(username);
+        user.setPassword(passwd);
+        user.signUpInBackground(callback);
 
     }
 }

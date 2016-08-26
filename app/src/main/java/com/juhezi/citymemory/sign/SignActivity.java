@@ -100,4 +100,8 @@ public class SignActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void turnSignIn() {
+        mVPager.setCurrentItem(0);
+    }
 }

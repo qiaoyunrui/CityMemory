@@ -9,4 +9,7 @@
     <string name="click_to_signin">点击登录</string>
     <string name="own_memories">创建的回忆</string>
     <string name="pip_memories">见证的回忆</string>
+    <string name="intput_username">请输入用户名</string>
+    <string name="input_passwd">请输入密码</string>
+    <string name="input_passwd_again">再次输入密码</string>
 </resources>
