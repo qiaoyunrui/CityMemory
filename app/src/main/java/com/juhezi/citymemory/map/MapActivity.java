@@ -10,7 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.avos.avoscloud.AVAnalytics;
 import com.juhezi.citymemory.R;
+import com.juhezi.citymemory.other.Config;
 
 public class MapActivity extends AppCompatActivity {
 
@@ -24,7 +26,6 @@ public class MapActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_act);
-
         initActionBar();
 
         initDrawLayout();
@@ -40,7 +41,7 @@ public class MapActivity extends AppCompatActivity {
         }
 
         mPresenter = new MapPresenter(mFragment, this);
-
+        AVAnalytics.trackAppOpened(getIntent());
     }
 
     private void initDrawLayout() {

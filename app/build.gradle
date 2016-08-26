@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
-
+    useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId rootProject.ext.applicationId
@@ -18,6 +18,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main.jniLibs.srcDirs = ['libs']
+    }
+
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+        exclude 'META-INF/maven/com.squareup.okhttp3/okhttp/pom.xml'
+        exclude 'META-INF/maven/com.squareup.okhttp3/okhttp/pom.properties'
+        exclude 'META-INF/maven/com.squareup.okio/okio/pom.xml'
+        exclude 'META-INF/maven/com.squareup.okio/okio/pom.properties'
+        exclude 'META-INF/maven/com.google.code.gson/gson/pom.xml'
+        exclude 'META-INF/maven/com.google.code.gson/gson/pom.properties'
+    }
+
 }
 
 dependencies {
@@ -30,10 +45,11 @@ dependencies {
     compile rootProject.ext.libSupportV4
     compile rootProject.ext.libGson
     compile rootProject.ext.libRetrofit
+    compile rootProject.ext.libConverterGson
     compile rootProject.ext.libRxJava
     compile rootProject.ext.libRxAndroid
     compile rootProject.ext.libGlide
     compile rootProject.ext.libRebound
     compile rootProject.ext.libEasypermissions
-    compile rootProject.ext.libConverterGson
+
 }
