@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVUser;
@@ -78,7 +79,13 @@ public class MapActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.nav_menu_setting:
-                                mFragment.turn2SettingActivity();
+                                if (mPresenter.getCurrUserData() != null) {
+                                    mFragment.turn2SettingActivity();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "请先登录", Toast.LENGTH_SHORT)
+                                            .show();
+                                    mFragment.turn2SignActivity();
+                                }
                                 break;
                         }
                         mDLayout.closeDrawers();

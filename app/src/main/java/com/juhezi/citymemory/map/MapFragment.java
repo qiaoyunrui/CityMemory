@@ -252,6 +252,11 @@ public class MapFragment extends Fragment implements MapContract.View {
         mMarker = mAMap.addMarker(markerOptions);
     }
 
+    /**
+     * 加载远程地址
+     * @param latitude
+     * @param longitude
+     */
     @Override
     public void locateRemote(double latitude, double longitude) {
         LatLng latLng = new LatLng(latitude, longitude);
@@ -316,7 +321,7 @@ public class MapFragment extends Fragment implements MapContract.View {
         if (settingIntent == null) {
             settingIntent = new Intent(getContext(), SettingActivity.class);
         }
-        startActivity(settingIntent);
+        startActivityForResult(settingIntent,Config.SETTING_CODE);
     }
 
 }

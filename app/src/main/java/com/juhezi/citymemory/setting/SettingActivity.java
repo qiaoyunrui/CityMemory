@@ -19,8 +19,8 @@ public class SettingActivity extends AppCompatActivity {
     private Toolbar mTbSetting;
     private ActionBar mActionBar;
 
-    private SettingFragment mFragment;
-    private SettingPresenter mPresenter;
+    private SettingFragment mSettingFragment;
+    private SettingPresenter mSettingPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,15 +48,15 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void initFragment() {
-        mFragment = (SettingFragment) getSupportFragmentManager()
+        mSettingFragment = (SettingFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.rl_setting_frag);
-        if (mFragment == null) {
-            mFragment = new SettingFragment();
+        if (mSettingFragment == null) {
+            mSettingFragment = new SettingFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.rl_setting_frag, mFragment)
+                    .add(R.id.rl_setting_frag, mSettingFragment)
                     .commit();
         }
-        mPresenter = new SettingPresenter(mFragment);
+        mSettingPresenter = new SettingPresenter(mSettingFragment);
     }
 
     @Override
