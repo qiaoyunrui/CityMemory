@@ -18,4 +18,7 @@
     <dimen name="setting_pick_name_size">30sp</dimen>
     <dimen name="setting_memories_board_height">140dp</dimen>
     <dimen name="setting_memories_num_text_size">50sp</dimen>
+    <dimen name="memory_item_avatar_size">50dp</dimen>
+    <dimen name="discuss_item_discuss_min_htight">30dp</dimen>
+    <dimen name="discuss_item_discuss_text_size">15sp</dimen>
 </resources>

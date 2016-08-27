@@ -7,8 +7,8 @@ public class Memory {
 
     private static final String TAG = "Memory";
 
-    private static final int MEMORY_TYPE_PIC = 0;
-    private static final int MEMORY_TYPE_DISCUSS = 1;
+    public static final int MEMORY_TYPE_PIC = 0;
+    public static final int MEMORY_TYPE_DISCUSS = 1;
 
     private String id;
     private String streamId;
@@ -16,6 +16,24 @@ public class Memory {
     private int type;
     private String discuss;
     private String picture;
+    private String pickname;
+    private String avatar;
+
+    public String getPickname() {
+        return pickname;
+    }
+
+    public void setPickname(String pickname) {
+        this.pickname = pickname;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public String getId() {
         return id;
