@@ -11,7 +11,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/sign_avatar_margin_top"
         android:layout_marginTop="@dimen/sign_avatar_margin_top"
-        android:background="?android:attr/selectableItemBackground"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:src="@drawable/ic_avatar_primary" />
 
@@ -60,7 +60,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_margin="@dimen/activity_horizontal_margin"
-                    android:background="?android:attr/selectableItemBackground"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:clickable="true"
                     android:src="@drawable/ic_edit" />
 
