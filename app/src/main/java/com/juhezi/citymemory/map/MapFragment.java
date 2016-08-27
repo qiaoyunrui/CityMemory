@@ -254,6 +254,7 @@ public class MapFragment extends Fragment implements MapContract.View {
 
     /**
      * 加载远程地址
+     *
      * @param latitude
      * @param longitude
      */
@@ -295,8 +296,15 @@ public class MapFragment extends Fragment implements MapContract.View {
                     }
                 }
                 break;
+            case Config.SETTING_CODE:
+                if (resultCode == Config.SETTING_CODE) {
+                    ((MapActivity) getActivity()).cleanUserInfo();
+                }
         }
+
+
     }
+
 
     @Override
     public void initUser(AVUser user) {
@@ -321,7 +329,7 @@ public class MapFragment extends Fragment implements MapContract.View {
         if (settingIntent == null) {
             settingIntent = new Intent(getContext(), SettingActivity.class);
         }
-        startActivityForResult(settingIntent,Config.SETTING_CODE);
+        startActivityForResult(settingIntent, Config.SETTING_CODE);
     }
 
 }

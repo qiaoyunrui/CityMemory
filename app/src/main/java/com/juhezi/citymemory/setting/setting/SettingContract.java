@@ -1,4 +1,4 @@
-package com.juhezi.citymemory.setting;
+package com.juhezi.citymemory.setting.setting;
 
 import com.avos.avoscloud.AVUser;
 import com.juhezi.citymemory.BasePresenter;

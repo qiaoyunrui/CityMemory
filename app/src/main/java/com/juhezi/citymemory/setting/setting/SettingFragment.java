@@ -1,13 +1,10 @@
-package com.juhezi.citymemory.setting;
+package com.juhezi.citymemory.setting.setting;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +18,7 @@ import com.avos.avoscloud.AVUser;
 import com.bumptech.glide.Glide;
 import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.other.Config;
+import com.juhezi.citymemory.setting.SettingActivity;
 
 /**
  * Created by qiaoyunrui on 16-8-26.
@@ -94,7 +92,7 @@ public class SettingFragment extends Fragment implements SettingContract.View {
         mImgAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ((SettingActivity) getActivity()).openAvatarFrag();
             }
         });
     }

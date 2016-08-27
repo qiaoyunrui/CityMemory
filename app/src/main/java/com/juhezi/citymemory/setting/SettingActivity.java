@@ -2,12 +2,17 @@ package com.juhezi.citymemory.setting;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.juhezi.citymemory.R;
+import com.juhezi.citymemory.setting.avatar.AvatarFragment;
+import com.juhezi.citymemory.setting.avatar.AvatarPresenter;
+import com.juhezi.citymemory.setting.setting.SettingFragment;
+import com.juhezi.citymemory.setting.setting.SettingPresenter;
 
 /**
  * Created by qiaoyunrui on 16-8-26.
@@ -21,6 +26,9 @@ public class SettingActivity extends AppCompatActivity {
 
     private SettingFragment mSettingFragment;
     private SettingPresenter mSettingPresenter;
+
+    private AvatarFragment mAvatarFragment;
+    private AvatarPresenter mAvatarPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +65,8 @@ public class SettingActivity extends AppCompatActivity {
                     .commit();
         }
         mSettingPresenter = new SettingPresenter(mSettingFragment);
+        mAvatarFragment = new AvatarFragment();
+        mAvatarPresenter = new AvatarPresenter(mAvatarFragment);
     }
 
     @Override
@@ -68,4 +78,15 @@ public class SettingActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void openAvatarFrag() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.rl_setting_frag, mAvatarFragment)
+                .addToBackStack("avatar")
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
+    }
 }
+
+
