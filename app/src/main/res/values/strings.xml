@@ -14,4 +14,5 @@
     <string name="input_passwd_again">再次输入密码</string>
     <string name="pick_name">昵称</string>
     <string name="sign_out">退出登录</string>
+    <string name="input_your_discuss">评价这个记忆流</string>
 </resources>

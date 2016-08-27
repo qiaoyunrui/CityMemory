@@ -41,7 +41,18 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
 
         initRecyclerView();
 
+        initEvent();
+
         return rootView;
+    }
+
+    private void initEvent() {
+        mFabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((BrowseActivity) getActivity()).openDiscussFragment();
+            }
+        });
     }
 
     private void initRecyclerView() {
@@ -49,6 +60,24 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRvList.setLayoutManager(layoutManager);
         mAdapter = new BrowseAdapter();
+        //data
+        Memory m1 = new Memory();
+        m1.setPickname("居合子");
+        m1.setType(Memory.MEMORY_TYPE_DISCUSS);
+        m1.setDiscuss("AVUser 作为 AVObject 的子类，同样允许子类化，你可以定义自己的 User 对象" +
+                "，不过比起 AVObject 子类化会更简单一些，只要继承 AVUser 就可以了");
+        m1.setAvatar("http://www.iconpng.com/download/png/100984");
+        Memory m2 = new Memory();
+        m2.setPickname("张全蛋");
+        m2.setType(Memory.MEMORY_TYPE_PIC);
+        m2.setPicture("http://cn.bing.com/hpwp/a4bcdfeaa76fd70b2d6eb227e5ee9362");
+        m2.setAvatar("http://www.iconpng.com/download/png/100990");
+        List<Memory> list = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            list.add(m1);
+            list.add(m2);
+        }
+        mAdapter.setList(list);
         mRvList.setAdapter(mAdapter);
     }
 

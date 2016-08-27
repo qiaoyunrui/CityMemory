@@ -2,13 +2,15 @@ package com.juhezi.citymemory.browse;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.juhezi.citymemory.R;
+import com.juhezi.citymemory.browse.upload.UploadFragment;
+import com.juhezi.citymemory.browse.upload.UploadPresenter;
 
 /**
  * Created by qiaoyunrui on 16-8-27.
@@ -22,6 +24,9 @@ public class BrowseActivity extends AppCompatActivity {
 
     private BrowsePresenter mBrowsePresenter;
     private BrowseFragment mBrowseFragment;
+
+    private UploadPresenter mUploadPresenter;
+    private UploadFragment mUploadFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,6 +60,9 @@ public class BrowseActivity extends AppCompatActivity {
                     .commit();
         }
         mBrowsePresenter = new BrowsePresenter(mBrowseFragment);
+
+        mUploadFragment = new UploadFragment();
+        mUploadPresenter = new UploadPresenter(mUploadFragment);
     }
 
     @Override
@@ -65,5 +73,14 @@ public class BrowseActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void openDiscussFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.rl_browse_frag, mUploadFragment)
+                .addToBackStack("discuss")
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
     }
 }
