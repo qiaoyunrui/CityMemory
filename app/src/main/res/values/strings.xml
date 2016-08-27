@@ -15,4 +15,6 @@
     <string name="pick_name">昵称</string>
     <string name="sign_out">退出登录</string>
     <string name="input_your_discuss">评价这个记忆流</string>
+    <string name="upload">上传</string>
+    <string name="use_pic_location">使用照片地理位置</string>
 </resources>
