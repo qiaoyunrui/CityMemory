@@ -41,6 +41,7 @@ import com.amap.api.services.geocoder.RegeocodeAddress;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.avos.avoscloud.AVUser;
 import com.juhezi.citymemory.R;
+import com.juhezi.citymemory.browse.BrowseActivity;
 import com.juhezi.citymemory.data.Location;
 import com.juhezi.citymemory.other.Config;
 import com.juhezi.citymemory.search.SearchActivity;
@@ -85,6 +86,7 @@ public class MapFragment extends Fragment implements MapContract.View {
     private int mapWidth;
     private Intent signIntent;
     private Intent settingIntent;
+    private Intent browseIntent;
 
     @Nullable
     @Override
@@ -193,6 +195,12 @@ public class MapFragment extends Fragment implements MapContract.View {
             public void onGlobalLayout() {
                 mapHeight = mMV_map.getHeight();
                 mapWidth = mMV_map.getWidth();
+            }
+        });
+        mRlView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                turn2BrowseActivity();
             }
         });
     }
@@ -330,6 +338,13 @@ public class MapFragment extends Fragment implements MapContract.View {
             settingIntent = new Intent(getContext(), SettingActivity.class);
         }
         startActivityForResult(settingIntent, Config.SETTING_CODE);
+    }
+
+    public void turn2BrowseActivity() {
+        if (browseIntent == null) {
+            browseIntent = new Intent(getContext(), BrowseActivity.class);
+        }
+        startActivityForResult(browseIntent, Config.BROWSE_CODE);
     }
 
 }

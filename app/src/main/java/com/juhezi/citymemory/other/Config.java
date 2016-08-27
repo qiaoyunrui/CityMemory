@@ -16,4 +16,5 @@ public class Config {
     public final static String USER_PICK_NAME = "userPickName";
     public final static String USER_TYPE = "userType";
     public final static String USER_AVATAR = "userAvatar";
+    public final static int BROWSE_CODE = 0x126;
 }
