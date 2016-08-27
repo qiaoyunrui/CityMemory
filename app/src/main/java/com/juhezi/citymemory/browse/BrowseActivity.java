@@ -2,15 +2,19 @@ package com.juhezi.citymemory.browse;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.browse.upload.UploadFragment;
 import com.juhezi.citymemory.browse.upload.UploadPresenter;
+import com.juhezi.citymemory.browse.view.ViewFragment;
+import com.juhezi.citymemory.browse.view.ViewPresenter;
 
 /**
  * Created by qiaoyunrui on 16-8-27.
@@ -27,6 +31,9 @@ public class BrowseActivity extends AppCompatActivity {
 
     private UploadPresenter mUploadPresenter;
     private UploadFragment mUploadFragment;
+
+    private ViewPresenter mViewPresenter;
+    private ViewFragment mViewFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +70,9 @@ public class BrowseActivity extends AppCompatActivity {
 
         mUploadFragment = new UploadFragment();
         mUploadPresenter = new UploadPresenter(mUploadFragment);
+
+        mViewFragment = new ViewFragment();
+        mViewPresenter = new ViewPresenter(mViewFragment);
     }
 
     @Override
@@ -76,11 +86,27 @@ public class BrowseActivity extends AppCompatActivity {
     }
 
     public void openDiscussFragment() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.rl_browse_frag, mUploadFragment)
-                .addToBackStack("discuss")
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.rl_browse_frag, mUploadFragment)
+                    .addToBackStack("discuss")
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit();
+        }
     }
+
+    public void openViewFragment() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.rl_browse_frag, mViewFragment)
+                    .addToBackStack("view")
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit();
+        }
+
+    }
+
+
 }

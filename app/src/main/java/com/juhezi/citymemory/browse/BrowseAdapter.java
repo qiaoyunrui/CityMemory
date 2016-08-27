@@ -23,6 +23,8 @@ public class BrowseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private List<Memory> list = new ArrayList<>();
 
+    private Listener mListener;
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView;
@@ -41,7 +43,7 @@ public class BrowseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         switch (getItemViewType(position)) {
             case Memory.MEMORY_TYPE_DISCUSS:
                 ((DiscussViewHolder) holder).mTvDiscussPickname
@@ -76,6 +78,16 @@ public class BrowseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         .crossFade()
                         .into(((MemoryViewHolder) holder)
                                 .mImgMemoryMemory);
+                ((MemoryViewHolder) holder).itemView
+                        .setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (mListener != null) {
+                                    mListener.onItemClicked(
+                                            list.get(position).getPicture());
+                                }
+                            }
+                        });
                 break;
         }
     }
@@ -98,14 +110,20 @@ public class BrowseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.list = list;
     }
 
+    public void setListener(Listener listener) {
+        mListener = listener;
+    }
+
     class MemoryViewHolder extends RecyclerView.ViewHolder {
 
         ImageView mImgMemoryAvatar;
         TextView mTvMemoryPickname;
         ImageView mImgMemoryMemory;
+        View itemView;
 
         public MemoryViewHolder(View itemView) {
             super(itemView);
+            this.itemView = itemView;
             mImgMemoryAvatar = (ImageView)
                     itemView.findViewById(R.id.img_memory_item_avatar);
             mTvMemoryPickname = (TextView)
@@ -121,9 +139,11 @@ public class BrowseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         ImageView mImgDiscussAvatar;
         TextView mTvDiscussPickname;
         TextView mTvDiscussDiscuss;
+        View itemView;
 
         public DiscussViewHolder(View itemView) {
             super(itemView);
+            this.itemView = itemView;
             mImgDiscussAvatar = (ImageView)
                     itemView.findViewById(R.id.img_discuss_item_avatar);
             mTvDiscussPickname = (TextView)
@@ -133,4 +153,9 @@ public class BrowseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
+    interface Listener {
+
+        void onItemClicked(String memory);
+
+    }
 }

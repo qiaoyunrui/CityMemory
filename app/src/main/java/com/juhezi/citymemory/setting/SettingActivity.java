@@ -80,12 +80,14 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     public void openAvatarFrag() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.rl_setting_frag, mAvatarFragment)
-                .addToBackStack("avatar")
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.rl_setting_frag, mAvatarFragment)
+                    .addToBackStack("avatar")
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit();
+        }
     }
 }
 

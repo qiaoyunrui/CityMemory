@@ -78,6 +78,12 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
             list.add(m2);
         }
         mAdapter.setList(list);
+        mAdapter.setListener(new BrowseAdapter.Listener() {
+            @Override
+            public void onItemClicked(String memory) {
+                ((BrowseActivity) getActivity()).openViewFragment();
+            }
+        });
         mRvList.setAdapter(mAdapter);
     }
 
