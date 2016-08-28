@@ -2,10 +2,13 @@ package com.juhezi.citymemory.data.data;
 
 import android.content.Context;
 import android.provider.Settings;
+import android.util.Log;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
+import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.SaveCallback;
+import com.juhezi.citymemory.util.Action;
 import com.juhezi.citymemory.util.OperateCallback;
 
 import java.io.FileNotFoundException;
@@ -33,19 +36,24 @@ public class DataResponse implements DataSource {
     }
 
     @Override
-    public void uploadMemory(String memoryPath, final OperateCallback<AVException> callback) {
+    public void uploadFile(final String memoryPath, final OperateCallback<String> operateCallback, final Action action) {
         try {
-            AVFile memory = AVFile.withAbsoluteLocalPath(System.currentTimeMillis() + "_IMG.jpg",
+            final String name = System.currentTimeMillis() + "_IMG";
+            final AVFile memory = AVFile.withAbsoluteLocalPath(name,
                     memoryPath);
             memory.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(AVException e) {
-                    callback.onOperate(e);
+                    if (e == null) {
+                        operateCallback.onOperate(memory.getUrl());
+                    } else {
+                        action.onAction();
+                    }
                 }
             });
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            callback.onOperate(null);   //找不到文件
+            action.onAction();
         }
 
 

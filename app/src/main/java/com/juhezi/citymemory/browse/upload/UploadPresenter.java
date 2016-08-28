@@ -10,6 +10,7 @@ import com.avos.avoscloud.AVException;
 import com.juhezi.citymemory.data.data.DataSource;
 import com.juhezi.citymemory.data.map.MapSource;
 import com.juhezi.citymemory.other.Config;
+import com.juhezi.citymemory.util.Action;
 import com.juhezi.citymemory.util.LocationUtil;
 import com.juhezi.citymemory.util.OperateCallback;
 
@@ -114,10 +115,15 @@ public class UploadPresenter implements UploadContract.Presenter {
 
     @Override
     public void upload(String path) {
-        mDataSource.uploadMemory(path, new OperateCallback<AVException>() {
+        mDataSource.uploadFile(path, new OperateCallback<String>() {
             @Override
-            public void onOperate(AVException e) {
-                Log.i(TAG, "onOperate: OK");
+            public void onOperate(String s) {
+
+            }
+        }, new Action() {
+            @Override
+            public void onAction() {
+                
             }
         });
     }

@@ -1,7 +1,6 @@
 package com.juhezi.citymemory.data.data;
 
-import com.avos.avoscloud.AVException;
-import com.juhezi.citymemory.util.Func;
+import com.juhezi.citymemory.util.Action;
 import com.juhezi.citymemory.util.OperateCallback;
 
 /**
@@ -10,8 +9,8 @@ import com.juhezi.citymemory.util.OperateCallback;
 public interface DataSource {
 
     /**
-     * 上传记忆(照片)
+     * 上传照片
      */
-    void uploadMemory(String memoryPath, OperateCallback<AVException> callback);
+    void uploadFile(String memoryPath, OperateCallback<String> callback, Action action);
 
 }
