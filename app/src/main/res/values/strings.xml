@@ -17,4 +17,6 @@
     <string name="input_your_discuss">评价这个记忆流</string>
     <string name="upload">上传</string>
     <string name="use_pic_location">使用照片地理位置</string>
+    <string name="camera">拍照</string>
+    <string name="gallery">相册</string>
 </resources>

@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.data.Memory;
+import com.juhezi.citymemory.util.Action;
+import com.juhezi.citymemory.util.OperateCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +114,18 @@ public class BrowseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public void setListener(Listener listener) {
         mListener = listener;
+    }
+
+    public void addItem(Memory memory, Action action) {
+        list.add(memory);
+        notifyItemInserted(getItemCount());
+        action.onAction();
+    }
+
+    public void deleteItem(int position, Action action) {
+        list.remove(position);
+        notifyItemRemoved(position);
+        action.onAction();
     }
 
     class MemoryViewHolder extends RecyclerView.ViewHolder {

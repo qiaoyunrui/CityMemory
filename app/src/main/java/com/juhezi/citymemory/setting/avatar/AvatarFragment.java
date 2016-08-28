@@ -34,7 +34,6 @@ public class AvatarFragment extends Fragment implements AvatarContract.View {
 
     @Override
     public void onDestroy() {
-        mPresenter = null;
         super.onDestroy();
     }
 

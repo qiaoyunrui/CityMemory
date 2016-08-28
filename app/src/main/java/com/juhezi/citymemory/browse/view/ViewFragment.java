@@ -37,7 +37,6 @@ public class ViewFragment extends Fragment implements ViewContract.View {
 
     @Override
     public void onDestroy() {
-        mPresenter = null;
         super.onDestroy();
     }
 

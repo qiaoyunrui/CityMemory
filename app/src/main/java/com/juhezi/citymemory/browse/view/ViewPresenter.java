@@ -13,6 +13,7 @@ public class ViewPresenter implements ViewContract.Presenter {
 
     public ViewPresenter(ViewContract.View view) {
         mView = view;
+        mView.setPresenter(this);
     }
 
     @Override
