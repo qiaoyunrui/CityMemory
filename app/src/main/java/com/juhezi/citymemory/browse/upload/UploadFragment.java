@@ -166,6 +166,8 @@ public class UploadFragment extends Fragment implements UploadContract.View {
 
     @Override
     public void turn2GalleryActivity() {
+        mGalleryIntent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(mGalleryIntent, Config.GALLERY_CODE);
     }
 
@@ -177,6 +179,9 @@ public class UploadFragment extends Fragment implements UploadContract.View {
                 showImage(mCameraUri);
                 break;
             case Config.GALLERY_CODE:
+                if (data != null) {
+                    showImage(data.getData());
+                }
                 break;
         }
     }

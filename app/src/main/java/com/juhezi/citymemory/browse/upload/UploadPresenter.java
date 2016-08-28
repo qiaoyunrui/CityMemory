@@ -26,7 +26,6 @@ public class UploadPresenter implements UploadContract.Presenter {
     @Override
     public void start() {
         mView.hideProgressbar();
-        Log.i(TAG, "start: Hello");
     }
 
     @Override

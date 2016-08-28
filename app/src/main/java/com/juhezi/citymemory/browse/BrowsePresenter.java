@@ -18,6 +18,6 @@ public class BrowsePresenter implements BrowseContract.Presenter {
 
     @Override
     public void start() {
-        Log.i(TAG, "start: Hello");
+
     }
 }
