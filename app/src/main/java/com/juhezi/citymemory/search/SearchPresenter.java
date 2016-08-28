@@ -1,12 +1,11 @@
 package com.juhezi.citymemory.search;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
-import com.juhezi.citymemory.data.Location;
+import com.juhezi.citymemory.data.module.Location;
 
 import java.util.List;
 

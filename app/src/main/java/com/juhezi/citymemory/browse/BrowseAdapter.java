@@ -9,9 +9,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.juhezi.citymemory.R;
-import com.juhezi.citymemory.data.Memory;
+import com.juhezi.citymemory.data.module.Memory;
 import com.juhezi.citymemory.util.Action;
-import com.juhezi.citymemory.util.OperateCallback;
 
 import java.util.ArrayList;
 import java.util.List;

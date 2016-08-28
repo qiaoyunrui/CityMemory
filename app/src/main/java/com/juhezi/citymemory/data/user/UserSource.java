@@ -1,0 +1,8 @@
+package com.juhezi.citymemory.data.user;
+
+/**
+ * Created by qiaoyunrui on 16-8-28.
+ */
+public interface UserSource {
+
+}

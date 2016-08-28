@@ -1,11 +1,8 @@
 package com.juhezi.citymemory.sign.signup;
 
-import android.util.Log;
-
-import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SignUpCallback;
-import com.juhezi.citymemory.data.User;
+import com.juhezi.citymemory.data.module.User;
 import com.juhezi.citymemory.other.Config;
 
 /**

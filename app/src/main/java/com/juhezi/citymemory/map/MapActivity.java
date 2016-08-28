@@ -1,6 +1,5 @@
 package com.juhezi.citymemory.map;
 
-import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -8,7 +7,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,9 +17,8 @@ import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVUser;
 import com.bumptech.glide.Glide;
 import com.juhezi.citymemory.R;
-import com.juhezi.citymemory.data.User;
+import com.juhezi.citymemory.data.module.User;
 import com.juhezi.citymemory.other.Config;
-import com.juhezi.citymemory.sign.SignActivity;
 
 public class MapActivity extends AppCompatActivity {
 

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.juhezi.citymemory.R;
-import com.juhezi.citymemory.data.Location;
+import com.juhezi.citymemory.data.module.Location;
 
 import java.util.ArrayList;
 import java.util.List;

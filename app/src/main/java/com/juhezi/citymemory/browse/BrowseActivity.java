@@ -2,12 +2,10 @@ package com.juhezi.citymemory.browse;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.juhezi.citymemory.R;
@@ -15,6 +13,10 @@ import com.juhezi.citymemory.browse.upload.UploadFragment;
 import com.juhezi.citymemory.browse.upload.UploadPresenter;
 import com.juhezi.citymemory.browse.view.ViewFragment;
 import com.juhezi.citymemory.browse.view.ViewPresenter;
+import com.juhezi.citymemory.data.data.DataResponse;
+import com.juhezi.citymemory.data.data.DataSource;
+import com.juhezi.citymemory.data.map.MapResponse;
+import com.juhezi.citymemory.data.map.MapSource;
 
 /**
  * Created by qiaoyunrui on 16-8-27.
@@ -34,6 +36,9 @@ public class BrowseActivity extends AppCompatActivity {
 
     private ViewPresenter mViewPresenter;
     private ViewFragment mViewFragment;
+
+    private MapSource mMapSource;
+    private DataSource mDataSource;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +62,9 @@ public class BrowseActivity extends AppCompatActivity {
 
     private void initFragment() {
 
+        mMapSource = MapResponse.getInstance(this);
+        mDataSource = DataResponse.getInstance(this);
+
         mBrowseFragment = (BrowseFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.rl_browse_frag);
         if (mBrowseFragment == null) {
@@ -69,7 +77,7 @@ public class BrowseActivity extends AppCompatActivity {
         mBrowsePresenter = new BrowsePresenter(mBrowseFragment);
 
         mUploadFragment = new UploadFragment();
-        mUploadPresenter = new UploadPresenter(mUploadFragment);
+        mUploadPresenter = new UploadPresenter(mUploadFragment, mMapSource, mDataSource);
 
         mViewFragment = new ViewFragment();
         mViewPresenter = new ViewPresenter(mViewFragment);

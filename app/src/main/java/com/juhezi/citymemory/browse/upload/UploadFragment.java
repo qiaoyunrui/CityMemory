@@ -2,6 +2,7 @@ package com.juhezi.citymemory.browse.upload;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,13 +17,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.amap.api.maps.model.LatLng;
 import com.bumptech.glide.Glide;
 import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.other.Config;
+import com.juhezi.citymemory.util.OperateCallback;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 /**
@@ -36,13 +41,17 @@ public class UploadFragment extends Fragment implements UploadContract.View {
 
     private View rootView;
     private ImageView mImgShow;
-    private TextView mTvUpload;
-    private TextView mTvUsePicLoc;
+    private Button mBtnUpload;
+    private Button mBtnUsePicLoc;
     private ProgressBar mPbUpload;
     private Button mBtnCamera;
     private Button mBtnGallery;
     private AlertDialog mDialog;
     private Uri mCameraUri;
+    private Uri currentUri;
+
+    private TextView mTvCurrAddress;
+    private TextView mTvPicAddress;
 
     private Intent mCameraIntent;
     private Intent mGalleryIntent;
@@ -52,9 +61,11 @@ public class UploadFragment extends Fragment implements UploadContract.View {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.upload_frag, container, false);
         mImgShow = (ImageView) rootView.findViewById(R.id.up_upload_show);
-        mTvUpload = (TextView) rootView.findViewById(R.id.tv_upload_upload);
-        mTvUsePicLoc = (TextView) rootView.findViewById(R.id.tv_upload_use_pic_loc);
+        mBtnUpload = (Button) rootView.findViewById(R.id.btn_upload_upload);
+        mBtnUsePicLoc = (Button) rootView.findViewById(R.id.btn_upload_use_pic_loc);
         mPbUpload = (ProgressBar) rootView.findViewById(R.id.pb_upload);
+        mTvCurrAddress = (TextView) rootView.findViewById(R.id.tv_upload_curr_loc);
+        mTvPicAddress = (TextView) rootView.findViewById(R.id.tv_upload_pic_loc);
         initEvent();
         initCamera();
         initGallery();
@@ -76,6 +87,12 @@ public class UploadFragment extends Fragment implements UploadContract.View {
     public void onStart() {
         super.onStart();
         initDialog();
+        mPresenter.getCurrentAddress(new OperateCallback<String>() {
+            @Override
+            public void onOperate(String s) {
+                setCurrAddress(s);
+            }
+        });
     }
 
     private void initDialog() {
@@ -111,6 +128,23 @@ public class UploadFragment extends Fragment implements UploadContract.View {
                 showDialog();
             }
         });
+        mBtnUsePicLoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentUri != null) {
+
+                }
+            }
+        });
+        mBtnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentUri != null) {
+                    mPresenter.upload(currentUri.getPath());
+                    Log.i(TAG, "onClick: upload");
+                }
+            }
+        });
     }
 
     @Override
@@ -119,6 +153,7 @@ public class UploadFragment extends Fragment implements UploadContract.View {
         if (mPresenter != null) {
             mPresenter.start();
         }
+        setCurrAddress("定位中");
     }
 
     @Override
@@ -146,7 +181,6 @@ public class UploadFragment extends Fragment implements UploadContract.View {
         if (uri != null) {
             Glide.with(getContext())
                     .load(uri)
-                    .error(R.drawable.city)
                     .crossFade()
                     .into(mImgShow);
         }
@@ -166,9 +200,19 @@ public class UploadFragment extends Fragment implements UploadContract.View {
 
     @Override
     public void turn2GalleryActivity() {
-        mGalleryIntent = new Intent(Intent.ACTION_PICK,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        mGalleryIntent = new Intent(Intent.ACTION_PICK);
+        mGalleryIntent.setType("image/*");
         startActivityForResult(mGalleryIntent, Config.GALLERY_CODE);
+    }
+
+    @Override
+    public void setCurrAddress(String address) {
+        mTvCurrAddress.setText("当前位置: " + address);
+    }
+
+    @Override
+    public void setPicAddress(String address) {
+        mTvPicAddress.setText("图片位置: " + address);
     }
 
     @Override
@@ -176,14 +220,29 @@ public class UploadFragment extends Fragment implements UploadContract.View {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case Config.CAMERA_CODE:
+                currentUri = mCameraUri;
                 showImage(mCameraUri);
                 break;
             case Config.GALLERY_CODE:
                 if (data != null) {
+                    currentUri = data.getData();
                     showImage(data.getData());
                 }
                 break;
         }
+        LatLng latLng = mPresenter.getPicLocation(currentUri);
+        if (latLng != null) {
+            mPresenter.getAddress(latLng
+                    , new OperateCallback<String>() {
+                        @Override
+                        public void onOperate(String s) {
+                            setPicAddress(s);
+                        }
+                    });
+        } else {
+            setPicAddress("- - -");
+        }
+
     }
 
 }

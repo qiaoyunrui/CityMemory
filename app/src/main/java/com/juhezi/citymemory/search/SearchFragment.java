@@ -6,23 +6,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.amap.api.services.core.PoiItem;
 import com.juhezi.citymemory.R;
-import com.juhezi.citymemory.data.Location;
+import com.juhezi.citymemory.data.module.Location;
 import com.juhezi.citymemory.other.Config;
 
 import java.util.List;
-
-import rx.Observable;
-import rx.Observer;
-import rx.functions.Action1;
-import rx.functions.Func1;
 
 /**
  * Created by qiaoyunrui on 16-8-24.

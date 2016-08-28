@@ -1,8 +1,5 @@
 package com.juhezi.citymemory.map;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Point;
@@ -13,11 +10,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -30,10 +25,8 @@ import com.amap.api.maps.AMapOptions;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.Projection;
-import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
-import com.amap.api.maps.model.GroundOverlayOptions;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
@@ -42,14 +35,12 @@ import com.amap.api.services.geocoder.RegeocodeResult;
 import com.avos.avoscloud.AVUser;
 import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.browse.BrowseActivity;
-import com.juhezi.citymemory.data.Location;
+import com.juhezi.citymemory.data.module.Location;
 import com.juhezi.citymemory.other.Config;
 import com.juhezi.citymemory.search.SearchActivity;
 import com.juhezi.citymemory.setting.SettingActivity;
 import com.juhezi.citymemory.sign.SignActivity;
 import com.juhezi.citymemory.util.OperateCallback;
-
-import java.util.List;
 
 import rx.Observable;
 import rx.Observer;
@@ -122,7 +113,7 @@ public class MapFragment extends Fragment implements MapContract.View {
                     currentCityCode = aMapLocation.getCityCode();
                     locate();
                 } else {
-                    Log.d(TAG, "onLocationChanged: " +
+                    Log.d(TAG, "定位失败: " +
                             aMapLocation.getErrorCode() +
                             " ," + aMapLocation.getErrorInfo());
                 }
@@ -321,6 +312,13 @@ public class MapFragment extends Fragment implements MapContract.View {
         }
     }
 
+    /**
+     * 获取屏幕坐标对应的健康经纬度
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     private LatLng getPointAddress(int x, int y) {
         LatLng latLng = mProjection.fromScreenLocation(new Point(x, y));
         return latLng;

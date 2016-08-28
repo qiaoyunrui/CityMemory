@@ -1,4 +1,4 @@
-package com.juhezi.citymemory.data;
+package com.juhezi.citymemory.data.module;
 
 /**
  * Created by qiaoyunrui on 16-8-27.

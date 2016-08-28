@@ -1,4 +1,4 @@
-package com.juhezi.citymemory.data;
+package com.juhezi.citymemory.data.module;
 
 import java.io.Serializable;
 

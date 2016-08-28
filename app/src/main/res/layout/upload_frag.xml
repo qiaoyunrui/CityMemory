@@ -4,44 +4,73 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
+    <LinearLayout
+        android:id="@+id/ll_virtual_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_upload_curr_loc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="@string/current_address"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tv_upload_pic_loc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="@string/pic_address"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
     <ImageView
         android:id="@+id/up_upload_show"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/ll_actions_group"
+        android:layout_below="@+id/ll_virtual_toolbar"
         android:clickable="true"
-        android:foreground="?selectableItemBackground"
-        android:src="@drawable/city" />
+        android:foreground="?selectableItemBackground" />
 
     <LinearLayout
+        android:id="@+id/ll_actions_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@android:color/white"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_upload_use_pic_loc"
+        <Button
+            android:id="@+id/btn_upload_use_pic_loc"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:layout_weight="1"
-            android:background="?selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:gravity="center"
+            android:backgroundTint="@color/colorPrimary"
             android:text="@string/use_pic_location"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/discuss_item_discuss_text_size" />
+            android:textColor="@android:color/white" />
 
-        <TextView
-            android:id="@+id/tv_upload_upload"
+        <Button
+            android:id="@+id/btn_upload_upload"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:layout_weight="1"
-            android:background="?selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:gravity="center"
+            android:backgroundTint="@color/colorPrimaryDark"
             android:text="@string/upload"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/discuss_item_discuss_text_size" />
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 

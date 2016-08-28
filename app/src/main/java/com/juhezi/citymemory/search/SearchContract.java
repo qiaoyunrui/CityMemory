@@ -1,15 +1,11 @@
 package com.juhezi.citymemory.search;
 
-import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.poisearch.PoiResult;
 import com.juhezi.citymemory.BasePresenter;
 import com.juhezi.citymemory.BaseView;
-import com.juhezi.citymemory.data.Location;
-import com.juhezi.citymemory.map.MapContract;
+import com.juhezi.citymemory.data.module.Location;
 
 import java.util.List;
-
-import rx.Observable;
 
 /**
  * Created by qiaoyunrui on 16-8-24.
