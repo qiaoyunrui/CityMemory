@@ -1,9 +1,14 @@
 package com.juhezi.citymemory.data.module;
 
+import com.amap.api.maps.model.LatLng;
+import com.avos.avoscloud.AVObject;
+
+import java.io.Serializable;
+
 /**
  * Created by qiaoyunrui on 16-8-27.
  */
-public class MemoryStream {
+public class MemoryStream implements Serializable {
 
     private static final String TAG = "MemoryStream";
 
@@ -11,6 +16,24 @@ public class MemoryStream {
     private String owner;   //创建者
     private int memoryCount;    //图片的数量
     private int discussCount;   //评论的数量
+    private double lon;
+    private double lat;
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
 
     public String getId() {
         return id;
@@ -42,5 +65,16 @@ public class MemoryStream {
 
     public void setDiscussCount(int discussCount) {
         this.discussCount = discussCount;
+    }
+
+    public static MemoryStream parseAVObject(AVObject avObject) {
+        MemoryStream memoryStream = new MemoryStream();
+        memoryStream.setId(avObject.getObjectId());
+        memoryStream.setOwner(avObject.getString("owner"));
+        memoryStream.setDiscussCount(avObject.getInt("discussCount"));
+        memoryStream.setMemoryCount(avObject.getInt("memoryCount"));
+        memoryStream.setLat(avObject.getAVGeoPoint("whereCreated").getLatitude());
+        memoryStream.setLon(avObject.getAVGeoPoint("whereCreated").getLongitude());
+        return memoryStream;
     }
 }

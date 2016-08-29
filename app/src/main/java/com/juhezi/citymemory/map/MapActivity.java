@@ -17,6 +17,8 @@ import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVUser;
 import com.bumptech.glide.Glide;
 import com.juhezi.citymemory.R;
+import com.juhezi.citymemory.data.data.DataResponse;
+import com.juhezi.citymemory.data.data.DataSource;
 import com.juhezi.citymemory.data.module.User;
 import com.juhezi.citymemory.other.Config;
 
@@ -32,6 +34,8 @@ public class MapActivity extends AppCompatActivity {
     private ImageView mImgHeaderAvatar;
     private TextView mTvHeaderName;
     private ImageView mImgHeaderSign;
+
+    private DataSource mDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +53,8 @@ public class MapActivity extends AppCompatActivity {
                     .add(R.id.rl_map_frag, mFragment)
                     .commit();
         }
-
-        mPresenter = new MapPresenter(mFragment, this);
+        mDataSource = DataResponse.getInstance(this);
+        mPresenter = new MapPresenter(mFragment, this, mDataSource);
         AVAnalytics.trackAppOpened(getIntent());
     }
 

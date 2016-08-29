@@ -13,6 +13,8 @@ public class Config {
     public final static int CAMERA_CODE = 0x127;
     public final static int GALLERY_CODE = 0x128;
 
+    public final static int QUERY_LIMIT_RADIUS = 50;
+
     public final static String LOCATION_KEY = "locationKey";
 
     public final static String APP_ID = "mDW4SvkuYabyVszGjr5OaDaP-gzGzoHsz";
@@ -22,4 +24,5 @@ public class Config {
     public final static String USER_AVATAR = "userAvatar";
 
     public final static String APP_NAME = "CityMemory";
+    public final static String MEMORY_STREAM_TAG = "memoryStreamTag";
 }

@@ -2,9 +2,12 @@ package com.juhezi.citymemory.map;
 
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.services.geocoder.RegeocodeResult;
+import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.juhezi.citymemory.BasePresenter;
 import com.juhezi.citymemory.BaseView;
+import com.juhezi.citymemory.data.module.Memory;
+import com.juhezi.citymemory.data.module.MemoryStream;
 import com.juhezi.citymemory.util.OperateCallback;
 
 import rx.Observable;
@@ -21,9 +24,13 @@ public interface MapContract {
 
         AVUser getCurrUserData();
 
+        void getStreamInfo(int pointX, int pointY,
+                           OperateCallback<MemoryStream> callback);
+
     }
 
     interface View extends BaseView<Presenter> {
+
         void locate();
 
         void locateRemote(double latitude, double longitude);
@@ -31,6 +38,8 @@ public interface MapContract {
         void setBoardContent(String address);
 
         void initUser(AVUser user);
-    }
 
+        LatLng getPointAddress(int x, int y);
+
+    }
 }

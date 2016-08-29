@@ -36,6 +36,7 @@ import com.avos.avoscloud.AVUser;
 import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.browse.BrowseActivity;
 import com.juhezi.citymemory.data.module.Location;
+import com.juhezi.citymemory.data.module.MemoryStream;
 import com.juhezi.citymemory.other.Config;
 import com.juhezi.citymemory.search.SearchActivity;
 import com.juhezi.citymemory.setting.SettingActivity;
@@ -191,7 +192,13 @@ public class MapFragment extends Fragment implements MapContract.View {
         mRlView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                turn2BrowseActivity();
+                mPresenter.getStreamInfo(mapWidth / 2, mapHeight / 2
+                        , new OperateCallback<MemoryStream>() {
+                            @Override
+                            public void onOperate(MemoryStream memoryStream) {
+                                turn2BrowseActivity(memoryStream);
+                            }
+                        });
             }
         });
     }
@@ -313,13 +320,13 @@ public class MapFragment extends Fragment implements MapContract.View {
     }
 
     /**
-     * 获取屏幕坐标对应的健康经纬度
+     * 获取屏幕坐标对应的地图经纬度
      *
      * @param x
      * @param y
      * @return
      */
-    private LatLng getPointAddress(int x, int y) {
+    public LatLng getPointAddress(int x, int y) {
         LatLng latLng = mProjection.fromScreenLocation(new Point(x, y));
         return latLng;
     }
@@ -338,10 +345,14 @@ public class MapFragment extends Fragment implements MapContract.View {
         startActivityForResult(settingIntent, Config.SETTING_CODE);
     }
 
-    public void turn2BrowseActivity() {
+    public void turn2BrowseActivity(MemoryStream memoryStream) {
         if (browseIntent == null) {
             browseIntent = new Intent(getContext(), BrowseActivity.class);
         }
+        if (memoryStream == null) {
+            Log.i(TAG, "turn2BrowseActivity: memStream is null");
+        }
+        browseIntent.putExtra(Config.MEMORY_STREAM_TAG, memoryStream);
         startActivityForResult(browseIntent, Config.BROWSE_CODE);
     }
 
