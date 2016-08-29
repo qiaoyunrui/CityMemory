@@ -17,6 +17,8 @@ import com.juhezi.citymemory.data.data.DataResponse;
 import com.juhezi.citymemory.data.data.DataSource;
 import com.juhezi.citymemory.data.map.MapResponse;
 import com.juhezi.citymemory.data.map.MapSource;
+import com.juhezi.citymemory.data.user.UserResponse;
+import com.juhezi.citymemory.data.user.UserSource;
 
 /**
  * Created by qiaoyunrui on 16-8-27.
@@ -39,6 +41,7 @@ public class BrowseActivity extends AppCompatActivity {
 
     private MapSource mMapSource;
     private DataSource mDataSource;
+    private UserSource mUserSource;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,6 +67,7 @@ public class BrowseActivity extends AppCompatActivity {
 
         mMapSource = MapResponse.getInstance(this);
         mDataSource = DataResponse.getInstance(this);
+        mUserSource = UserResponse.getInstance(this);
 
         mBrowseFragment = (BrowseFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.rl_browse_frag);
@@ -74,7 +78,8 @@ public class BrowseActivity extends AppCompatActivity {
                     .add(R.id.rl_browse_frag, mBrowseFragment)
                     .commit();
         }
-        mBrowsePresenter = new BrowsePresenter(mBrowseFragment, mDataSource);
+        mBrowsePresenter = new BrowsePresenter(mBrowseFragment
+                , mDataSource, mUserSource, mMapSource);
 
         mUploadFragment = new UploadFragment();
         mUploadPresenter = new UploadPresenter(mUploadFragment, mMapSource, mDataSource);

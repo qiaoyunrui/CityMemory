@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,14 +13,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.amap.api.maps.model.LatLng;
+import com.avos.avoscloud.AVUser;
 import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.data.module.Memory;
 import com.juhezi.citymemory.data.module.MemoryStream;
 import com.juhezi.citymemory.other.Config;
+import com.juhezi.citymemory.sign.SignActivity;
+import com.juhezi.citymemory.util.Action;
 import com.juhezi.citymemory.util.OperateCallback;
 
 import java.util.ArrayList;
@@ -40,9 +47,18 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
     private BrowseAdapter mAdapter;
     private RelativeLayout mRlEmptyView;
     private ProgressBar mPbBrowse;
+    private TextView mTvCurrentAddress;
+    private TextView mTvCreater;
+    private TextInputLayout mTILDiscuss;
+    private ImageView mImgSend;
+
+    private AVUser currentUser;
 
     private MemoryStream mMemoryStream;
     private LatLng mLatLng;
+
+    private Intent mSignIntent;
+
 
     @Nullable
     @Override
@@ -54,6 +70,10 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
         mRlEmptyView = (RelativeLayout) rootView
                 .findViewById(R.id.rl_browse_empty_view);
         mPbBrowse = (ProgressBar) rootView.findViewById(R.id.pb_browse);
+        mTvCurrentAddress = (TextView) rootView.findViewById(R.id.tv_current_address);
+        mTvCreater = (TextView) rootView.findViewById(R.id.tv_creater);
+        mTILDiscuss = (TextInputLayout) rootView.findViewById(R.id.til_browse_discuss);
+        mImgSend = (ImageView) rootView.findViewById(R.id.img_browse_send);
 
         initRecyclerView();
 
@@ -68,6 +88,11 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
      * 获取列表数据
      */
     private void initData() {
+        currentUser = mPresenter.getCurrentUser();
+        if (currentUser == null) {
+            unenableTIL();
+            unenableSendButton();
+        }
         Intent intent = getActivity().getIntent();
         if (intent == null) {
             return;
@@ -75,6 +100,12 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
         mLatLng = (LatLng) intent
                 .getParcelableExtra(Config.MEMORY_STREAM_LATLNG);
         if (mLatLng != null) {
+            mPresenter.getAddressByLatLng(mLatLng, new OperateCallback<String>() {
+                @Override
+                public void onOperate(String s) {
+                    showAddress(s);
+                }
+            });
             mPresenter.getStreamInfo(mLatLng, new OperateCallback<MemoryStream>() {
                 @Override
                 public void onOperate(MemoryStream memoryStream) {
@@ -94,7 +125,18 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
         mFabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((BrowseActivity) getActivity()).openDiscussFragment();
+                if (currentUser == null) {   //未登录
+                    showSnackBar("未登录无法添加回忆,请先登录.", "登录", new Action() {
+                        @Override
+                        public void onAction() {
+                            turn2SignActivity();
+                            getActivity().finish();
+                        }
+                    });
+
+                } else {    //已经登录
+                    ((BrowseActivity) getActivity()).openDiscussFragment();
+                }
             }
         });
     }
@@ -104,30 +146,6 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRvList.setLayoutManager(layoutManager);
         mAdapter = new BrowseAdapter();
-        //data
-        Memory m1 = new Memory();
-        m1.setPickname("居合子");
-        m1.setType(Memory.MEMORY_TYPE_DISCUSS);
-        m1.setDiscuss("AVUser 作为 AVObject 的子类，同样允许子类化，你可以定义自己的 User 对象" +
-                "，不过比起 AVObject 子类化会更简单一些，只要继承 AVUser 就可以了");
-        m1.setAvatar("http://www.iconpng.com/download/png/100984");
-        Memory m2 = new Memory();
-        m2.setPickname("张全蛋");
-        m2.setType(Memory.MEMORY_TYPE_PIC);
-        m2.setPicture("http://cn.bing.com/hpwp/a4bcdfeaa76fd70b2d6eb227e5ee9362");
-        m2.setAvatar("http://www.iconpng.com/download/png/100990");
-        List<Memory> list = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            list.add(m1);
-            list.add(m2);
-        }
-        mAdapter.setList(list);
-        mAdapter.setListener(new BrowseAdapter.Listener() {
-            @Override
-            public void onItemClicked(String memory) {
-                ((BrowseActivity) getActivity()).openViewFragment();
-            }
-        });
         mRvList.setAdapter(mAdapter);
     }
 
@@ -168,7 +186,50 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
     @Override
     public void hideProgressbar() {
         mPbBrowse.setVisibility(View.INVISIBLE);
+    }
 
+    @Override
+    public void showSnackBar(String message, String actionName, final Action action) {
+        Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT)
+                .setAction(actionName, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        action.onAction();
+                    }
+                })
+                .show();
+    }
+
+    @Override
+    public void turn2SignActivity() {
+        mSignIntent = new Intent(getContext(), SignActivity.class);
+        startActivity(mSignIntent);
+    }
+
+    @Override
+    public void showAddress(String address) {
+        mTvCurrentAddress.setText(address);
+    }
+
+    @Override
+    public void showCreater(String creater) {
+        mTvCreater.setText(creater);
+    }
+
+    @Override
+    public void unenableTIL() {
+        mTILDiscuss.setHint("未登录无法发表评论");
+        mTILDiscuss.getEditText().setFocusable(false);
+    }
+
+    @Override
+    public void unenableSendButton() {
+        mImgSend.setClickable(false);
+    }
+
+    @Override
+    public void enableSendButton() {
+        mImgSend.setClickable(true);
     }
 }
 

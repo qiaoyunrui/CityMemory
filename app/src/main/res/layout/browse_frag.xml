@@ -62,23 +62,25 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_current_address"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="居合子"
+                    android:singleLine="true"
                     android:textColor="@android:color/white" />
 
                 <TextView
+                    android:id="@+id/tv_creater"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="山西省太原试尖草坪区中北大学"
+                    android:singleLine="true"
                     android:textColor="@android:color/white" />
 
             </LinearLayout>
