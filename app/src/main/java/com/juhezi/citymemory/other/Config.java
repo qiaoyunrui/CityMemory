@@ -24,5 +24,5 @@ public class Config {
     public final static String USER_AVATAR = "userAvatar";
 
     public final static String APP_NAME = "CityMemory";
-    public final static String MEMORY_STREAM_TAG = "memoryStreamTag";
+    public final static String MEMORY_STREAM_LATLNG = "memoryStreamLatLng";
 }

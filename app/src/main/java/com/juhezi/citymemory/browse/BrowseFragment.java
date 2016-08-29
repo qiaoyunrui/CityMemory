@@ -14,10 +14,12 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.amap.api.maps.model.LatLng;
 import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.data.module.Memory;
 import com.juhezi.citymemory.data.module.MemoryStream;
 import com.juhezi.citymemory.other.Config;
+import com.juhezi.citymemory.util.OperateCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,7 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
     private ProgressBar mPbBrowse;
 
     private MemoryStream mMemoryStream;
+    private LatLng mLatLng;
 
     @Nullable
     @Override
@@ -69,13 +72,21 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
         if (intent == null) {
             return;
         }
-        mMemoryStream = (MemoryStream) intent
-                .getSerializableExtra(Config.MEMORY_STREAM_TAG);
-        if (mMemoryStream == null) { //此地没有回忆
-            showEmptyView();
-            hideProgressbar();
-        } else {    //此地有回忆
+        mLatLng = (LatLng) intent
+                .getParcelableExtra(Config.MEMORY_STREAM_LATLNG);
+        if (mLatLng != null) {
+            mPresenter.getStreamInfo(mLatLng, new OperateCallback<MemoryStream>() {
+                @Override
+                public void onOperate(MemoryStream memoryStream) {
+                    mMemoryStream = memoryStream;
+                    if (mMemoryStream == null) {    //此地没有回忆
+                        showEmptyView();
+                        hideProgressbar();  //此地有回忆
+                    } else {
 
+                    }
+                }
+            });
         }
     }
 
@@ -157,7 +168,6 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
     @Override
     public void hideProgressbar() {
         mPbBrowse.setVisibility(View.INVISIBLE);
-        Log.i(TAG, "hideProgressbar: " + mPbBrowse.getVisibility());
 
     }
 }

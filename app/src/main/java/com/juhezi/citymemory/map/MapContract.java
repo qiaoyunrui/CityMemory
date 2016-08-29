@@ -24,9 +24,6 @@ public interface MapContract {
 
         AVUser getCurrUserData();
 
-        void getStreamInfo(int pointX, int pointY,
-                           OperateCallback<MemoryStream> callback);
-
     }
 
     interface View extends BaseView<Presenter> {

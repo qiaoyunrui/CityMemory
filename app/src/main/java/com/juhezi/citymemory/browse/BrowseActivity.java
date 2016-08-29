@@ -74,7 +74,7 @@ public class BrowseActivity extends AppCompatActivity {
                     .add(R.id.rl_browse_frag, mBrowseFragment)
                     .commit();
         }
-        mBrowsePresenter = new BrowsePresenter(mBrowseFragment);
+        mBrowsePresenter = new BrowsePresenter(mBrowseFragment, mDataSource);
 
         mUploadFragment = new UploadFragment();
         mUploadPresenter = new UploadPresenter(mUploadFragment, mMapSource, mDataSource);

@@ -192,13 +192,8 @@ public class MapFragment extends Fragment implements MapContract.View {
         mRlView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.getStreamInfo(mapWidth / 2, mapHeight / 2
-                        , new OperateCallback<MemoryStream>() {
-                            @Override
-                            public void onOperate(MemoryStream memoryStream) {
-                                turn2BrowseActivity(memoryStream);
-                            }
-                        });
+                turn2BrowseActivity(getPointAddress(
+                        mapWidth / 2, mapHeight / 2));
             }
         });
     }
@@ -345,14 +340,11 @@ public class MapFragment extends Fragment implements MapContract.View {
         startActivityForResult(settingIntent, Config.SETTING_CODE);
     }
 
-    public void turn2BrowseActivity(MemoryStream memoryStream) {
+    public void turn2BrowseActivity(LatLng latLng) {
         if (browseIntent == null) {
             browseIntent = new Intent(getContext(), BrowseActivity.class);
         }
-        if (memoryStream == null) {
-            Log.i(TAG, "turn2BrowseActivity: memStream is null");
-        }
-        browseIntent.putExtra(Config.MEMORY_STREAM_TAG, memoryStream);
+        browseIntent.putExtra(Config.MEMORY_STREAM_LATLNG, latLng);
         startActivityForResult(browseIntent, Config.BROWSE_CODE);
     }
 

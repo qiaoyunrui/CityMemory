@@ -1,6 +1,7 @@
 package com.juhezi.citymemory.map;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.util.Log;
 
 import com.amap.api.maps.model.LatLng;
@@ -75,11 +76,5 @@ public class MapPresenter implements MapContract.Presenter {
         return AVUser.getCurrentUser();
     }
 
-    @Override
-    public void getStreamInfo(int pointX, int pointY
-            , OperateCallback<MemoryStream> callback) {
-        mDataSource.getMemStream(mView.getPointAddress(pointX, pointY)
-                , callback);
-    }
 
 }
