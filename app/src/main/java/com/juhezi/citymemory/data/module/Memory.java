@@ -1,5 +1,7 @@
 package com.juhezi.citymemory.data.module;
 
+import android.util.Log;
+
 import com.avos.avoscloud.AVObject;
 
 /**

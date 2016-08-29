@@ -113,9 +113,11 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
                     if (mMemoryStream == null) {    //此地没有回忆
                         showEmptyView();
                         hideProgressbar();
-                        mMemoryStream = mPresenter.createNewMemory(mLatLng);
+                        if (mPresenter.getCurrentUser() != null) {
+                            mMemoryStream = mPresenter.createNewMemory(mLatLng);
+                        }
                     } else {
-
+                        Log.i(TAG, "onOperate: not null");
                     }
                 }
             });

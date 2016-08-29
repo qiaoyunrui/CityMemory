@@ -11,6 +11,7 @@ import com.juhezi.citymemory.data.module.MemoryStream;
 import com.juhezi.citymemory.data.user.UserSource;
 import com.juhezi.citymemory.other.Config;
 import com.juhezi.citymemory.util.OperateCallback;
+import com.juhezi.citymemory.util.UUIDUtil;
 
 import java.util.UUID;
 
@@ -58,7 +59,7 @@ public class BrowsePresenter implements BrowseContract.Presenter {
     @Override
     public MemoryStream createNewMemory(LatLng latLng) {
         MemoryStream memoryStream = new MemoryStream();
-        memoryStream.setId(UUID.randomUUID().toString());   //创建唯一ID
+        memoryStream.setId(UUIDUtil.toValidClassName(UUID.randomUUID().toString()));   //创建唯一ID
         memoryStream.setLat(latLng.latitude);
         memoryStream.setLon(latLng.longitude);
         memoryStream.setMemoryCount(0);

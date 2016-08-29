@@ -13,7 +13,7 @@ public class Config {
     public final static int CAMERA_CODE = 0x127;
     public final static int GALLERY_CODE = 0x128;
 
-    public final static int QUERY_LIMIT_RADIUS = 50;
+    public final static int QUERY_LIMIT_RADIUS = 100;
 
     public final static String LOCATION_KEY = "locationKey";
 

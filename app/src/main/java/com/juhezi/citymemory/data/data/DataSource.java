@@ -32,9 +32,11 @@ public interface DataSource {
 
     /**
      * 添加到用户记忆仓库
+     *
      * @param memory
      * @param success
      * @param fail
      */
     void addUserMemory(Memory memory, Action success, Action fail);
+
 }
