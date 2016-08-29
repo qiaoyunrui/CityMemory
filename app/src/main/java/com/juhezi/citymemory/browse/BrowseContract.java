@@ -14,6 +14,14 @@ public interface BrowseContract {
 
     interface View extends BaseView<BrowseContract.Presenter> {
 
+        void showEmptyView();
+
+        void hideEmptyView();
+
+        void showProgressbar();
+
+        void hideProgressbar();
+
     }
 
 }
