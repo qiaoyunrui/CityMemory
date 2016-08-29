@@ -82,8 +82,8 @@ public class BrowseActivity extends AppCompatActivity {
                 , mDataSource, mUserSource, mMapSource);
 
         mUploadFragment = new UploadFragment();
-        mUploadPresenter = new UploadPresenter(mUploadFragment, mMapSource, mDataSource);
-
+        mUploadPresenter = new UploadPresenter(mUploadFragment
+                , mMapSource, mDataSource, mUserSource);
         mViewFragment = new ViewFragment();
         mViewPresenter = new ViewPresenter(mViewFragment);
     }
@@ -98,8 +98,9 @@ public class BrowseActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void openDiscussFragment() {
+    public void openDiscussFragment(Bundle MemoryStream) {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            mUploadFragment.setArguments(MemoryStream);
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.rl_browse_frag, mUploadFragment)

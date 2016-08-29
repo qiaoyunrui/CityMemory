@@ -22,7 +22,12 @@ public class Config {
     public final static String USER_PICK_NAME = "userPickName";
     public final static String USER_TYPE = "userType";
     public final static String USER_AVATAR = "userAvatar";
+    public final static String USER_OWN = "userOwn";
+    public final static String USER_PIP = "userPip";
 
     public final static String APP_NAME = "CityMemory";
     public final static String MEMORY_STREAM_LATLNG = "memoryStreamLatLng";
+
+    public final static String MEMORY_STREAM_TAG = "memoryStreamTag";
+
 }

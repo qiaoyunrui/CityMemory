@@ -112,7 +112,8 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
                     mMemoryStream = memoryStream;
                     if (mMemoryStream == null) {    //此地没有回忆
                         showEmptyView();
-                        hideProgressbar();  //此地有回忆
+                        hideProgressbar();
+                        mMemoryStream = mPresenter.createNewMemory(mLatLng);
                     } else {
 
                     }
@@ -135,7 +136,9 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
                     });
 
                 } else {    //已经登录
-                    ((BrowseActivity) getActivity()).openDiscussFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(Config.MEMORY_STREAM_TAG, mMemoryStream);
+                    ((BrowseActivity) getActivity()).openDiscussFragment(bundle);
                 }
             }
         });

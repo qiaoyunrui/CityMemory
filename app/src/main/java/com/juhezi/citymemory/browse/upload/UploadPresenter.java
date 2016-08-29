@@ -7,8 +7,12 @@ import android.util.Log;
 
 import com.amap.api.maps.model.LatLng;
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVUser;
 import com.juhezi.citymemory.data.data.DataSource;
 import com.juhezi.citymemory.data.map.MapSource;
+import com.juhezi.citymemory.data.module.Memory;
+import com.juhezi.citymemory.data.module.MemoryStream;
+import com.juhezi.citymemory.data.user.UserSource;
 import com.juhezi.citymemory.other.Config;
 import com.juhezi.citymemory.util.Action;
 import com.juhezi.citymemory.util.LocationUtil;
@@ -18,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by qiaoyunrui on 16-8-27.
@@ -27,17 +32,37 @@ public class UploadPresenter implements UploadContract.Presenter {
     private static final String TAG = "UploadPresenter";
 
     private UploadContract.View mView;
+
     private MapSource mMapSource;
     private DataSource mDataSource;
+    private UserSource mUserSource;
 
     private String memoryStreamId;  //记忆流的唯一标识符
     private String isMemSteamNull;  //当前记忆流是否为空
 
+    private Action failAction = new Action() {
+
+        @Override
+        public void onAction() {
+            mView.showToast("上传失败");
+            mView.hideProgressbar();
+        }
+    };
+
+    private Action successAction = new Action() {
+        @Override
+        public void onAction() {
+            mView.hideProgressbar();
+            mView.showToast("上传成功");
+        }
+    };
+
     public UploadPresenter(UploadContract.View view
-            , MapSource mapSource, DataSource dataSource) {
+            , MapSource mapSource, DataSource dataSource, UserSource userSource) {
         mView = view;
         mMapSource = mapSource;
         mDataSource = dataSource;
+        mUserSource = userSource;
         mView.setPresenter(this);
     }
 
@@ -113,19 +138,55 @@ public class UploadPresenter implements UploadContract.Presenter {
         mMapSource.getAddressByLatLng(latLng, callback);
     }
 
+    /**
+     * 这里需要优化,现在的代码结构太丑了!!!
+     *
+     * @param path
+     * @param memoryStream
+     */
     @Override
-    public void upload(String path) {
+    public void upload(final String path, final MemoryStream memoryStream) {
+        mView.showProgressbar();
         mDataSource.uploadFile(path, new OperateCallback<String>() {
             @Override
-            public void onOperate(String s) {
+            public void onOperate(final String s) {
+                mDataSource.addStreamToWarehouse(memoryStream, new Action() {
+                    @Override
+                    public void onAction() {
+                        final Memory memory = createNewMemory(s, memoryStream.getId());
+                        mDataSource.addMemoryStream(memory, new Action() {
+                            @Override
+                            public void onAction() {
+                                mDataSource.addUserMemory(memory, new Action() {
+                                    @Override
+                                    public void onAction() {
+                                        if (memoryStream.getOwner().equals(memory.getCreater())) {
+                                            mUserSource.addOwnMemory(successAction, failAction);
+                                        } else {
+                                            mUserSource.addOwnMemory(successAction, failAction);
+                                        }
+                                    }
+                                }, failAction);
+                            }
+                        }, failAction);
+                    }
+                }, failAction);
+            }
+        }, failAction);
+    }
 
-            }
-        }, new Action() {
-            @Override
-            public void onAction() {
-                
-            }
-        });
+    @Override
+    public Memory createNewMemory(String path, String memoryStreamId) {
+        Memory memory = new Memory();
+        memory.setId(UUID.randomUUID().toString());
+        memory.setPicture(path);
+        memory.setType(Memory.MEMORY_TYPE_PIC);
+        AVUser user = mUserSource.getCurrentUser();
+        memory.setCreater(user.getUsername());
+        memory.setAvatar(user.getString(Config.USER_AVATAR));
+        memory.setPickname(user.getString(Config.USER_PICK_NAME));
+        memory.setStreamId(memoryStreamId);
+        return memory;
     }
 
 }

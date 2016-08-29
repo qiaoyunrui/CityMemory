@@ -19,11 +19,15 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.maps.model.LatLng;
 import com.bumptech.glide.Glide;
 import com.juhezi.citymemory.R;
+import com.juhezi.citymemory.data.module.Memory;
+import com.juhezi.citymemory.data.module.MemoryStream;
 import com.juhezi.citymemory.other.Config;
+import com.juhezi.citymemory.util.Action;
 import com.juhezi.citymemory.util.OperateCallback;
 
 import java.io.File;
@@ -56,6 +60,8 @@ public class UploadFragment extends Fragment implements UploadContract.View {
     private Intent mCameraIntent;
     private Intent mGalleryIntent;
 
+    private MemoryStream mMemoryStream;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -87,6 +93,9 @@ public class UploadFragment extends Fragment implements UploadContract.View {
     public void onStart() {
         super.onStart();
         initDialog();
+        mMemoryStream = (MemoryStream) getArguments()
+                .getSerializable(Config.MEMORY_STREAM_TAG);
+        Log.i(TAG, "onStart: " + (mMemoryStream == null));
         mPresenter.getCurrentAddress(new OperateCallback<String>() {
             @Override
             public void onOperate(String s) {
@@ -140,8 +149,7 @@ public class UploadFragment extends Fragment implements UploadContract.View {
             @Override
             public void onClick(View v) {
                 if (currentUri != null) {
-                    mPresenter.upload(currentUri.getPath());
-                    Log.i(TAG, "onClick: upload");
+                    mPresenter.upload(currentUri.getPath(), mMemoryStream);
                 }
             }
         });
@@ -213,6 +221,11 @@ public class UploadFragment extends Fragment implements UploadContract.View {
     @Override
     public void setPicAddress(String address) {
         mTvPicAddress.setText("图片位置: " + address);
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -23,6 +23,8 @@ public interface BrowseContract {
         void getAddressByLatLng(LatLng latlng
                 , OperateCallback<String> callback);
 
+        MemoryStream createNewMemory(LatLng latLng);
+
     }
 
     interface View extends BaseView<BrowseContract.Presenter> {
@@ -48,6 +50,7 @@ public interface BrowseContract {
         void unenableSendButton();
 
         void enableSendButton();
+
     }
 
 }

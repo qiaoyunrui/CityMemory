@@ -7,6 +7,8 @@ import com.amap.api.maps.model.LatLng;
 import com.juhezi.citymemory.BasePresenter;
 import com.juhezi.citymemory.BaseView;
 import com.juhezi.citymemory.data.module.Memory;
+import com.juhezi.citymemory.data.module.MemoryStream;
+import com.juhezi.citymemory.util.Action;
 import com.juhezi.citymemory.util.OperateCallback;
 
 import java.io.File;
@@ -44,7 +46,9 @@ public interface UploadContract {
 
         void getAddress(LatLng latLng, OperateCallback<String> callback);
 
-        void upload(String path);   //需要修改
+        void upload(String path, MemoryStream memoryStream);
+
+        Memory createNewMemory(String path, String streamId);
     }
 
     interface View extends BaseView<Presenter> {
@@ -64,6 +68,8 @@ public interface UploadContract {
         void setCurrAddress(String address);
 
         void setPicAddress(String address);
+
+        void showToast(String message);
 
     }
 

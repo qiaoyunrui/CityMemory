@@ -34,6 +34,8 @@ public class SignupPresenter implements SignupContract.Presenter {
         user.put(Config.USER_PICK_NAME, username);
         user.put(Config.USER_TYPE, User.USER_TYPE_PERSON);
         user.put(Config.USER_AVATAR, "");
+        user.put(Config.USER_OWN, 0);
+        user.put(Config.USER_PIP, 0);
         user.signUpInBackground(callback);
     }
 }

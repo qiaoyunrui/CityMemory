@@ -1,6 +1,7 @@
 package com.juhezi.citymemory.data.module;
 
 import com.amap.api.maps.model.LatLng;
+import com.avos.avoscloud.AVGeoPoint;
 import com.avos.avoscloud.AVObject;
 
 import java.io.Serializable;
@@ -69,7 +70,7 @@ public class MemoryStream implements Serializable {
 
     public static MemoryStream parseAVObject(AVObject avObject) {
         MemoryStream memoryStream = new MemoryStream();
-        memoryStream.setId(avObject.getObjectId());
+        memoryStream.setId(avObject.getString("sid"));
         memoryStream.setOwner(avObject.getString("owner"));
         memoryStream.setDiscussCount(avObject.getInt("discussCount"));
         memoryStream.setMemoryCount(avObject.getInt("memoryCount"));
@@ -77,4 +78,17 @@ public class MemoryStream implements Serializable {
         memoryStream.setLon(avObject.getAVGeoPoint("whereCreated").getLongitude());
         return memoryStream;
     }
+
+    public AVObject toAVObject() {
+        AVObject avObject = new AVObject("StreamWarehouse");
+        avObject.put("sid", id);
+        avObject.put("owner", owner);
+        avObject.put("discussCount", discussCount);
+        avObject.put("memoryCount", memoryCount);
+        AVGeoPoint avGeoPoint = new AVGeoPoint();
+        avGeoPoint.setLatitude(lat);
+        avGeoPoint.setLongitude(lon);
+        return avObject;
+    }
+
 }

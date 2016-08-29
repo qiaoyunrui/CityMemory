@@ -1,5 +1,7 @@
 package com.juhezi.citymemory.data.module;
 
+import com.avos.avoscloud.AVObject;
+
 /**
  * Created by qiaoyunrui on 16-8-27.
  */
@@ -82,5 +84,19 @@ public class Memory {
     public void setPicture(String picture) {
         this.picture = picture;
     }
+
+    public AVObject toAvObject(String className) {
+        AVObject avObject = new AVObject(className);
+        avObject.put("sid", id);
+        avObject.put("streamId", streamId);
+        avObject.put("creater", creater);
+        avObject.put("pickname", pickname);
+        avObject.put("avatar", avatar);
+        avObject.put("type", type);
+        avObject.put("discuss", discuss);
+        avObject.put("picture", picture);
+        return avObject;
+    }
+
 }
 
