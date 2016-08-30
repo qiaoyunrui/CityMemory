@@ -21,6 +21,10 @@ import com.juhezi.citymemory.util.OperateCallback;
 import java.io.FileNotFoundException;
 import java.util.List;
 
+import rx.Observable;
+import rx.functions.Action1;
+import rx.functions.Func1;
+
 /**
  * Created by qiaoyunrui on 16-8-28.
  */
@@ -69,10 +73,10 @@ public class DataResponse implements DataSource {
 
     @Override
     public void getMemStream(LatLng latLng, final OperateCallback<MemoryStream> callback) {
-        AVQuery<AVObject> query = new AVQuery<>("allMemorySteam");
+        AVQuery<AVObject> query = new AVQuery<>(Config.STREAM_WARE_HOUSE);
         AVGeoPoint point = new AVGeoPoint(latLng.latitude, latLng.longitude);
-        query.limit(10);
-        query.whereWithinMiles("whereCreated", point, Config.QUERY_LIMIT_RADIUS);  //指定查询范围为50m
+        query.limit(1);
+        query.whereWithinMiles(Config.MEMORY_STREAM_WHERE_CREATED, point, Config.QUERY_LIMIT_RADIUS);  //指定查询范围为50m
         query.findInBackground(new FindCallback<AVObject>() {
             @Override
             public void done(List<AVObject> list, AVException e) {
@@ -111,6 +115,7 @@ public class DataResponse implements DataSource {
                 if (e == null) {
                     success.onAction();
                 } else {
+                    Log.i(TAG, "done: " + e.getCode() + " " + e.getMessage());
                     fail.onAction();
                 }
             }
@@ -127,6 +132,28 @@ public class DataResponse implements DataSource {
                     success.onAction();
                 } else {
                     fail.onAction();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getAllMemories(String streamId, final OperateCallback<Observable<List<Memory>>> callback) {
+        AVQuery<AVObject> query = new AVQuery<>(streamId);
+        query.findInBackground(new FindCallback<AVObject>() {
+            @Override
+            public void done(List<AVObject> list, AVException e) {
+                if (list != null) {
+                    Observable<List<Memory>> observable = Observable.from(list)
+                            .map(new Func1<AVObject, Memory>() {
+                                @Override
+                                public Memory call(AVObject avObject) {
+                                    return Memory.parseMemory(avObject);
+                                }
+                            }).toList();
+                    callback.onOperate(observable);
+                } else {
+                    callback.onOperate(null);
                 }
             }
         });

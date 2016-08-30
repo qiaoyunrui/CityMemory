@@ -3,6 +3,7 @@ package com.juhezi.citymemory.data.module;
 import android.util.Log;
 
 import com.avos.avoscloud.AVObject;
+import com.juhezi.citymemory.other.Config;
 
 /**
  * Created by qiaoyunrui on 16-8-27.
@@ -89,15 +90,28 @@ public class Memory {
 
     public AVObject toAvObject(String className) {
         AVObject avObject = new AVObject(className);
-        avObject.put("sid", id);
-        avObject.put("streamId", streamId);
-        avObject.put("creater", creater);
-        avObject.put("pickname", pickname);
-        avObject.put("avatar", avatar);
-        avObject.put("type", type);
-        avObject.put("discuss", discuss);
-        avObject.put("picture", picture);
+        avObject.put(Config.MEMORY_ID, id);
+        avObject.put(Config.MEMORY_STREAMID, streamId);
+        avObject.put(Config.MEMORY_CREATER, creater);
+        avObject.put(Config.MEMORY_PICK_NAME, pickname);
+        avObject.put(Config.MEMORY_AVATAR, avatar);
+        avObject.put(Config.MEMORY_TYPE, type);
+        avObject.put(Config.MEMORY_DISCUSS, discuss);
+        avObject.put(Config.MEMORY_PICTURE, picture);
         return avObject;
+    }
+
+    public static Memory parseMemory(AVObject avObject) {
+        Memory memory = new Memory();
+        memory.setId(avObject.getString(Config.MEMORY_ID));
+        memory.setStreamId(avObject.getString(Config.MEMORY_STREAMID));
+        memory.setCreater(avObject.getString(Config.MEMORY_CREATER));
+        memory.setPickname(avObject.getString(Config.MEMORY_PICK_NAME));
+        memory.setAvatar(avObject.getString(Config.MEMORY_AVATAR));
+        memory.setType(avObject.getInt(Config.MEMORY_TYPE));
+        memory.setDiscuss(avObject.getString(Config.MEMORY_DISCUSS));
+        memory.setPicture(avObject.getString(Config.MEMORY_PICTURE));
+        return memory;
     }
 
 }

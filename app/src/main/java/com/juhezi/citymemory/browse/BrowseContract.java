@@ -9,6 +9,10 @@ import com.juhezi.citymemory.data.module.MemoryStream;
 import com.juhezi.citymemory.util.Action;
 import com.juhezi.citymemory.util.OperateCallback;
 
+import java.util.List;
+
+import rx.Observable;
+
 /**
  * Created by qiaoyunrui on 16-8-27.
  */
@@ -24,6 +28,11 @@ public interface BrowseContract {
                 , OperateCallback<String> callback);
 
         MemoryStream createNewMemory(LatLng latLng);
+
+        void getAllMemories(String streamId,
+                            OperateCallback<Observable<List<Memory>>> callback);
+
+        void uploadDiscuss(Memory memory, Action success, Action fail);
 
     }
 
@@ -50,6 +59,8 @@ public interface BrowseContract {
         void unenableSendButton();
 
         void enableSendButton();
+
+        void showToast(String message);
 
     }
 

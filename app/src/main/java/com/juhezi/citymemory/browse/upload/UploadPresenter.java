@@ -150,27 +150,46 @@ public class UploadPresenter implements UploadContract.Presenter {
         mDataSource.uploadFile(path, new OperateCallback<String>() {
             @Override
             public void onOperate(final String s) {
-                mDataSource.addStreamToWarehouse(memoryStream, new Action() {
-                    @Override
-                    public void onAction() {
-                        final Memory memory = createNewMemory(s, memoryStream.getId());
-                        mDataSource.addMemoryStream(memory, new Action() {
-                            @Override
-                            public void onAction() {
-                                mDataSource.addUserMemory(memory, new Action() {
-                                    @Override
-                                    public void onAction() {
-                                        if (memoryStream.getOwner().equals(memory.getCreater())) {
-                                            mUserSource.addOwnMemory(successAction, failAction);
-                                        } else {
-                                            mUserSource.addOwnMemory(successAction, failAction);
+                if (memoryStream.isNew()) {
+                    mDataSource.addStreamToWarehouse(memoryStream, new Action() {
+                        @Override
+                        public void onAction() {
+                            final Memory memory = createNewMemory(s, memoryStream.getId());
+                            mDataSource.addMemoryStream(memory, new Action() {
+                                @Override
+                                public void onAction() {
+                                    mDataSource.addUserMemory(memory, new Action() {
+                                        @Override
+                                        public void onAction() {
+                                            if (memoryStream.getOwner().equals(memory.getCreater())) {
+                                                mUserSource.addOwnMemory(successAction, failAction);
+                                            } else {
+                                                mUserSource.addOwnMemory(successAction, failAction);
+                                            }
                                         }
+                                    }, failAction);
+                                }
+                            }, failAction);
+                        }
+                    }, failAction);
+                } else {
+                    final Memory memory = createNewMemory(s, memoryStream.getId());
+                    mDataSource.addMemoryStream(memory, new Action() {
+                        @Override
+                        public void onAction() {
+                            mDataSource.addUserMemory(memory, new Action() {
+                                @Override
+                                public void onAction() {
+                                    if (memoryStream.getOwner().equals(memory.getCreater())) {
+                                        mUserSource.addOwnMemory(successAction, failAction);
+                                    } else {
+                                        mUserSource.addOwnMemory(successAction, failAction);
                                     }
-                                }, failAction);
-                            }
-                        }, failAction);
-                    }
-                }, failAction);
+                                }
+                            }, failAction);
+                        }
+                    }, failAction);
+                }
             }
         }, failAction);
     }
@@ -186,6 +205,7 @@ public class UploadPresenter implements UploadContract.Presenter {
         memory.setAvatar(user.getString(Config.USER_AVATAR));
         memory.setPickname(user.getString(Config.USER_PICK_NAME));
         memory.setStreamId(memoryStreamId);
+        memory.setDiscuss("");
         return memory;
     }
 

@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.maps.model.LatLng;
 import com.avos.avoscloud.AVUser;
@@ -30,6 +32,10 @@ import com.juhezi.citymemory.util.OperateCallback;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import rx.Observable;
+import rx.Observer;
 
 /**
  * Created by qiaoyunrui on 16-8-27.
@@ -51,6 +57,7 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
     private TextView mTvCreater;
     private TextInputLayout mTILDiscuss;
     private ImageView mImgSend;
+    private SwipeRefreshLayout mSrlRefresh;
 
     private AVUser currentUser;
 
@@ -74,7 +81,8 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
         mTvCreater = (TextView) rootView.findViewById(R.id.tv_creater);
         mTILDiscuss = (TextInputLayout) rootView.findViewById(R.id.til_browse_discuss);
         mImgSend = (ImageView) rootView.findViewById(R.id.img_browse_send);
-
+        mSrlRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.srl_browse_refresh);
+        mSrlRefresh.setColorSchemeColors(R.color.colorAccent);
         initRecyclerView();
 
         initEvent();
@@ -116,8 +124,37 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
                         if (mPresenter.getCurrentUser() != null) {
                             mMemoryStream = mPresenter.createNewMemory(mLatLng);
                         }
-                    } else {
-                        Log.i(TAG, "onOperate: not null");
+                    } else {    //此地有回忆
+                        showCreater(mMemoryStream.getOwner());
+                        mPresenter.getAllMemories(mMemoryStream.getId()
+                                , new OperateCallback<Observable<List<Memory>>>() {
+                                    @Override
+                                    public void onOperate(Observable<List<Memory>> listObservable) {
+                                        listObservable.subscribe(new Observer<List<Memory>>() {
+                                            @Override
+                                            public void onCompleted() {
+
+                                            }
+
+                                            @Override
+                                            public void onError(Throwable e) {
+
+                                            }
+
+                                            @Override
+                                            public void onNext(List<Memory> memories) {
+                                                mAdapter.setList(memories);
+                                                hideProgressbar();
+                                                if (memories.size() == 0) {
+                                                    showEmptyView();
+                                                } else {
+                                                    hideEmptyView();
+                                                }
+                                            }
+                                        })
+                                                .unsubscribe();
+                                    }
+                                });
                     }
                 }
             });
@@ -142,6 +179,78 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
                     bundle.putSerializable(Config.MEMORY_STREAM_TAG, mMemoryStream);
                     ((BrowseActivity) getActivity()).openDiscussFragment(bundle);
                 }
+            }
+        });
+        mSrlRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mPresenter.getAllMemories(mMemoryStream.getId()
+                        , new OperateCallback<Observable<List<Memory>>>() {
+                            @Override
+                            public void onOperate(Observable<List<Memory>> listObservable) {
+                                listObservable.subscribe(new Observer<List<Memory>>() {
+                                    @Override
+                                    public void onCompleted() {
+
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+
+                                    }
+
+                                    @Override
+                                    public void onNext(List<Memory> memories) {
+                                        mAdapter.setList(memories);
+                                        hideProgressbar();
+                                        if (memories.size() == 0) {
+                                            showEmptyView();
+                                        } else {
+                                            hideEmptyView();
+                                        }
+                                    }
+                                })
+                                        .unsubscribe();
+                                mSrlRefresh.setRefreshing(false);
+                            }
+                        });
+            }
+        });
+        mImgSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String discuss = mTILDiscuss.getEditText().getText().toString().trim();
+                AVUser user = mPresenter.getCurrentUser();
+                if (discuss.length() != 0 && user != null) {
+                    final Memory memory = new Memory();
+                    memory.setType(Memory.MEMORY_TYPE_DISCUSS);
+                    memory.setDiscuss(discuss);
+                    memory.setId(UUID.randomUUID().toString());
+                    memory.setStreamId(mMemoryStream.getId());
+                    memory.setCreater(user.getUsername());
+                    memory.setAvatar(user.getString(Config.USER_AVATAR));
+                    memory.setPickname(user.getString(Config.USER_PICK_NAME));
+                    mPresenter.uploadDiscuss(memory, new Action() {
+                        @Override
+                        public void onAction() {
+                            mAdapter.addItem(memory, new Action() {
+                                @Override
+                                public void onAction() {
+                                    hideEmptyView();
+                                }
+                            });
+                            mTILDiscuss.getEditText().setText("");
+                        }
+                    }, new Action() {
+                        @Override
+                        public void onAction() {
+                            showToast("评论失败");
+                        }
+                    });
+                } else {
+                    showToast("评论失败");
+                }
+
             }
         });
     }
@@ -235,6 +344,11 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
     @Override
     public void enableSendButton() {
         mImgSend.setClickable(true);
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 }
 

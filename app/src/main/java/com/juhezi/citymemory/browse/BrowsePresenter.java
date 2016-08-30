@@ -10,10 +10,14 @@ import com.juhezi.citymemory.data.module.Memory;
 import com.juhezi.citymemory.data.module.MemoryStream;
 import com.juhezi.citymemory.data.user.UserSource;
 import com.juhezi.citymemory.other.Config;
+import com.juhezi.citymemory.util.Action;
 import com.juhezi.citymemory.util.OperateCallback;
 import com.juhezi.citymemory.util.UUIDUtil;
 
+import java.util.List;
 import java.util.UUID;
+
+import rx.Observable;
 
 /**
  * Created by qiaoyunrui on 16-8-27.
@@ -65,6 +69,17 @@ public class BrowsePresenter implements BrowseContract.Presenter {
         memoryStream.setMemoryCount(0);
         memoryStream.setDiscussCount(0);
         memoryStream.setOwner(getCurrentUser().getUsername());
+        memoryStream.setNew(true);
         return memoryStream;
+    }
+
+    @Override
+    public void getAllMemories(String streamId, OperateCallback<Observable<List<Memory>>> callback) {
+        mDataSource.getAllMemories(streamId, callback);
+    }
+
+    @Override
+    public void uploadDiscuss(Memory memory, Action success, Action fail) {
+        mDataSource.addMemoryStream(memory, success, fail);
     }
 }

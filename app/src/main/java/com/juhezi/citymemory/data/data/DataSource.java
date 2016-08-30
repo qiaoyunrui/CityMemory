@@ -6,6 +6,10 @@ import com.juhezi.citymemory.data.module.MemoryStream;
 import com.juhezi.citymemory.util.Action;
 import com.juhezi.citymemory.util.OperateCallback;
 
+import java.util.List;
+
+import rx.Observable;
+
 /**
  * Created by qiaoyunrui on 16-8-28.
  */
@@ -38,5 +42,10 @@ public interface DataSource {
      * @param fail
      */
     void addUserMemory(Memory memory, Action success, Action fail);
+
+    /**
+     * 获取一个MemoryStream中所有的Memory
+     */
+    void getAllMemories(String streamId, OperateCallback<Observable<List<Memory>>> callback);
 
 }

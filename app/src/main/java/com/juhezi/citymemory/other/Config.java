@@ -25,6 +25,23 @@ public class Config {
     public final static String USER_OWN = "userOwn";
     public final static String USER_PIP = "userPip";
 
+    public final static String MEMORY_ID = "sid";
+    public final static String MEMORY_STREAMID = "streamId";
+    public final static String MEMORY_CREATER = "creater";
+    public final static String MEMORY_PICK_NAME = "pickname";
+    public final static String MEMORY_AVATAR = "avatar";
+    public final static String MEMORY_TYPE = "type";
+    public final static String MEMORY_DISCUSS = "discuss";
+    public final static String MEMORY_PICTURE = "picture";
+
+    public final static String MEMORY_STREAM_ID = "sid";
+    public final static String MEMORY_STREAM_OWNER = "owner";
+    public final static String MEMORY_STREAM_DISCUSS_COUNT = "discussCount";
+    public final static String MEMORY_STREAM_MEMORY_COUNT = "memoryCount";
+    public final static String MEMORY_STREAM_WHERE_CREATED = "whereCreated";
+
+    public final static String STREAM_WARE_HOUSE = "StreamWarehouse";
+
     public final static String APP_NAME = "CityMemory";
     public final static String MEMORY_STREAM_LATLNG = "memoryStreamLatLng";
 

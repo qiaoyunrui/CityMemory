@@ -109,6 +109,11 @@ public class BrowseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public void setList(List<Memory> list) {
         this.list = list;
+        notifyDataSetChanged();
+    }
+
+    public void refresh() {
+        notifyDataSetChanged();
     }
 
     public void setListener(Listener listener) {
@@ -118,13 +123,17 @@ public class BrowseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void addItem(Memory memory, Action action) {
         list.add(memory);
         notifyItemInserted(getItemCount());
-        action.onAction();
+        if (list.size() == 1) {
+            action.onAction();
+        }
     }
 
     public void deleteItem(int position, Action action) {
         list.remove(position);
         notifyItemRemoved(position);
-        action.onAction();
+        if (list.size() == 0) {
+            action.onAction();
+        }
     }
 
     class MemoryViewHolder extends RecyclerView.ViewHolder {

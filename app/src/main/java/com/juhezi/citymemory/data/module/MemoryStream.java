@@ -3,6 +3,7 @@ package com.juhezi.citymemory.data.module;
 import com.amap.api.maps.model.LatLng;
 import com.avos.avoscloud.AVGeoPoint;
 import com.avos.avoscloud.AVObject;
+import com.juhezi.citymemory.other.Config;
 
 import java.io.Serializable;
 
@@ -19,6 +20,8 @@ public class MemoryStream implements Serializable {
     private int discussCount;   //评论的数量
     private double lon;
     private double lat;
+
+    private boolean isNew;  //是否为新创建的?
 
     public double getLon() {
         return lon;
@@ -68,26 +71,38 @@ public class MemoryStream implements Serializable {
         this.discussCount = discussCount;
     }
 
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean aNew) {
+        isNew = aNew;
+    }
+
     public static MemoryStream parseAVObject(AVObject avObject) {
         MemoryStream memoryStream = new MemoryStream();
-        memoryStream.setId(avObject.getString("sid"));
-        memoryStream.setOwner(avObject.getString("owner"));
-        memoryStream.setDiscussCount(avObject.getInt("discussCount"));
-        memoryStream.setMemoryCount(avObject.getInt("memoryCount"));
-        memoryStream.setLat(avObject.getAVGeoPoint("whereCreated").getLatitude());
-        memoryStream.setLon(avObject.getAVGeoPoint("whereCreated").getLongitude());
+        memoryStream.setId(avObject.getString(Config.MEMORY_STREAM_ID));
+        memoryStream.setOwner(avObject.getString(Config.MEMORY_STREAM_OWNER));
+        memoryStream.setDiscussCount(avObject.getInt(Config.MEMORY_STREAM_DISCUSS_COUNT));
+        memoryStream.setMemoryCount(avObject.getInt(Config.MEMORY_STREAM_MEMORY_COUNT));
+        memoryStream.setLat(avObject.getAVGeoPoint(Config.MEMORY_STREAM_WHERE_CREATED)
+                .getLatitude());
+        memoryStream.setLon(avObject.getAVGeoPoint(Config.MEMORY_STREAM_WHERE_CREATED)
+                .getLongitude());
+        memoryStream.setNew(false);
         return memoryStream;
     }
 
     public AVObject toAVObject() {
-        AVObject avObject = new AVObject("StreamWarehouse");
-        avObject.put("sid", id);
-        avObject.put("owner", owner);
-        avObject.put("discussCount", discussCount);
-        avObject.put("memoryCount", memoryCount);
+        AVObject avObject = new AVObject(Config.STREAM_WARE_HOUSE);
+        avObject.put(Config.MEMORY_STREAM_ID, id);
+        avObject.put(Config.MEMORY_STREAM_OWNER, owner);
+        avObject.put(Config.MEMORY_STREAM_DISCUSS_COUNT, discussCount);
+        avObject.put(Config.MEMORY_STREAM_MEMORY_COUNT, memoryCount);
         AVGeoPoint avGeoPoint = new AVGeoPoint();
         avGeoPoint.setLatitude(lat);
         avGeoPoint.setLongitude(lon);
+        avObject.put(Config.MEMORY_STREAM_WHERE_CREATED, avGeoPoint);
         return avObject;
     }
 

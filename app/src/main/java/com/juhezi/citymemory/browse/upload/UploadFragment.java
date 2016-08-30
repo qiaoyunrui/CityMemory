@@ -243,18 +243,21 @@ public class UploadFragment extends Fragment implements UploadContract.View {
                 }
                 break;
         }
-        LatLng latLng = mPresenter.getPicLocation(currentUri);
-        if (latLng != null) {
-            mPresenter.getAddress(latLng
-                    , new OperateCallback<String>() {
-                        @Override
-                        public void onOperate(String s) {
-                            setPicAddress(s);
-                        }
-                    });
-        } else {
-            setPicAddress("- - -");
+        if (currentUri != null) {
+            LatLng latLng = mPresenter.getPicLocation(currentUri);
+            if (latLng != null) {
+                mPresenter.getAddress(latLng
+                        , new OperateCallback<String>() {
+                            @Override
+                            public void onOperate(String s) {
+                                setPicAddress(s);
+                            }
+                        });
+            } else {
+                setPicAddress("- - -");
+            }
         }
+
 
     }
 
