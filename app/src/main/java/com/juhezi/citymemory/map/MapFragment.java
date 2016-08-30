@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -42,6 +43,8 @@ import com.juhezi.citymemory.search.SearchActivity;
 import com.juhezi.citymemory.setting.SettingActivity;
 import com.juhezi.citymemory.sign.SignActivity;
 import com.juhezi.citymemory.util.OperateCallback;
+
+import java.util.List;
 
 import rx.Observable;
 import rx.Observer;
@@ -79,6 +82,9 @@ public class MapFragment extends Fragment implements MapContract.View {
     private Intent signIntent;
     private Intent settingIntent;
     private Intent browseIntent;
+
+    private View mVMarker;
+    private ImageView mImgMarker;
 
     @Nullable
     @Override
@@ -124,6 +130,27 @@ public class MapFragment extends Fragment implements MapContract.View {
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         mLocationClient.setLocationOption(mLocationOption);
         mLocationClient.startLocation();
+        mPresenter.getAllMemoryStream(new OperateCallback<Observable<List<MemoryStream>>>() {
+            @Override
+            public void onOperate(Observable<List<MemoryStream>> list) {
+                list.subscribe(new Observer<List<MemoryStream>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<MemoryStream> memoryStreams) {
+                        showAllMemoryStream(memoryStreams);
+                    }
+                });
+            }
+        });
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -240,13 +267,16 @@ public class MapFragment extends Fragment implements MapContract.View {
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
         mAMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mAMap.moveCamera(CameraUpdateFactory.zoomTo(mapScale));
+        mVMarker = LayoutInflater.from(getContext())
+                .inflate(R.layout.marker_view, null);
+        mImgMarker = (ImageView) mVMarker.findViewById(R.id.img_marker);
+        mImgMarker.setImageResource(R.drawable.gpsx);
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(latLng)
                 .title(currentAddress)
                 .snippet("当前所在的位置")
-                .icon(BitmapDescriptorFactory
-                        .fromResource(R.drawable.locate_sign)
-                );
+                .icon(BitmapDescriptorFactory.fromView(mVMarker)
+                ).anchor(0.5f, 0.5f);
         if (mMarker != null) {
             mMarker.destroy();
         }
@@ -324,6 +354,22 @@ public class MapFragment extends Fragment implements MapContract.View {
     public LatLng getPointAddress(int x, int y) {
         LatLng latLng = mProjection.fromScreenLocation(new Point(x, y));
         return latLng;
+    }
+
+    @Override
+    public void showAllMemoryStream(List<MemoryStream> list) {
+        for (MemoryStream memoryStream : list) {
+            mVMarker = LayoutInflater.from(getContext())
+                    .inflate(R.layout.marker_view, null);
+            mImgMarker = (ImageView) mVMarker.findViewById(R.id.img_marker);
+            mImgMarker.setImageResource(R.drawable.memory_stream);
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .position(new LatLng(memoryStream.getLat(), memoryStream.getLon()))
+                    .icon(BitmapDescriptorFactory
+                            .fromView(mVMarker)
+                    ).anchor(0.5f, 0.5f);
+            mAMap.addMarker(markerOptions);
+        }
     }
 
     public void turn2SignActivity() {

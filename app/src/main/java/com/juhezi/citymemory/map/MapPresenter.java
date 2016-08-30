@@ -18,6 +18,8 @@ import com.juhezi.citymemory.data.module.Memory;
 import com.juhezi.citymemory.data.module.MemoryStream;
 import com.juhezi.citymemory.util.OperateCallback;
 
+import java.util.List;
+
 import rx.Observable;
 
 /**
@@ -74,6 +76,13 @@ public class MapPresenter implements MapContract.Presenter {
     @Override
     public AVUser getCurrUserData() {
         return AVUser.getCurrentUser();
+    }
+
+    @Override
+    public void getAllMemoryStream(OperateCallback<Observable<List<MemoryStream>>> callback) {
+
+        mDataSource.getAllStreams(callback);
+
     }
 
 

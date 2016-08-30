@@ -10,6 +10,8 @@ import com.juhezi.citymemory.data.module.Memory;
 import com.juhezi.citymemory.data.module.MemoryStream;
 import com.juhezi.citymemory.util.OperateCallback;
 
+import java.util.List;
+
 import rx.Observable;
 
 /**
@@ -24,6 +26,8 @@ public interface MapContract {
 
         AVUser getCurrUserData();
 
+        void getAllMemoryStream(OperateCallback<Observable<List<MemoryStream>>> callback);
+
     }
 
     interface View extends BaseView<Presenter> {
@@ -37,6 +41,8 @@ public interface MapContract {
         void initUser(AVUser user);
 
         LatLng getPointAddress(int x, int y);
+
+        void showAllMemoryStream(List<MemoryStream> list);
 
     }
 }

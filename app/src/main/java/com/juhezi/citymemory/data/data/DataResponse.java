@@ -11,6 +11,7 @@ import com.avos.avoscloud.AVGeoPoint;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.FindCallback;
+import com.avos.avoscloud.Messages;
 import com.avos.avoscloud.SaveCallback;
 import com.juhezi.citymemory.data.module.Memory;
 import com.juhezi.citymemory.data.module.MemoryStream;
@@ -74,9 +75,9 @@ public class DataResponse implements DataSource {
     @Override
     public void getMemStream(LatLng latLng, final OperateCallback<MemoryStream> callback) {
         AVQuery<AVObject> query = new AVQuery<>(Config.STREAM_WARE_HOUSE);
-        AVGeoPoint point = new AVGeoPoint(latLng.latitude, latLng.longitude);
+        final AVGeoPoint point = new AVGeoPoint(latLng.latitude, latLng.longitude);
         query.limit(1);
-        query.whereWithinMiles(Config.MEMORY_STREAM_WHERE_CREATED, point, Config.QUERY_LIMIT_RADIUS);  //指定查询范围为50m
+        query.whereWithinKilometers(Config.MEMORY_STREAM_WHERE_CREATED, point, Config.QUERY_LIMIT_RADIUS);  //指定查询范围为50m
         query.findInBackground(new FindCallback<AVObject>() {
             @Override
             public void done(List<AVObject> list, AVException e) {
@@ -84,9 +85,16 @@ public class DataResponse implements DataSource {
                     callback.onOperate(null);
                 } else {
                     AVObject avObject = list.get(0);
-//                    avObject.getAVGeoPoint(Config.MEMOR)
-                    MemoryStream memoryStream = MemoryStream.parseAVObject(avObject);
-                    callback.onOperate(memoryStream);
+                    AVGeoPoint avGeoPoint = avObject
+                            .getAVGeoPoint(Config.MEMORY_STREAM_WHERE_CREATED);
+                    double d = avGeoPoint.distanceInKilometersTo(point);
+                    Log.i(TAG, "done: " + d);
+                    if (d < 0.05) {
+                        MemoryStream memoryStream = MemoryStream.parseAVObject(avObject);
+                        callback.onOperate(memoryStream);
+                    } else {
+                        callback.onOperate(null);
+                    }
                 }
             }
         });
@@ -150,6 +158,28 @@ public class DataResponse implements DataSource {
                                 @Override
                                 public Memory call(AVObject avObject) {
                                     return Memory.parseMemory(avObject);
+                                }
+                            }).toList();
+                    callback.onOperate(observable);
+                } else {
+                    callback.onOperate(null);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getAllStreams(final OperateCallback<Observable<List<MemoryStream>>> callback) {
+        AVQuery<AVObject> query = new AVQuery<>(Config.STREAM_WARE_HOUSE);
+        query.findInBackground(new FindCallback<AVObject>() {
+            @Override
+            public void done(List<AVObject> list, AVException e) {
+                if (list != null) {
+                    Observable<List<MemoryStream>> observable = Observable.from(list)
+                            .map(new Func1<AVObject, MemoryStream>() {
+                                @Override
+                                public MemoryStream call(AVObject avObject) {
+                                    return MemoryStream.parseAVObject(avObject);
                                 }
                             }).toList();
                     callback.onOperate(observable);

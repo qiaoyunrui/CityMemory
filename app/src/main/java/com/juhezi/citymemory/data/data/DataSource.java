@@ -48,4 +48,6 @@ public interface DataSource {
      */
     void getAllMemories(String streamId, OperateCallback<Observable<List<Memory>>> callback);
 
+    void getAllStreams(OperateCallback<Observable<List<MemoryStream>>> callback);
+
 }
