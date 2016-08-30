@@ -84,6 +84,7 @@ public class DataResponse implements DataSource {
                     callback.onOperate(null);
                 } else {
                     AVObject avObject = list.get(0);
+//                    avObject.getAVGeoPoint(Config.MEMOR)
                     MemoryStream memoryStream = MemoryStream.parseAVObject(avObject);
                     callback.onOperate(memoryStream);
                 }
