@@ -110,8 +110,9 @@ public class BrowseActivity extends AppCompatActivity {
         }
     }
 
-    public void openViewFragment() {
+    public void openViewFragment(Bundle imgUrl) {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            mViewFragment.setArguments(imgUrl);
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.rl_browse_frag, mViewFragment)

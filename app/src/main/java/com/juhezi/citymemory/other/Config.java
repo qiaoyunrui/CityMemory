@@ -47,4 +47,6 @@ public class Config {
 
     public final static String MEMORY_STREAM_TAG = "memoryStreamTag";
 
+    public final static String IMAGE_URL = "imageUrl";
+
 }

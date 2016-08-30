@@ -260,6 +260,14 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRvList.setLayoutManager(layoutManager);
         mAdapter = new BrowseAdapter();
+        mAdapter.setListener(new BrowseAdapter.Listener() {
+            @Override
+            public void onItemClicked(String url) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Config.IMAGE_URL, url);
+                ((BrowseActivity) getActivity()).openViewFragment(bundle);
+            }
+        });
         mRvList.setAdapter(mAdapter);
     }
 

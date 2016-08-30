@@ -75,7 +75,7 @@ public class BrowseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         .mImgMemoryMemory
                         .getContext())
                         .load(list.get(position).getPicture())
-                        .error(R.drawable.ic_avatar_primary)
+                        .error(R.drawable.error)
                         .crossFade()
                         .into(((MemoryViewHolder) holder)
                                 .mImgMemoryMemory);
@@ -177,7 +177,7 @@ public class BrowseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     interface Listener {
 
-        void onItemClicked(String memory);
+        void onItemClicked(String url);
 
     }
 }
