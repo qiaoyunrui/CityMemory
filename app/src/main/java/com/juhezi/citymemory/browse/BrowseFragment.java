@@ -89,6 +89,13 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
 
         initData();
 
+        ((BrowseActivity) getActivity()).setUploadAction(new Action() {
+            @Override
+            public void onAction() {
+                initData();
+            }
+        });
+
         return rootView;
     }
 
@@ -240,6 +247,7 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
                                 }
                             });
                             mTILDiscuss.getEditText().setText("");
+                            mRvList.smoothScrollToPosition(mAdapter.getItemCount() + 1);
                         }
                     }, new Action() {
                         @Override

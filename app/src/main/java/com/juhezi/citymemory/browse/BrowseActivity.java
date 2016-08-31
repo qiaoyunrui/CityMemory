@@ -2,10 +2,12 @@ package com.juhezi.citymemory.browse;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.juhezi.citymemory.R;
@@ -19,6 +21,7 @@ import com.juhezi.citymemory.data.map.MapResponse;
 import com.juhezi.citymemory.data.map.MapSource;
 import com.juhezi.citymemory.data.user.UserResponse;
 import com.juhezi.citymemory.data.user.UserSource;
+import com.juhezi.citymemory.util.Action;
 
 /**
  * Created by qiaoyunrui on 16-8-27.
@@ -26,6 +29,9 @@ import com.juhezi.citymemory.data.user.UserSource;
 public class BrowseActivity extends AppCompatActivity {
 
     private static final String TAG = "BrowseActivity";
+
+    private static final int VIEW_TAG = 1;
+    private static final int UPLOAD_TAG = 0;
 
     private Toolbar mTbBrowse;
     private ActionBar mActionBar;
@@ -42,6 +48,9 @@ public class BrowseActivity extends AppCompatActivity {
     private MapSource mMapSource;
     private DataSource mDataSource;
     private UserSource mUserSource;
+    private int tag = -1;
+
+    private Action uploadAction;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,6 +95,26 @@ public class BrowseActivity extends AppCompatActivity {
                 , mMapSource, mDataSource, mUserSource);
         mViewFragment = new ViewFragment();
         mViewPresenter = new ViewPresenter(mViewFragment);
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                    switch (tag) {
+                        case UPLOAD_TAG:
+                            uploadAction.onAction();
+                            break;
+                        case VIEW_TAG:
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        });
+    }
+
+    public void setUploadAction(Action action) {
+        uploadAction = action;
     }
 
     @Override
@@ -100,6 +129,7 @@ public class BrowseActivity extends AppCompatActivity {
 
     public void openDiscussFragment(Bundle MemoryStream) {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            tag = UPLOAD_TAG;
             mUploadFragment.setArguments(MemoryStream);
             getSupportFragmentManager()
                     .beginTransaction()
@@ -112,6 +142,7 @@ public class BrowseActivity extends AppCompatActivity {
 
     public void openViewFragment(Bundle imgUrl) {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            tag = VIEW_TAG;
             mViewFragment.setArguments(imgUrl);
             getSupportFragmentManager()
                     .beginTransaction()
@@ -120,7 +151,6 @@ public class BrowseActivity extends AppCompatActivity {
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit();
         }
-
     }
 
 
