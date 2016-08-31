@@ -138,6 +138,11 @@ public class MapFragment extends Fragment implements MapContract.View {
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         mLocationClient.setLocationOption(mLocationOption);
         mLocationClient.startLocation();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         mPresenter.getAllMemoryStream(new OperateCallback<Observable<List<MemoryStream>>>() {
             @Override
             public void onOperate(Observable<List<MemoryStream>> list) {
@@ -342,6 +347,9 @@ public class MapFragment extends Fragment implements MapContract.View {
                 if (resultCode == Config.SETTING_CODE) {
                     ((MapActivity) getActivity()).cleanUserInfo();
                 }
+                break;
+            case Config.BROWSE_CODE:
+                break;
         }
 
 
@@ -404,7 +412,6 @@ public class MapFragment extends Fragment implements MapContract.View {
         browseIntent.putExtra(Config.MEMORY_STREAM_LATLNG, latLng);
         startActivityForResult(browseIntent, Config.BROWSE_CODE);
     }
-
 
     private void requestPrimission() {
         if (!EasyPermissions.hasPermissions(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {

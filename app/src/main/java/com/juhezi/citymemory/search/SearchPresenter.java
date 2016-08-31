@@ -32,6 +32,7 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void start() {
+        mView.hideProgressbar();
     }
 
     @Override
