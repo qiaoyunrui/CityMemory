@@ -54,7 +54,7 @@
         android:background="@android:color/white"
         android:orientation="horizontal">
 
-        <Button
+        <!--<Button
             android:id="@+id/btn_upload_use_pic_loc"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
@@ -62,7 +62,7 @@
             android:backgroundTint="@color/colorPrimary"
             android:text="@string/use_pic_location"
             android:textColor="@android:color/white" />
-
+-->
         <Button
             android:id="@+id/btn_upload_upload"
             android:layout_width="match_parent"

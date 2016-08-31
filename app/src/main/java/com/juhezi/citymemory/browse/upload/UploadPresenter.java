@@ -164,7 +164,7 @@ public class UploadPresenter implements UploadContract.Presenter {
                                             if (memoryStream.getOwner().equals(memory.getCreater())) {
                                                 mUserSource.addOwnMemory(successAction, failAction);
                                             } else {
-                                                mUserSource.addOwnMemory(successAction, failAction);
+                                                mUserSource.addPipMemory(successAction, failAction);
                                             }
                                         }
                                     }, failAction);
@@ -183,7 +183,7 @@ public class UploadPresenter implements UploadContract.Presenter {
                                     if (memoryStream.getOwner().equals(memory.getCreater())) {
                                         mUserSource.addOwnMemory(successAction, failAction);
                                     } else {
-                                        mUserSource.addOwnMemory(successAction, failAction);
+                                        mUserSource.addPipMemory(successAction, failAction);
                                     }
                                 }
                             }, failAction);

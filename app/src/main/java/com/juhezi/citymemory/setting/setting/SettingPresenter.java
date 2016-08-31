@@ -3,7 +3,9 @@ package com.juhezi.citymemory.setting.setting;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SaveCallback;
+import com.juhezi.citymemory.data.data.DataSource;
 import com.juhezi.citymemory.other.Config;
+import com.juhezi.citymemory.util.OperateCallback;
 
 /**
  * Created by qiaoyunrui on 16-8-26.
@@ -13,9 +15,11 @@ public class SettingPresenter implements SettingContract.Presenter {
     private static final String TAG = "SettingPresenter";
 
     private SettingContract.View mView;
+    private DataSource mDataSource;
 
-    public SettingPresenter(SettingContract.View view) {
+    public SettingPresenter(SettingContract.View view, DataSource dataSource) {
         mView = view;
+        mDataSource = dataSource;
         mView.setPresenter(this);
     }
 
@@ -49,5 +53,10 @@ public class SettingPresenter implements SettingContract.Presenter {
             }
         });
 
+    }
+
+    @Override
+    public void getUserMemCount(String username, OperateCallback<Integer> callback) {
+        mDataSource.getMemoryCount(username, callback);
     }
 }

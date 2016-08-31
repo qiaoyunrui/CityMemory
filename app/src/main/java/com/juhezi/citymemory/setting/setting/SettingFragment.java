@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.SaveCallback;
 import com.bumptech.glide.Glide;
 import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.other.Config;
@@ -50,7 +53,12 @@ public class SettingFragment extends Fragment implements SettingContract.View {
         mTvPipMemNum = (TextView) rootView.findViewById(R.id.tv_setting_pip_mem_count);
         mBtnSignout = (Button) rootView.findViewById(R.id.btn_setting_sign_out);
         initEvent();
+        initData();
         return rootView;
+    }
+
+    private void initData() {
+
     }
 
     @Override
@@ -117,17 +125,22 @@ public class SettingFragment extends Fragment implements SettingContract.View {
     }
 
     @Override
-    public void showUserData(AVUser user) {
-        Glide.with(this)
-                .load(user.get(Config.USER_AVATAR)
+    public void showUserData(final AVUser user) {
+        user.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                Glide.with(getContext())
+                        .load(user.get(Config.USER_AVATAR)
+                                .toString())
+                        .error(R.drawable.ic_avatar_primary)
+                        .into(mImgAvatar);
+                mTvPickname.setText((String) user.get(Config.USER_PICK_NAME));
+                mTvPipMemNum.setText(user.getInt(Config.USER_PIP) + "");
+                Log.i(TAG, "done: " + user.getInt(Config.USER_OWN));
+                mTvOwnMemNum.setText(user.getInt(Config.USER_OWN) + "");
+            }
+        });
 
-                        .toString())
-                .error(R.drawable.ic_avatar_primary)
-                .into(mImgAvatar);
-        mTvPickname.setText((String) user.get(Config.USER_PICK_NAME));
-        //set the pip and own
-        mTvPipMemNum.setText("0");
-        mTvOwnMemNum.setText("0");
     }
 
     @Override
