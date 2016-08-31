@@ -1,5 +1,7 @@
 package com.juhezi.citymemory.map;
 
+import android.Manifest;
+import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Point;
@@ -13,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -46,6 +49,7 @@ import com.juhezi.citymemory.util.OperateCallback;
 
 import java.util.List;
 
+import pub.devrel.easypermissions.EasyPermissions;
 import rx.Observable;
 import rx.Observer;
 import rx.functions.Func1;
@@ -86,6 +90,8 @@ public class MapFragment extends Fragment implements MapContract.View {
     private View mVMarker;
     private ImageView mImgMarker;
 
+    private ObjectAnimator fabAnim;
+
     @Nullable
     @Override
 
@@ -100,6 +106,8 @@ public class MapFragment extends Fragment implements MapContract.View {
         searchIntent = new Intent(getContext(), SearchActivity.class);
         initMap();
         initEvent();
+        requestPrimission();
+        configFabAnim();
         return rootView;
     }
 
@@ -159,6 +167,9 @@ public class MapFragment extends Fragment implements MapContract.View {
             @Override
             public void onClick(View v) {
                 mLocationClient.startLocation();
+                if (!fabAnim.isRunning()) {
+                    fabAnim.start();
+                }
             }
         });
         mRlSearch.setOnClickListener(new View.OnClickListener() {
@@ -392,6 +403,20 @@ public class MapFragment extends Fragment implements MapContract.View {
         }
         browseIntent.putExtra(Config.MEMORY_STREAM_LATLNG, latLng);
         startActivityForResult(browseIntent, Config.BROWSE_CODE);
+    }
+
+
+    private void requestPrimission() {
+        if (!EasyPermissions.hasPermissions(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+            EasyPermissions.requestPermissions(getContext(), "Camera"
+                    , 0x123,
+                    Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+    }
+
+    private void configFabAnim() {
+        fabAnim = ObjectAnimator.ofFloat(mFabLocate, "rotation", 0f, 180f);
+        fabAnim.setInterpolator(new AccelerateDecelerateInterpolator());
     }
 
 }
