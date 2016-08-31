@@ -2,6 +2,8 @@ package com.juhezi.citymemory.browse.view;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -16,9 +18,13 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.other.Config;
 import com.juhezi.citymemory.util.Action;
+
+import java.lang.annotation.Target;
 
 /**
  * Created by qiaoyunrui on 16-8-27.
@@ -42,6 +48,7 @@ public class ViewFragment extends Fragment implements ViewContract.View {
         rootView = inflater.inflate(R.layout.view_frag, container, false);
         mPbView = (ProgressBar) rootView.findViewById(R.id.pb_view);
         mImgShow = (ImageView) rootView.findViewById(R.id.img_view_show);
+        mImgShow.setDrawingCacheEnabled(true);
         mFabSave = (FloatingActionButton) rootView.findViewById(R.id.fab_save);
         initData();
 
@@ -54,7 +61,6 @@ public class ViewFragment extends Fragment implements ViewContract.View {
         mFabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "onClick: " + mImgShow.getResources());
                 if (mBitmap != null) {
                     showProgressbar();
                     mPresenter.saveImage(mBitmap, new Action() {
@@ -121,6 +127,7 @@ public class ViewFragment extends Fragment implements ViewContract.View {
                 .crossFade()
                 .into(mImgShow);
     }
+
 
     @Override
     public void showToast(String message) {
