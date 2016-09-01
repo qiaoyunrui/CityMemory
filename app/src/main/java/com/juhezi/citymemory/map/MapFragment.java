@@ -146,22 +146,27 @@ public class MapFragment extends Fragment implements MapContract.View {
         mPresenter.getAllMemoryStream(new OperateCallback<Observable<List<MemoryStream>>>() {
             @Override
             public void onOperate(Observable<List<MemoryStream>> list) {
-                list.subscribe(new Observer<List<MemoryStream>>() {
-                    @Override
-                    public void onCompleted() {
+                if (list != null) {
+                    list.subscribe(new Observer<List<MemoryStream>>() {
+                        @Override
+                        public void onCompleted() {
 
-                    }
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
+                        @Override
+                        public void onError(Throwable e) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onNext(List<MemoryStream> memoryStreams) {
-                        showAllMemoryStream(memoryStreams);
-                    }
-                });
+                        @Override
+                        public void onNext(List<MemoryStream> memoryStreams) {
+                            showAllMemoryStream(memoryStreams);
+                        }
+                    });
+                } else {
+                    showAllMemoryStream(null);
+                }
+
             }
         });
     }
@@ -377,6 +382,9 @@ public class MapFragment extends Fragment implements MapContract.View {
 
     @Override
     public void showAllMemoryStream(List<MemoryStream> list) {
+        if (list == null) {
+            return;
+        }
         for (MemoryStream memoryStream : list) {
             mVMarker = LayoutInflater.from(getContext())
                     .inflate(R.layout.marker_view, null);
