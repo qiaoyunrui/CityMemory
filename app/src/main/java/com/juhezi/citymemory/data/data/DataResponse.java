@@ -190,5 +190,20 @@ public class DataResponse implements DataSource {
         });
     }
 
+    @Override
+    public void getMemoryCount(String username, final OperateCallback<Integer> callback) {
+        AVQuery<AVObject> query = new AVQuery<>(username);
+        query.findInBackground(new FindCallback<AVObject>() {
+            @Override
+            public void done(List<AVObject> list, AVException e) {
+                int count = 0;
+                if (list != null) {
+                    count = list.size();
+                }
+                callback.onOperate(count);
+            }
+        });
+    }
+
 
 }

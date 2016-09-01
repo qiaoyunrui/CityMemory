@@ -46,7 +46,7 @@ public class UploadFragment extends Fragment implements UploadContract.View {
     private View rootView;
     private ImageView mImgShow;
     private Button mBtnUpload;
-    private Button mBtnUsePicLoc;
+//    private Button mBtnUsePicLoc;
     private ProgressBar mPbUpload;
     private Button mBtnCamera;
     private Button mBtnGallery;
@@ -68,7 +68,7 @@ public class UploadFragment extends Fragment implements UploadContract.View {
         rootView = inflater.inflate(R.layout.upload_frag, container, false);
         mImgShow = (ImageView) rootView.findViewById(R.id.up_upload_show);
         mBtnUpload = (Button) rootView.findViewById(R.id.btn_upload_upload);
-        mBtnUsePicLoc = (Button) rootView.findViewById(R.id.btn_upload_use_pic_loc);
+//        mBtnUsePicLoc = (Button) rootView.findViewById(R.id.btn_upload_use_pic_loc);
         mPbUpload = (ProgressBar) rootView.findViewById(R.id.pb_upload);
         mTvCurrAddress = (TextView) rootView.findViewById(R.id.tv_upload_curr_loc);
         mTvPicAddress = (TextView) rootView.findViewById(R.id.tv_upload_pic_loc);
@@ -137,14 +137,14 @@ public class UploadFragment extends Fragment implements UploadContract.View {
                 showDialog();
             }
         });
-        mBtnUsePicLoc.setOnClickListener(new View.OnClickListener() {
+        /*mBtnUsePicLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (currentUri != null) {
 
                 }
             }
-        });
+        });*/
         mBtnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -50,4 +50,12 @@ public interface DataSource {
 
     void getAllStreams(OperateCallback<Observable<List<MemoryStream>>> callback);
 
+    /**
+     * 查看用户所分享的记忆的个数
+     * @param username
+     * @param callback
+     */
+    void getMemoryCount(String username, OperateCallback<Integer> callback);
+
+
 }

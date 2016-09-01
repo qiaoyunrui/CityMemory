@@ -9,6 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.juhezi.citymemory.R;
+import com.juhezi.citymemory.data.data.DataResponse;
+import com.juhezi.citymemory.data.data.DataSource;
+import com.juhezi.citymemory.data.user.UserResponse;
+import com.juhezi.citymemory.data.user.UserSource;
 import com.juhezi.citymemory.setting.avatar.AvatarFragment;
 import com.juhezi.citymemory.setting.avatar.AvatarPresenter;
 import com.juhezi.citymemory.setting.setting.SettingFragment;
@@ -29,6 +33,8 @@ public class SettingActivity extends AppCompatActivity {
 
     private AvatarFragment mAvatarFragment;
     private AvatarPresenter mAvatarPresenter;
+
+    private DataSource mDataSource;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,6 +62,7 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void initFragment() {
+        mDataSource = DataResponse.getInstance(this);
         mSettingFragment = (SettingFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.rl_setting_frag);
         if (mSettingFragment == null) {
@@ -64,7 +71,7 @@ public class SettingActivity extends AppCompatActivity {
                     .add(R.id.rl_setting_frag, mSettingFragment)
                     .commit();
         }
-        mSettingPresenter = new SettingPresenter(mSettingFragment);
+        mSettingPresenter = new SettingPresenter(mSettingFragment, mDataSource);
         mAvatarFragment = new AvatarFragment();
         mAvatarPresenter = new AvatarPresenter(mAvatarFragment);
     }
