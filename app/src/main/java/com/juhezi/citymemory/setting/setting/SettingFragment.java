@@ -100,7 +100,7 @@ public class SettingFragment extends Fragment implements SettingContract.View {
         mImgAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                ((SettingActivity) getActivity()).openAvatarFrag();
+                ((SettingActivity) getActivity()).openAvatarFrag();
             }
         });
     }
