@@ -23,4 +23,5 @@
     <dimen name="discuss_item_discuss_text_size">15sp</dimen>
     <dimen name="marker_img_size">50dp</dimen>
     <dimen name="serach_item_margin">8dp</dimen>
+    <dimen name="toolbar_elevation">8dp</dimen>
 </resources>

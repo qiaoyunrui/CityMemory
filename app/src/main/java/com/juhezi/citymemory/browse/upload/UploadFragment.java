@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.maps.model.LatLng;
+import com.avos.avoscloud.ProgressCallback;
 import com.bumptech.glide.Glide;
 import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.data.module.Memory;
@@ -46,7 +47,7 @@ public class UploadFragment extends Fragment implements UploadContract.View {
     private View rootView;
     private ImageView mImgShow;
     private Button mBtnUpload;
-//    private Button mBtnUsePicLoc;
+    private Button mBtnUsePicLoc;
     private ProgressBar mPbUpload;
     private Button mBtnCamera;
     private Button mBtnGallery;
@@ -59,7 +60,7 @@ public class UploadFragment extends Fragment implements UploadContract.View {
 
     private Intent mCameraIntent;
     private Intent mGalleryIntent;
-
+    private boolean imgLatlngEnable = false;    //图片经纬度是否可以使用
     private MemoryStream mMemoryStream;
 
     @Nullable
@@ -68,7 +69,7 @@ public class UploadFragment extends Fragment implements UploadContract.View {
         rootView = inflater.inflate(R.layout.upload_frag, container, false);
         mImgShow = (ImageView) rootView.findViewById(R.id.up_upload_show);
         mBtnUpload = (Button) rootView.findViewById(R.id.btn_upload_upload);
-//        mBtnUsePicLoc = (Button) rootView.findViewById(R.id.btn_upload_use_pic_loc);
+        mBtnUsePicLoc = (Button) rootView.findViewById(R.id.btn_upload_use_pic_loc);
         mPbUpload = (ProgressBar) rootView.findViewById(R.id.pb_upload);
         mTvCurrAddress = (TextView) rootView.findViewById(R.id.tv_upload_curr_loc);
         mTvPicAddress = (TextView) rootView.findViewById(R.id.tv_upload_pic_loc);
@@ -137,19 +138,24 @@ public class UploadFragment extends Fragment implements UploadContract.View {
                 showDialog();
             }
         });
-        /*mBtnUsePicLoc.setOnClickListener(new View.OnClickListener() {
+        mBtnUsePicLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (currentUri != null) {
-
+                    //根据照片中所提取出的经纬度获取MemoryStream
                 }
             }
-        });*/
+        });
         mBtnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (currentUri != null) {
-                    mPresenter.upload(currentUri.getPath(), mMemoryStream);
+                    mPresenter.uploadN(currentUri.getPath(), mMemoryStream, new ProgressCallback() {
+                        @Override
+                        public void done(Integer integer) {
+                            mPbUpload.setProgress(integer);
+                        }
+                    });
                 }
             }
         });
@@ -177,6 +183,7 @@ public class UploadFragment extends Fragment implements UploadContract.View {
     @Override
     public void showProgressbar() {
         mPbUpload.setVisibility(View.VISIBLE);
+        mPbUpload.setProgress(0);
     }
 
     @Override
@@ -229,6 +236,20 @@ public class UploadFragment extends Fragment implements UploadContract.View {
     }
 
     @Override
+    public void banAllActions() {
+        mBtnUpload.setClickable(false);
+        mBtnUsePicLoc.setClickable(false);
+        mImgShow.setClickable(false);
+    }
+
+    @Override
+    public void allowAllActions() {
+        mBtnUpload.setClickable(true);
+        mBtnUsePicLoc.setClickable(true);
+        mImgShow.setClickable(true);
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
@@ -240,24 +261,25 @@ public class UploadFragment extends Fragment implements UploadContract.View {
                 if (data != null) {
                     currentUri = data.getData();
                     showImage(data.getData());
+                    if (currentUri != null) {
+                        LatLng latLng = mPresenter.getPicLocation(currentUri);
+                        imgLatlngEnable = true;
+                        if (latLng != null) {
+                            mPresenter.getAddress(latLng
+                                    , new OperateCallback<String>() {
+                                        @Override
+                                        public void onOperate(String s) {
+                                            setPicAddress(s);
+                                            Log.i(TAG, "onOperate: ");
+                                        }
+                                    });
+                        } else {
+                            imgLatlngEnable = false;
+                        }
+                    }
                 }
                 break;
         }
-        if (currentUri != null) {
-            LatLng latLng = mPresenter.getPicLocation(currentUri);
-            if (latLng != null) {
-                mPresenter.getAddress(latLng
-                        , new OperateCallback<String>() {
-                            @Override
-                            public void onOperate(String s) {
-                                setPicAddress(s);
-                            }
-                        });
-            } else {
-                setPicAddress("- - -");
-            }
-        }
-
 
     }
 

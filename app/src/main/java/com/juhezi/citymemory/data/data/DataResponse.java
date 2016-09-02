@@ -12,6 +12,7 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.Messages;
+import com.avos.avoscloud.ProgressCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.juhezi.citymemory.data.module.Memory;
 import com.juhezi.citymemory.data.module.MemoryStream;
@@ -49,30 +50,6 @@ public class DataResponse implements DataSource {
     }
 
     @Override
-    public void uploadFile(final String memoryPath, final OperateCallback<String> operateCallback, final Action action) {
-        try {
-            final String name = System.currentTimeMillis() + "_IMG";
-            final AVFile memory = AVFile.withAbsoluteLocalPath(name,
-                    memoryPath);
-            memory.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(AVException e) {
-                    if (e == null) {
-                        operateCallback.onOperate(memory.getUrl());
-                    } else {
-                        action.onAction();
-                    }
-                }
-            });
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            action.onAction();
-        }
-
-
-    }
-
-    @Override
     public void getMemStream(LatLng latLng, final OperateCallback<MemoryStream> callback) {
         AVQuery<AVObject> query = new AVQuery<>(Config.STREAM_WARE_HOUSE);
         final AVGeoPoint point = new AVGeoPoint(latLng.latitude, latLng.longitude);
@@ -98,6 +75,51 @@ public class DataResponse implements DataSource {
                 }
             }
         });
+    }
+
+    @Override
+    public void uploadFile(final String memoryPath, final OperateCallback<String> callback
+            , final ProgressCallback progressCallback) {
+        try {
+            final String name = System.currentTimeMillis() + "_IMG";
+            final AVFile memory = AVFile.withAbsoluteLocalPath(name,
+                    memoryPath);
+            memory.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(AVException e) {
+                    if (e == null) {
+                        callback.onOperate(memory.getUrl());
+                    } else {
+                        callback.onOperate(null);
+                    }
+                }
+            }, progressCallback);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            callback.onOperate(null);
+        }
+    }
+
+    @Override
+    public void uploadFile(final String memoryPath, final OperateCallback<String> operateCallback, final Action action) {
+        try {
+            final String name = System.currentTimeMillis() + "_IMG";
+            final AVFile memory = AVFile.withAbsoluteLocalPath(name,
+                    memoryPath);
+            memory.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(AVException e) {
+                    if (e == null) {
+                        operateCallback.onOperate(memory.getUrl());
+                    } else {
+                        action.onAction();
+                    }
+                }
+            });
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            action.onAction();
+        }
     }
 
     @Override

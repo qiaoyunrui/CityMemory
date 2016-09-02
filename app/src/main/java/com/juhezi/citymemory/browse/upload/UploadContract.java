@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 
 import com.amap.api.maps.model.LatLng;
+import com.avos.avoscloud.ProgressCallback;
 import com.juhezi.citymemory.BasePresenter;
 import com.juhezi.citymemory.BaseView;
 import com.juhezi.citymemory.data.module.Memory;
@@ -48,6 +49,8 @@ public interface UploadContract {
 
         void upload(String path, MemoryStream memoryStream);
 
+        void uploadN(String path, MemoryStream memoryStream, ProgressCallback callback);
+
         Memory createNewMemory(String path, String streamId);
     }
 
@@ -70,6 +73,10 @@ public interface UploadContract {
         void setPicAddress(String address);
 
         void showToast(String message);
+
+        void banAllActions();   //禁止所有的操作
+
+        void allowAllActions(); //允许所有的操作
 
     }
 

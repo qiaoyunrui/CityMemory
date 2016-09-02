@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@color/colorPrimary"
+        android:elevation="@dimen/toolbar_elevation"
         android:orientation="vertical">
 
         <TextView
@@ -32,7 +33,6 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:singleLine="true"
-            android:text="@string/pic_address"
             android:textColor="@android:color/white" />
 
     </LinearLayout>
@@ -54,7 +54,7 @@
         android:background="@android:color/white"
         android:orientation="horizontal">
 
-        <!--<Button
+        <Button
             android:id="@+id/btn_upload_use_pic_loc"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
@@ -62,7 +62,7 @@
             android:backgroundTint="@color/colorPrimary"
             android:text="@string/use_pic_location"
             android:textColor="@android:color/white" />
--->
+
         <Button
             android:id="@+id/btn_upload_upload"
             android:layout_width="match_parent"
@@ -76,10 +76,11 @@
 
     <ProgressBar
         android:id="@+id/pb_upload"
-        style="@android:style/Widget.DeviceDefault.Light.ProgressBar"
-        android:layout_width="wrap_content"
+        style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
         android:visibility="visible" />
 
 </RelativeLayout>

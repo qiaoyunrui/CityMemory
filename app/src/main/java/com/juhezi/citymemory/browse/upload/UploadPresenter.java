@@ -8,6 +8,7 @@ import android.util.Log;
 import com.amap.api.maps.model.LatLng;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.ProgressCallback;
 import com.juhezi.citymemory.data.data.DataSource;
 import com.juhezi.citymemory.data.map.MapSource;
 import com.juhezi.citymemory.data.module.Memory;
@@ -44,14 +45,16 @@ public class UploadPresenter implements UploadContract.Presenter {
 
         @Override
         public void onAction() {
-            mView.showToast("上传失败");
+            mView.allowAllActions();
             mView.hideProgressbar();
+            mView.showToast("上传失败");
         }
     };
 
     private Action successAction = new Action() {
         @Override
         public void onAction() {
+            mView.allowAllActions();
             mView.hideProgressbar();
             mView.showToast("上传成功");
         }
@@ -192,6 +195,61 @@ public class UploadPresenter implements UploadContract.Presenter {
                 }
             }
         }, failAction);
+    }
+
+    @Override
+    public void uploadN(String path, final MemoryStream memoryStream, ProgressCallback callback) {
+        mView.showProgressbar();
+        mView.banAllActions();
+        mDataSource.uploadFile(path, new OperateCallback<String>() {
+            @Override
+            public void onOperate(final String s) {
+                if (s == null) {
+                    failAction.onAction();
+                    return;
+                }
+                if (memoryStream.isNew()) {
+                    mDataSource.addStreamToWarehouse(memoryStream, new Action() {
+                        @Override
+                        public void onAction() {
+                            final Memory memory = createNewMemory(s, memoryStream.getId());
+                            mDataSource.addMemoryStream(memory, new Action() {
+                                @Override
+                                public void onAction() {
+                                    mDataSource.addUserMemory(memory, new Action() {
+                                        @Override
+                                        public void onAction() {
+                                            if (memoryStream.getOwner().equals(memory.getCreater())) {
+                                                mUserSource.addOwnMemory(successAction, failAction);
+                                            } else {
+                                                mUserSource.addPipMemory(successAction, failAction);
+                                            }
+                                        }
+                                    }, failAction);
+                                }
+                            }, failAction);
+                        }
+                    }, failAction);
+                } else {
+                    final Memory memory = createNewMemory(s, memoryStream.getId());
+                    mDataSource.addMemoryStream(memory, new Action() {
+                        @Override
+                        public void onAction() {
+                            mDataSource.addUserMemory(memory, new Action() {
+                                @Override
+                                public void onAction() {
+                                    if (memoryStream.getOwner().equals(memory.getCreater())) {
+                                        mUserSource.addOwnMemory(successAction, failAction);
+                                    } else {
+                                        mUserSource.addPipMemory(successAction, failAction);
+                                    }
+                                }
+                            }, failAction);
+                        }
+                    }, failAction);
+                }
+            }
+        }, callback);
     }
 
     @Override
