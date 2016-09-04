@@ -22,4 +22,13 @@ public interface UserSource {
      * 添加参与的回忆
      */
     void addPipMemory(Action success, Action fail);
+
+    /**
+     * 修改用户头像
+     *
+     * @param avatar
+     * @param success
+     * @param fail
+     */
+    void changeAvatar(String avatar, Action success, Action fail);
 }

@@ -10,8 +10,11 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.avos.avoscloud.AVUser;
 import com.juhezi.citymemory.R;
+import com.juhezi.citymemory.util.Action;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +59,23 @@ public class AvatarFragment extends Fragment implements AvatarContract.View {
         mRvList.setAdapter(mAdapter);
         mRvList.setLayoutManager(layoutManager);
         mAdapter.setList(mList);
+        mAdapter.setListener(new AvatarAdapter.ItemListener() {
+            @Override
+            public void onItemClick(String avatar) {
+                mPresenter.changeAvater(avatar, new Action() {
+                    @Override
+                    public void onAction() {
+                        showToast("更换头像成功");
+                        getActivity().onBackPressed();
+                    }
+                }, new Action() {
+                    @Override
+                    public void onAction() {
+                        showToast("修改头像失败");
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -74,5 +94,12 @@ public class AvatarFragment extends Fragment implements AvatarContract.View {
         if (mPresenter != null) {
             mPresenter.start();
         }
+    }
+
+    @Override
+    public void showToast(String message) {
+
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+
     }
 }

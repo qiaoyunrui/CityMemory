@@ -22,6 +22,8 @@ public class AvatarAdapter extends RecyclerView.Adapter<AvatarAdapter.AvatarHold
 
     private List<String> list = new ArrayList<>();
 
+    private ItemListener mListener;
+
     @Override
     public AvatarHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -30,13 +32,19 @@ public class AvatarAdapter extends RecyclerView.Adapter<AvatarAdapter.AvatarHold
     }
 
     @Override
-    public void onBindViewHolder(AvatarHolder holder, int position) {
+    public void onBindViewHolder(AvatarHolder holder, final int position) {
         Glide.with(holder.mImgAvatar.getContext())
                 .load(list.get(position))
                 .error(R.drawable.error)
                 .crossFade()
                 .placeholder(R.drawable.ic_load)
                 .into(holder.mImgAvatar);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onItemClick(list.get(position));
+            }
+        });
     }
 
     @Override
@@ -50,6 +58,10 @@ public class AvatarAdapter extends RecyclerView.Adapter<AvatarAdapter.AvatarHold
         notifyDataSetChanged();
     }
 
+    public void setListener(ItemListener listener) {
+        mListener = listener;
+    }
+
     class AvatarHolder extends RecyclerView.ViewHolder {
 
         public ImageView mImgAvatar;
@@ -58,6 +70,12 @@ public class AvatarAdapter extends RecyclerView.Adapter<AvatarAdapter.AvatarHold
             super(itemView);
             mImgAvatar = (ImageView) itemView.findViewById(R.id.img_avatar_select);
         }
+    }
+
+    interface ItemListener {
+
+        void onItemClick(String avatar);
+
     }
 
 }

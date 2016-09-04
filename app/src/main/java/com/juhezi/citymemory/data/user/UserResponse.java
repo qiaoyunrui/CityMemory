@@ -68,4 +68,26 @@ public class UserResponse implements UserSource {
             }
         });
     }
+
+    @Override
+    public void changeAvatar(String avatar, final Action success, final Action fail) {
+        AVUser user = getCurrentUser();
+        if (user == null) {
+            fail.onAction();
+            return;
+        }
+        user.put(Config.USER_AVATAR, avatar);
+        user.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e == null) {
+                    success.onAction();
+                } else {
+                    fail.onAction();
+                }
+            }
+        });
+    }
+
+
 }

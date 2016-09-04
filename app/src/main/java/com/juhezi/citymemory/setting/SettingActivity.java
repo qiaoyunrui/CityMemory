@@ -2,10 +2,12 @@ package com.juhezi.citymemory.setting;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.juhezi.citymemory.R;
@@ -35,6 +37,7 @@ public class SettingActivity extends AppCompatActivity {
     private AvatarPresenter mAvatarPresenter;
 
     private DataSource mDataSource;
+    private UserSource mUserSource;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +66,7 @@ public class SettingActivity extends AppCompatActivity {
 
     private void initFragment() {
         mDataSource = DataResponse.getInstance(this);
+        mUserSource = UserResponse.getInstance(this);
         mSettingFragment = (SettingFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.rl_setting_frag);
         if (mSettingFragment == null) {
@@ -73,7 +77,15 @@ public class SettingActivity extends AppCompatActivity {
         }
         mSettingPresenter = new SettingPresenter(mSettingFragment, mDataSource);
         mAvatarFragment = new AvatarFragment();
-        mAvatarPresenter = new AvatarPresenter(mAvatarFragment);
+        mAvatarPresenter = new AvatarPresenter(mAvatarFragment, mUserSource);
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                    mSettingPresenter.start();
+                }
+            }
+        });
     }
 
     @Override
@@ -96,6 +108,7 @@ public class SettingActivity extends AppCompatActivity {
                     .commit();
         }
     }
+
 }
 
 

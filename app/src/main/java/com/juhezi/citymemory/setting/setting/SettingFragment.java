@@ -53,12 +53,7 @@ public class SettingFragment extends Fragment implements SettingContract.View {
         mTvPipMemNum = (TextView) rootView.findViewById(R.id.tv_setting_pip_mem_count);
         mBtnSignout = (Button) rootView.findViewById(R.id.btn_setting_sign_out);
         initEvent();
-        initData();
         return rootView;
-    }
-
-    private void initData() {
-
     }
 
     @Override

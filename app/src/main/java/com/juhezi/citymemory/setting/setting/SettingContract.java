@@ -11,6 +11,7 @@ import com.juhezi.citymemory.util.OperateCallback;
 public interface SettingContract {
 
     interface Presenter extends BasePresenter {
+
         void getCurrentUser();
 
         void signout();
