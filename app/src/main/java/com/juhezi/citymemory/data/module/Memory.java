@@ -3,6 +3,7 @@ package com.juhezi.citymemory.data.module;
 import android.util.Log;
 
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVUser;
 import com.juhezi.citymemory.other.Config;
 
 /**

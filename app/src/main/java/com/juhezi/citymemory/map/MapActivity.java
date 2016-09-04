@@ -88,6 +88,9 @@ public class MapActivity extends AppCompatActivity {
                                     mFragment.turn2SignActivity();
                                 }
                                 break;
+                            case R.id.nav_menu_comment:
+                                mFragment.turn2MessageActivity();
+                                break;
                         }
                         mDLayout.closeDrawers();
                         return true;

@@ -5,11 +5,14 @@ import android.provider.Settings;
 import android.util.Log;
 
 import com.amap.api.maps.model.LatLng;
+import com.avos.avoscloud.AVCloudQueryResult;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVGeoPoint;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.CloudQueryCallback;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.Messages;
 import com.avos.avoscloud.ProgressCallback;
@@ -77,6 +80,13 @@ public class DataResponse implements DataSource {
         });
     }
 
+    /**
+     * 带有进度的上传文件
+     *
+     * @param memoryPath
+     * @param callback
+     * @param progressCallback
+     */
     @Override
     public void uploadFile(final String memoryPath, final OperateCallback<String> callback
             , final ProgressCallback progressCallback) {
@@ -100,6 +110,13 @@ public class DataResponse implements DataSource {
         }
     }
 
+    /**
+     * 不带进度条的上传文件
+     *
+     * @param memoryPath
+     * @param operateCallback
+     * @param action
+     */
     @Override
     public void uploadFile(final String memoryPath, final OperateCallback<String> operateCallback, final Action action) {
         try {
@@ -171,6 +188,8 @@ public class DataResponse implements DataSource {
     @Override
     public void getAllMemories(String streamId, final OperateCallback<Observable<List<Memory>>> callback) {
         AVQuery<AVObject> query = new AVQuery<>(streamId);
+        AVQuery<AVUser> queryUser = new AVQuery<>("_User");
+        queryUser.whereEqualTo("username", "");
         query.findInBackground(new FindCallback<AVObject>() {
             @Override
             public void done(List<AVObject> list, AVException e) {
@@ -226,6 +245,5 @@ public class DataResponse implements DataSource {
             }
         });
     }
-
 
 }

@@ -28,6 +28,7 @@ public class Config {
     public final static String MEMORY_ID = "sid";
     public final static String MEMORY_STREAMID = "streamId";
     public final static String MEMORY_CREATER = "creater";
+    public final static String MEMORY_CREATERX = "createrx";
     public final static String MEMORY_PICK_NAME = "pickname";
     public final static String MEMORY_AVATAR = "avatar";
     public final static String MEMORY_TYPE = "type";

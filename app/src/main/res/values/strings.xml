@@ -22,5 +22,5 @@
     <string name="current_address">当前位置:</string>
     <string name="pic_address">图片位置:</string>
     <string name="there_no_memory">此处没有记忆,快来添加吧!</string>
-    <string name="comment">交谈</string>
+    <string name="comment">私信</string>
 </resources>

@@ -36,6 +36,7 @@
         <activity android:name=".sign.SignActivity"></activity>
         <activity android:name=".setting.SettingActivity"></activity>
         <activity android:name=".browse.BrowseActivity"></activity>
+        <activity android:name=".message.MessageActivity"></activity>
 
         <service android:name="com.amap.api.location.APSService">
 

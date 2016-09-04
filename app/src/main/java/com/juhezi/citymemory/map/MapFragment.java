@@ -41,6 +41,7 @@ import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.browse.BrowseActivity;
 import com.juhezi.citymemory.data.module.Location;
 import com.juhezi.citymemory.data.module.MemoryStream;
+import com.juhezi.citymemory.message.MessageActivity;
 import com.juhezi.citymemory.other.Config;
 import com.juhezi.citymemory.search.SearchActivity;
 import com.juhezi.citymemory.setting.SettingActivity;
@@ -86,6 +87,7 @@ public class MapFragment extends Fragment implements MapContract.View {
     private Intent signIntent;
     private Intent settingIntent;
     private Intent browseIntent;
+    private Intent messageIntent;
 
     private View mVMarker;
     private ImageView mImgMarker;
@@ -419,6 +421,13 @@ public class MapFragment extends Fragment implements MapContract.View {
         }
         browseIntent.putExtra(Config.MEMORY_STREAM_LATLNG, latLng);
         startActivityForResult(browseIntent, Config.BROWSE_CODE);
+    }
+
+    public void turn2MessageActivity() {
+        if (null == messageIntent) {
+            messageIntent = new Intent(getContext(), MessageActivity.class);
+        }
+        startActivity(messageIntent);
     }
 
     private void requestPrimission() {

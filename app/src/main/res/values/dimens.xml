@@ -24,4 +24,6 @@
     <dimen name="marker_img_size">50dp</dimen>
     <dimen name="serach_item_margin">8dp</dimen>
     <dimen name="toolbar_elevation">8dp</dimen>
+    <dimen name="message_item_height">75dp</dimen>
+    <dimen name="message_name_text_size">20sp</dimen>
 </resources>

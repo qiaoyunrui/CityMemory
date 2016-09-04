@@ -61,5 +61,4 @@ public interface DataSource {
      */
     void getMemoryCount(String username, OperateCallback<Integer> callback);
 
-
 }
