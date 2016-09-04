@@ -237,15 +237,15 @@ public class UploadFragment extends Fragment implements UploadContract.View {
 
     @Override
     public void banAllActions() {
-        mBtnUpload.setClickable(false);
-        mBtnUsePicLoc.setClickable(false);
+        mBtnUpload.setVisibility(View.INVISIBLE);
+        mBtnUsePicLoc.setVisibility(View.INVISIBLE);
         mImgShow.setClickable(false);
     }
 
     @Override
     public void allowAllActions() {
-        mBtnUpload.setClickable(true);
-        mBtnUsePicLoc.setClickable(true);
+        mBtnUpload.setVisibility(View.VISIBLE);
+        mBtnUsePicLoc.setVisibility(View.VISIBLE);
         mImgShow.setClickable(true);
     }
 
