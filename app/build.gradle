@@ -11,6 +11,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -51,4 +52,5 @@ dependencies {
     compile rootProject.ext.libGlide
     compile rootProject.ext.libRebound
     compile rootProject.ext.libEasypermissions
+    compile rootProject.ext.libMultidex
 }

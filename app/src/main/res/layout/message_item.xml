@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/message_item_height"
-    android:layout_margin="@dimen/serach_item_margin"
     android:clickable="true"
     android:foreground="?selectableItemBackground">
 
@@ -22,6 +21,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:singleLine="true"
             android:id="@+id/tv_message_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,6 +31,7 @@
             android:textSize="@dimen/message_name_text_size" />
 
         <TextView
+            android:singleLine="true"
             android:id="@+id/tv_message_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

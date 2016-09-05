@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.data.module.Coversation;
+import com.juhezi.citymemory.util.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,8 @@ public class MessageFragment extends Fragment implements MessageContract.View {
     private void initRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mRvList.setLayoutManager(layoutManager);
+        mRvList.addItemDecoration(new DividerItemDecoration(
+                getContext(), LinearLayoutManager.VERTICAL));
         mAdapter = new MessageAdapter();
         mRvList.setAdapter(mAdapter);
 
