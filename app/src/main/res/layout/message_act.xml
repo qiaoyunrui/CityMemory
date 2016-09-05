@@ -8,14 +8,14 @@
         android:id="@+id/tb_message"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimary"
+        android:theme="@style/Toolbar">
 
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
         android:id="@+id/rl_message_frag"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </RelativeLayout>
+        android:layout_height="match_parent"></RelativeLayout>
 
 </LinearLayout>
