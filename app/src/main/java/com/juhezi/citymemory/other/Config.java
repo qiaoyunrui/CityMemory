@@ -41,6 +41,12 @@ public class Config {
     public final static String MEMORY_STREAM_MEMORY_COUNT = "memoryCount";
     public final static String MEMORY_STREAM_WHERE_CREATED = "whereCreated";
 
+    public final static String COVER_OWN_ID = "coverOwnId";
+    public final static String COVER_CHATER_ID = "coverChaterId";
+    public final static String COVER_PICKNAME = "coverPickname";
+    public final static String COVER_AVATAR = "coverAvatar";
+    public final static String COVER_CONTENT = "coverContent";
+
     public final static String STREAM_WARE_HOUSE = "StreamWarehouse";
 
     public final static String APP_NAME = "CityMemory";
@@ -49,5 +55,7 @@ public class Config {
     public final static String MEMORY_STREAM_TAG = "memoryStreamTag";
 
     public final static String IMAGE_URL = "imageUrl";
+
+    public final static String COVERSATION = "Coversation";
 
 }

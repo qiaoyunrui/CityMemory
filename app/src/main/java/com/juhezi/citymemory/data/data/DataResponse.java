@@ -17,6 +17,7 @@ import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.Messages;
 import com.avos.avoscloud.ProgressCallback;
 import com.avos.avoscloud.SaveCallback;
+import com.juhezi.citymemory.data.module.Coversation;
 import com.juhezi.citymemory.data.module.Memory;
 import com.juhezi.citymemory.data.module.MemoryStream;
 import com.juhezi.citymemory.other.Config;
@@ -242,6 +243,68 @@ public class DataResponse implements DataSource {
                     count = list.size();
                 }
                 callback.onOperate(count);
+            }
+        });
+    }
+
+    @Override
+    public void addCoverRecord(final Coversation coversation, final
+    OperateCallback<Exception> callback) {
+        /**/
+        AVQuery<AVObject> query = new AVQuery<>(coversation.getOwnId() + Config.COVERSATION);
+        final AVObject[] avObject = new AVObject[1];
+        query.whereEqualTo(Config.COVER_CHATER_ID, coversation.getChaterId());
+        query.findInBackground(new FindCallback<AVObject>() {
+            @Override
+            public void done(List<AVObject> list, AVException e) {
+                if (list == null || list.size() == 0) { //之前没有聊过天,添加数据
+                    avObject[0] = coversation.toAvObject();
+                    avObject[0].saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(AVException e) {
+                            callback.onOperate(e);
+                        }
+                    });
+                } else {    //之前有聊过天，更新数据
+                    avObject[0] = list.get(0);  //获取查询到的数据
+                    avObject[0].put(Config.COVER_AVATAR, coversation.getAvatar());
+                    avObject[0].put(Config.COVER_CONTENT, coversation.getContent());
+                    avObject[0].put(Config.COVER_PICKNAME, coversation.getPickname());
+                    avObject[0].saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(AVException e) {
+                            callback.onOperate(e);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getCoverRecords(String username, final
+    OperateCallback<Observable<List<Coversation>>> callback) {
+        String className = username + Config.COVERSATION;
+        AVQuery<AVObject> query = new AVQuery<>(className);
+        query.setLimit(50);     //限制为50条
+        query.orderByAscending("updatedAt");
+        query.findInBackground(new FindCallback<AVObject>() {
+            @Override
+            public void done(List<AVObject> list, AVException e) {
+                if (list != null && list.size() != 0) {
+                    Observable<List<Coversation>> observable = Observable
+                            .from(list)
+                            .map(new Func1<AVObject, Coversation>() {
+                                @Override
+                                public Coversation call(AVObject avObject) {
+                                    return Coversation.parseCoversation(avObject);
+                                }
+                            })
+                            .toList();
+                    callback.onOperate(observable);
+                } else {    //数据查询失败
+                    callback.onOperate(null);
+                }
             }
         });
     }
