@@ -89,7 +89,14 @@ public class MapActivity extends AppCompatActivity {
                                 }
                                 break;
                             case R.id.nav_menu_comment:
-                                mFragment.turn2MessageActivity();
+                                if (mPresenter.getCurrUserData() != null) {
+                                    mFragment.turn2MessageActivity();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "请先登录", Toast.LENGTH_SHORT)
+                                            .show();
+                                    mFragment.turn2SignActivity();
+                                }
+
                                 break;
                         }
                         mDLayout.closeDrawers();

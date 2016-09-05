@@ -8,6 +8,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.juhezi.citymemory.R;
+import com.juhezi.citymemory.data.data.DataResponse;
+import com.juhezi.citymemory.data.data.DataSource;
+import com.juhezi.citymemory.data.user.UserResponse;
+import com.juhezi.citymemory.data.user.UserSource;
 
 /**
  * Created by qiaoyunrui on 16-9-4.
@@ -21,6 +25,9 @@ public class MessageActivity extends AppCompatActivity {
 
     private MessageFragment mFragment;
     private MessagePresenter mPresenter;
+
+    private DataSource mDataSource;
+    private UserSource mUserSource;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +49,8 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void initFragment() {
+        mDataSource = DataResponse.getInstance(this);
+        mUserSource = UserResponse.getInstance(this);
         mFragment = (MessageFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.rl_message_frag);
         if (mFragment == null) {
@@ -51,7 +60,8 @@ public class MessageActivity extends AppCompatActivity {
                     .add(R.id.rl_message_frag, mFragment)
                     .commit();
         }
-        mPresenter = new MessagePresenter(mFragment);
+        mPresenter = new MessagePresenter(mFragment,
+                mDataSource, mUserSource);
     }
 
     @Override
