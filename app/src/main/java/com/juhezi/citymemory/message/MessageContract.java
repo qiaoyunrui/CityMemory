@@ -30,6 +30,7 @@ public interface MessageContract {
         void hideEmptyView();
 
         void showToast(String message);
+
     }
 
 }

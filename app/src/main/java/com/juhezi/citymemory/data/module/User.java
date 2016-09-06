@@ -1,5 +1,8 @@
 package com.juhezi.citymemory.data.module;
 
+import com.avos.avoscloud.AVUser;
+import com.juhezi.citymemory.other.Config;
+
 import java.util.List;
 
 /**
@@ -13,12 +16,12 @@ public class User {
     private String username;    //用户名
     private String pickName;    //昵称
     private String mail;    //邮箱
+    private String avatar;  //头像
     private int userType;   //账户类型
 
     private List<String> ownMemories;   //创建的记忆
-    private List<String> pipMemories;   //参与的记忆
 
-    private String avatar;  //头像
+    private List<String> pipMemories;   //参与的记忆
 
     public String getUsername() {
         return username;
@@ -74,5 +77,15 @@ public class User {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public static User parseUser(AVUser avUserser) {
+        User user = new User();
+        user.username = avUserser.getUsername();
+        user.pickName = avUserser.getString(Config.USER_PICK_NAME);
+        user.avatar = avUserser.getString(Config.USER_AVATAR);
+        user.mail = avUserser.getEmail();
+        user.userType = avUserser.getInt(Config.USER_TYPE);
+        return user;
     }
 }

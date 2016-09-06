@@ -11,11 +11,22 @@
         android:background="@color/colorPrimary"
         android:theme="@style/Toolbar">
 
+        <EditText
+            android:id="@+id/et_search_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/search_user_name"
+            android:singleLine="true"
+            android:visibility="invisible" />
+
+
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
         android:id="@+id/rl_message_frag"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></RelativeLayout>
+        android:layout_height="match_parent">
+
+    </RelativeLayout>
 
 </LinearLayout>

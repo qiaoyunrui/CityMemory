@@ -1,7 +1,13 @@
 package com.juhezi.citymemory.data.user;
 
 import com.avos.avoscloud.AVUser;
+import com.juhezi.citymemory.data.module.User;
 import com.juhezi.citymemory.util.Action;
+import com.juhezi.citymemory.util.OperateCallback;
+
+import java.util.List;
+
+import rx.Observable;
 
 /**
  * Created by qiaoyunrui on 16-8-28.
@@ -31,4 +37,6 @@ public interface UserSource {
      * @param fail
      */
     void changeAvatar(String avatar, Action success, Action fail);
+
+    void queryUsers(String name, OperateCallback<Observable<List<User>>> callback);
 }

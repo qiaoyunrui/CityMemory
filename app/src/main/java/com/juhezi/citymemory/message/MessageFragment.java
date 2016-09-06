@@ -1,7 +1,9 @@
 package com.juhezi.citymemory.message;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +34,7 @@ public class MessageFragment extends Fragment implements MessageContract.View {
     private MessageAdapter mAdapter;
     private SwipeRefreshLayout mSrlRefresh;
     private RelativeLayout mRlEmptyView;
+    private FloatingActionButton mFabAdd;
 
     @Nullable
     @Override
@@ -41,7 +44,7 @@ public class MessageFragment extends Fragment implements MessageContract.View {
         mSrlRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.srl_message);
         mRlEmptyView = (RelativeLayout) rootView
                 .findViewById(R.id.rl_message_empty_view);
-
+        mFabAdd = (FloatingActionButton) rootView.findViewById(R.id.fab_message_add);
         initRecyclerView();
 
         initEvent();
@@ -52,7 +55,12 @@ public class MessageFragment extends Fragment implements MessageContract.View {
     }
 
     private void initEvent() {
-
+        mFabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MessageActivity) getActivity()).addSearchUserFragment();
+            }
+        });
     }
 
     private void initRecyclerView() {
@@ -112,4 +120,5 @@ public class MessageFragment extends Fragment implements MessageContract.View {
     public void showToast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
+
 }

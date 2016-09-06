@@ -24,4 +24,6 @@
     <string name="there_no_memory">此处没有记忆,快来添加吧!</string>
     <string name="comment">私信</string>
     <string name="there_no_message">暂时没有私信</string>
+    <string name="search_user_name">搜索你想发送私信的人</string>
+    <string name="message">私信</string>
 </resources>
