@@ -26,4 +26,9 @@
     <dimen name="toolbar_elevation">8dp</dimen>
     <dimen name="message_item_height">75dp</dimen>
     <dimen name="message_name_text_size">20sp</dimen>
+    <dimen name="person_dialog_width">300dp</dimen>
+    <dimen name="person_dialog_height">400dp</dimen>
+    <dimen name="person_dialog_name_size">30sp</dimen>
+    <dimen name="person_dialog_avatar_margin_top">20dp</dimen>
+    <dimen name="person_dialog_board_height">100dp</dimen>
 </resources>

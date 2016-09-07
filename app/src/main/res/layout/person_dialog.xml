@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/person_dialog_width"
+    android:layout_height="@dimen/person_dialog_height"
+    android:background="@color/colorPrimary">
+
+    <ImageView
+        android:id="@+id/img_person_dialog_avatar"
+        android:layout_width="@dimen/nav_header_avatar_size"
+        android:layout_height="@dimen/nav_header_avatar_size"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/sign_avatar_margin_top"
+        android:src="@drawable/ic_avatar" />
+
+    <TextView
+        android:id="@+id/tv_person_dialog_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img_person_dialog_avatar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/person_dialog_avatar_margin_top"
+        android:singleLine="true"
+        android:text="居合子"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/person_dialog_name_size" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/person_dialog_board_height"
+        android:layout_below="@+id/tv_person_dialog_name"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:gravity="center"
+                android:text="@string/own_memories"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/tv_person_dialog_own_mem_count"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="1"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/setting_memories_num_text_size" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:gravity="center"
+                android:text="@string/pip_memories"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/tv_person_dialog_pip_mem_count"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="1"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/setting_memories_num_text_size" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_person_dialog_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:backgroundTint="@color/colorAccent"
+        android:clickable="true"
+        android:text="@string/message"
+        android:textColor="@android:color/white" />
+
+</RelativeLayout>

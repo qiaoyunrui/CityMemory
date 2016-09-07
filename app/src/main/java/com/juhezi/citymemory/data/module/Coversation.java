@@ -4,12 +4,14 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.juhezi.citymemory.other.Config;
 
+import java.io.Serializable;
+
 /**
  * 盛装对话的数据结构
  * <p>
  * Created by qiaoyunrui on 16-9-5.
  */
-public class Coversation {
+public class Coversation implements Serializable {
 
     private static final String TAG = "Coversation";
 
