@@ -1,11 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_cov"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/rl_cov_input_board">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_cov_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_cov_input_board"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:elevation="@dimen/board_elevation">
+
+        <EditText
+            android:id="@+id/et_cov_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/btn_cov_send"
+            android:hint="@string/say_some_thing" />
+
+        <Button
+            android:id="@+id/btn_cov_send"
+            android:layout_width="@dimen/cov_send_btn_width"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:backgroundTint="@color/colorAccent"
+            android:text="@string/send"
+            android:textColor="@android:color/white" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

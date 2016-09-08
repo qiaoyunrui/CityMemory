@@ -45,4 +45,19 @@ public class ConversationFragment extends Fragment implements ConversationContra
     public void setPresenter(ConversationContract.Presenter presenter) {
         mPresenter = presenter;
     }
+
+    @Override
+    public void showProgressBar() {
+
+    }
+
+    @Override
+    public void hideProgressBar() {
+
+    }
+
+    @Override
+    public void showDailog() {
+
+    }
 }

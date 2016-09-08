@@ -26,4 +26,7 @@
     <string name="there_no_message">暂时没有私信</string>
     <string name="search_user_name">搜索你想发送私信的人</string>
     <string name="message">私信</string>
+    <string name="clear">清除聊天记录</string>
+    <string name="send">发送</string>
+    <string name="say_some_thing">说点什么吧</string>
 </resources>

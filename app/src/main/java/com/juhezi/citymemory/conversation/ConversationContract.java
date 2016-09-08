@@ -14,6 +14,15 @@ public interface ConversationContract {
 
     interface View extends BaseView<Presenter> {
 
+        void showProgressBar();
+
+        void hideProgressBar();
+
+        /**
+         * 显示删除提示按钮
+         */
+        void showDailog();
+
     }
 
 }
