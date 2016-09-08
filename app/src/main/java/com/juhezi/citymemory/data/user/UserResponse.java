@@ -132,4 +132,27 @@ public class UserResponse implements UserSource {
         });
     }
 
+    @Override
+    public void queryUserByUsername(String username, final OperateCallback<Observable<List<User>>> callback) {
+        AVQuery<AVUser> query = new AVQuery<>("_User");
+        query.whereEqualTo(Config.USER_NAME, username);
+        query.findInBackground(new FindCallback<AVUser>() {
+            @Override
+            public void done(List<AVUser> list, AVException e) {
+                if (e != null || list == null || list.size() == 0) {
+                    callback.onOperate(null);
+                    return;
+                }
+                Observable<List<User>> observable = Observable.from(list)
+                        .map(new Func1<AVUser, User>() {
+                            @Override
+                            public User call(AVUser user) {
+                                return User.parseUser(user);
+                            }
+                        }).toList();
+                callback.onOperate(observable);
+            }
+        });
+    }
+
 }

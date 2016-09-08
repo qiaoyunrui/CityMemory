@@ -24,6 +24,7 @@ public class Config {
     public final static String USER_AVATAR = "userAvatar";
     public final static String USER_OWN = "userOwn";
     public final static String USER_PIP = "userPip";
+    public final static String USER_NAME = "username";
 
     public final static String MEMORY_ID = "sid";
     public final static String MEMORY_STREAMID = "streamId";

@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 
 import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.data.module.User;
+import com.juhezi.citymemory.util.PersonDialog;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class SearchUserFragment extends Fragment implements SearchUserContract.V
 
     private View rootView;
 
+    private PersonDialog mPersonDialog;
 
     @Nullable
     @Override
@@ -38,9 +40,8 @@ public class SearchUserFragment extends Fragment implements SearchUserContract.V
         rootView = inflater.inflate(R.layout.search_user_frag, container, false);
         mRvList = (RecyclerView) rootView.findViewById(R.id.rv_search_user_list);
         mPbSearchUser = (ProgressBar) rootView.findViewById(R.id.pb_search_user);
-
+        mPersonDialog = new PersonDialog(getContext());
         initRecyclerView();
-
         return rootView;
     }
 
@@ -49,6 +50,13 @@ public class SearchUserFragment extends Fragment implements SearchUserContract.V
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mRvList.setLayoutManager(linearLayoutManager);
         mRvList.setAdapter(mAdapter);
+        mAdapter.setClickListener(new SUAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(User user) {
+                mPersonDialog.setData(user);
+                mPersonDialog.show();
+            }
+        });
     }
 
     @Override

@@ -19,6 +19,9 @@ public class User {
     private String avatar;  //头像
     private int userType;   //账户类型
 
+    private int ownCount;
+    private int pipCount;
+
     private List<String> ownMemories;   //创建的记忆
 
     private List<String> pipMemories;   //参与的记忆
@@ -79,6 +82,22 @@ public class User {
         this.avatar = avatar;
     }
 
+    public int getOwnCount() {
+        return ownCount;
+    }
+
+    public void setOwnCount(int ownCount) {
+        this.ownCount = ownCount;
+    }
+
+    public int getPipCount() {
+        return pipCount;
+    }
+
+    public void setPipCount(int pipCount) {
+        this.pipCount = pipCount;
+    }
+
     public static User parseUser(AVUser avUserser) {
         User user = new User();
         user.username = avUserser.getUsername();
@@ -86,6 +105,8 @@ public class User {
         user.avatar = avUserser.getString(Config.USER_AVATAR);
         user.mail = avUserser.getEmail();
         user.userType = avUserser.getInt(Config.USER_TYPE);
+        user.ownCount = avUserser.getInt(Config.USER_OWN);
+        user.pipCount = avUserser.getInt(Config.USER_PIP);
         return user;
     }
 }

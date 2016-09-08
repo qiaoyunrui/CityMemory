@@ -32,7 +32,7 @@ public class SearchUserPresenter implements SearchUserContract.Presenter {
 
     @Override
     public void start() {
-        Log.i(TAG, "start: Hello");
+
     }
 
     @Override

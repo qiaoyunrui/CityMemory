@@ -8,6 +8,7 @@ import com.juhezi.citymemory.data.data.DataSource;
 import com.juhezi.citymemory.data.map.MapSource;
 import com.juhezi.citymemory.data.module.Memory;
 import com.juhezi.citymemory.data.module.MemoryStream;
+import com.juhezi.citymemory.data.module.User;
 import com.juhezi.citymemory.data.user.UserSource;
 import com.juhezi.citymemory.other.Config;
 import com.juhezi.citymemory.util.Action;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 import rx.Observable;
+import rx.functions.Action1;
 
 /**
  * Created by qiaoyunrui on 16-8-27.
@@ -81,5 +83,26 @@ public class BrowsePresenter implements BrowseContract.Presenter {
     @Override
     public void uploadDiscuss(Memory memory, Action success, Action fail) {
         mDataSource.addMemoryStream(memory, success, fail);
+    }
+
+    @Override
+    public void findUser(String username) {
+        mView.showProgressbar();
+        mUserSource.queryUserByUsername(username, new OperateCallback<Observable<List<User>>>() {
+            @Override
+            public void onOperate(Observable<List<User>> observable) {
+                if (observable == null) {
+                    mView.showToast("用户信息加载失败!");
+                    mView.hideProgressbar();
+                }
+                observable.subscribe(new Action1<List<User>>() {
+                    @Override
+                    public void call(List<User> users) {
+                        mView.hideProgressbar();
+                        mView.showDialog(users.get(0));
+                    }
+                }).unsubscribe();
+            }
+        });
     }
 }

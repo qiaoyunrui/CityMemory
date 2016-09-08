@@ -6,6 +6,7 @@ import com.juhezi.citymemory.BasePresenter;
 import com.juhezi.citymemory.BaseView;
 import com.juhezi.citymemory.data.module.Memory;
 import com.juhezi.citymemory.data.module.MemoryStream;
+import com.juhezi.citymemory.data.module.User;
 import com.juhezi.citymemory.util.Action;
 import com.juhezi.citymemory.util.OperateCallback;
 
@@ -34,6 +35,8 @@ public interface BrowseContract {
 
         void uploadDiscuss(Memory memory, Action success, Action fail);
 
+        void findUser(String username);
+
     }
 
     interface View extends BaseView<BrowseContract.Presenter> {
@@ -61,6 +64,8 @@ public interface BrowseContract {
         void enableSendButton();
 
         void showToast(String message);
+
+        void showDialog(User user);
 
     }
 

@@ -39,4 +39,11 @@ public interface UserSource {
     void changeAvatar(String avatar, Action success, Action fail);
 
     void queryUsers(String name, OperateCallback<Observable<List<User>>> callback);
+
+    /**
+     * 通过用户名查找用户
+     * @param username
+     * @param callback
+     */
+    void queryUserByUsername(String username, OperateCallback<Observable<List<User>>> callback);
 }

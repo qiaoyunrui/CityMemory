@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/person_dialog_width"
-    android:layout_height="@dimen/person_dialog_height"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
     <ImageView
@@ -25,6 +25,7 @@
         android:textSize="@dimen/person_dialog_name_size" />
 
     <LinearLayout
+        android:id="@+id/ll_person_dialog_borad"
         android:layout_width="match_parent"
         android:layout_height="@dimen/person_dialog_board_height"
         android:layout_below="@+id/tv_person_dialog_name"
@@ -89,7 +90,7 @@
         android:id="@+id/btn_person_dialog_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/ll_person_dialog_borad"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:backgroundTint="@color/colorAccent"
         android:clickable="true"

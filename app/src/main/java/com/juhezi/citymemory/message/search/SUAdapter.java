@@ -24,6 +24,8 @@ public class SUAdapter extends RecyclerView.Adapter<SUAdapter.AUViewHolder> {
 
     private List<User> list = new ArrayList<>();
 
+    private ItemClickListener mItemClickListener;
+
     @Override
     public AUViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -32,7 +34,7 @@ public class SUAdapter extends RecyclerView.Adapter<SUAdapter.AUViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(AUViewHolder holder, int position) {
+    public void onBindViewHolder(AUViewHolder holder, final int position) {
 
         Glide.with(holder.itemView.getContext())
                 .load(list.get(position).getAvatar())
@@ -40,7 +42,14 @@ public class SUAdapter extends RecyclerView.Adapter<SUAdapter.AUViewHolder> {
                 .error(R.drawable.ic_avatar_primary)
                 .into(holder.mImgAvatar);
         holder.mTvName.setText(list.get(position).getPickName());
-
+        if (mItemClickListener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mItemClickListener.onItemClick(list.get(position));
+                }
+            });
+        }
     }
 
     @Override
@@ -52,6 +61,16 @@ public class SUAdapter extends RecyclerView.Adapter<SUAdapter.AUViewHolder> {
         this.list.clear();
         this.list.addAll(list);
         notifyDataSetChanged();
+    }
+
+    public void setClickListener(ItemClickListener itemClickListener) {
+        mItemClickListener = itemClickListener;
+    }
+
+    interface ItemClickListener {
+
+        void onItemClick(User user);
+
     }
 
     class AUViewHolder extends RecyclerView.ViewHolder {

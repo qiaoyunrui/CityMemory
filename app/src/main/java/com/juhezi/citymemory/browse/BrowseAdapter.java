@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.data.module.Memory;
+import com.juhezi.citymemory.data.module.User;
 import com.juhezi.citymemory.util.Action;
 
 import java.util.ArrayList;
@@ -59,6 +60,12 @@ public class BrowseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         .crossFade()
                         .into(((DiscussViewHolder) holder)
                                 .mImgDiscussAvatar);
+                ((DiscussViewHolder) holder).mImgDiscussAvatar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onAvatarClicked(list.get(position).getCreater());
+                    }
+                });
                 break;
             case Memory.MEMORY_TYPE_PIC:
                 ((MemoryViewHolder) holder).mTvMemoryPickname
@@ -89,6 +96,12 @@ public class BrowseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                 }
                             }
                         });
+                ((MemoryViewHolder) holder).mImgMemoryAvatar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onAvatarClicked(list.get(position).getCreater());
+                    }
+                });
                 break;
         }
     }
@@ -179,5 +192,6 @@ public class BrowseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         void onItemClicked(String url);
 
+        void onAvatarClicked(String username);
     }
 }

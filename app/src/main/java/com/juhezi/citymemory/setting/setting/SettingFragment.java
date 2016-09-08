@@ -131,7 +131,6 @@ public class SettingFragment extends Fragment implements SettingContract.View {
                         .into(mImgAvatar);
                 mTvPickname.setText((String) user.get(Config.USER_PICK_NAME));
                 mTvPipMemNum.setText(user.getInt(Config.USER_PIP) + "");
-                Log.i(TAG, "done: " + user.getInt(Config.USER_OWN));
                 mTvOwnMemNum.setText(user.getInt(Config.USER_OWN) + "");
             }
         });
@@ -158,6 +157,5 @@ public class SettingFragment extends Fragment implements SettingContract.View {
     public void setShowPickname(String pickname) {
         mTvPickname.setText(pickname);
     }
-
 
 }

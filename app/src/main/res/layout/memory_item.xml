@@ -23,6 +23,8 @@
                 android:layout_width="@dimen/memory_item_avatar_size"
                 android:layout_height="@dimen/memory_item_avatar_size"
                 android:layout_margin="@dimen/activity_horizontal_margin"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
                 android:src="@drawable/ic_avatar_primary" />
 
             <TextView

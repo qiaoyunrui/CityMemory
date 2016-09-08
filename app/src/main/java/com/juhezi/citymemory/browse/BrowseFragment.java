@@ -25,10 +25,12 @@ import com.avos.avoscloud.AVUser;
 import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.data.module.Memory;
 import com.juhezi.citymemory.data.module.MemoryStream;
+import com.juhezi.citymemory.data.module.User;
 import com.juhezi.citymemory.other.Config;
 import com.juhezi.citymemory.sign.SignActivity;
 import com.juhezi.citymemory.util.Action;
 import com.juhezi.citymemory.util.OperateCallback;
+import com.juhezi.citymemory.util.PersonDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +67,7 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
     private LatLng mLatLng;
 
     private Intent mSignIntent;
-
+    private PersonDialog mPersonDialog;
 
     @Nullable
     @Override
@@ -83,6 +85,8 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
         mImgSend = (ImageView) rootView.findViewById(R.id.img_browse_send);
         mSrlRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.srl_browse_refresh);
         mSrlRefresh.setColorSchemeColors(R.color.colorAccent);
+        mPersonDialog = new PersonDialog(getContext());
+
         initRecyclerView();
 
         initEvent();
@@ -261,6 +265,12 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
 
             }
         });
+        mPersonDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "onClick: Hello");
+            }
+        });
     }
 
     private void initRecyclerView() {
@@ -274,6 +284,11 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
                 Bundle bundle = new Bundle();
                 bundle.putString(Config.IMAGE_URL, url);
                 ((BrowseActivity) getActivity()).openViewFragment(bundle);
+            }
+
+            @Override
+            public void onAvatarClicked(String username) {
+                mPresenter.findUser(username);
             }
         });
         mRvList.setAdapter(mAdapter);
@@ -365,6 +380,12 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
     @Override
     public void showToast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showDialog(User user) {
+        mPersonDialog.setData(user);
+        mPersonDialog.show();
     }
 }
 
