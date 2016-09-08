@@ -3,11 +3,18 @@ package com.juhezi.citymemory.conversation;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.juhezi.citymemory.R;
+import com.juhezi.citymemory.data.module.Cov;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by qiaoyunrui on 16-9-4.
@@ -19,12 +26,41 @@ public class ConversationFragment extends Fragment implements ConversationContra
     private ConversationContract.Presenter mPresenter;
 
     private View rootView;
+    private SwipeRefreshLayout mSrlCov;
+    private RecyclerView mRvList;
+    private CovAdapter mAdapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.coversation_frag, container, false);
+        mRvList = (RecyclerView) rootView.findViewById(R.id.rv_cov_list);
+        mSrlCov = (SwipeRefreshLayout) rootView.findViewById(R.id.srl_cov);
+
+        initRecyclerView();
+
         return rootView;
+    }
+
+    private void initRecyclerView() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        mRvList.setLayoutManager(layoutManager);
+        mAdapter = new CovAdapter();
+        mRvList.setAdapter(mAdapter);
+        List list = new ArrayList<>();
+        Cov cov1 = new Cov();
+        cov1.setType(1);
+        cov1.setMessage("你好");
+        cov1.setAvatar("http://www.iconpng.com/download/png/100981");
+        Cov cov2 = new Cov();
+        cov2.setType(1);
+        cov2.setMessage("你好");
+        cov2.setAvatar("http://www.iconpng.com/download/png/100983");
+        for (int i = 0; i < 10; i++) {
+            list.add(cov1);
+            list.add(cov2);
+        }
+        mAdapter.setList(list);
     }
 
     @Override
@@ -48,12 +84,12 @@ public class ConversationFragment extends Fragment implements ConversationContra
 
     @Override
     public void showProgressBar() {
-
+        mSrlCov.setRefreshing(true);
     }
 
     @Override
     public void hideProgressBar() {
-
+        mSrlCov.setRefreshing(false);
     }
 
     @Override

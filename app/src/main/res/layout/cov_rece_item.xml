@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/activity_horizontal_margin">
+
+    <ImageView
+        android:id="@+id/img_cov_rece_avatar"
+        android:layout_width="@dimen/memory_item_avatar_size"
+        android:layout_height="@dimen/memory_item_avatar_size"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_avatar_primary" />
+
+    <TextView
+        android:id="@+id/tv_cov_rece_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/serach_item_margin"
+        android:layout_toRightOf="@id/img_cov_rece_avatar"
+        android:background="@drawable/ic_cov_rece"
+        android:gravity="center"
+        android:text="Hello"
+        android:textColor="@android:color/white" />
+
+</RelativeLayout>
