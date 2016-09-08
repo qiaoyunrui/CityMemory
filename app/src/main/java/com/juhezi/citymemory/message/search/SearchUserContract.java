@@ -25,6 +25,8 @@ public interface SearchUserContract {
 
         void showData(List<User> list);
 
+        void turn2CovActivity(User user);
+
     }
 
 }

@@ -53,6 +53,8 @@ public interface BrowseContract {
 
         void turn2SignActivity();
 
+        void turn2ConversationActivity(User user);
+
         void showAddress(String address);
 
         void showCreater(String creater);

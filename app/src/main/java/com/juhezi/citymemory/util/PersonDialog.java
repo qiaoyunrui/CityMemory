@@ -28,6 +28,10 @@ public class PersonDialog {
     private Button mBtnMessage;
     private AlertDialog mDialog;
 
+    private User mUser;
+
+    private ClickListener mClickListener;
+
     public PersonDialog(Context context) {
         mContext = context;
         dialogView = LayoutInflater.from(mContext)
@@ -43,28 +47,43 @@ public class PersonDialog {
         mDialog = new AlertDialog.Builder(mContext)
                 .setView(dialogView)
                 .create();
+        mBtnMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mClickListener != null) {
+                    mClickListener.onMessageBtnClicked(mUser);
+                }
+            }
+        });
     }
 
 
-    public void setOnClickListener(View.OnClickListener listener) {
-        mBtnMessage.setOnClickListener(listener);
+    public void setClickListener(ClickListener clickListener) {
+        mClickListener = clickListener;
     }
 
     public void setData(User user) {
-        if (user != null) {
-            Glide.with(mContext)
-                    .load(user.getAvatar())
-                    .crossFade()
-                    .error(R.drawable.ic_avatar)
-                    .into(mImgAvatar);
-            mTvPickname.setText(user.getPickName());
-            mTvPipCount.setText(user.getPipCount() + "");
-            mTvOwnCount.setText(user.getOwnCount() + "");
-        }
+        mUser = user;
     }
 
     public void show() {
+        if (mUser != null) {
+            Glide.with(mContext)
+                    .load(mUser.getAvatar())
+                    .crossFade()
+                    .error(R.drawable.ic_avatar)
+                    .into(mImgAvatar);
+            mTvPickname.setText(mUser.getPickName());
+            mTvPipCount.setText(mUser.getPipCount() + "");
+            mTvOwnCount.setText(mUser.getOwnCount() + "");
+        }
         mDialog.show();
+    }
+
+    public interface ClickListener {
+
+        void onMessageBtnClicked(User user);
+
     }
 
 }

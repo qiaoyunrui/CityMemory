@@ -3,12 +3,13 @@ package com.juhezi.citymemory.data.module;
 import com.avos.avoscloud.AVUser;
 import com.juhezi.citymemory.other.Config;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by qiaoyunrui on 16-8-26.
  */
-public class User {
+public class User implements Serializable {
 
     public static final int USER_TYPE_PERSON = 1;
     public static final int USER_TYPE_GROUP = 2;

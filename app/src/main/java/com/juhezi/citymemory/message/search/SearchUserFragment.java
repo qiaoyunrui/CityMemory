@@ -1,5 +1,6 @@
 package com.juhezi.citymemory.message.search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.juhezi.citymemory.R;
+import com.juhezi.citymemory.conversation.ConversationActivity;
 import com.juhezi.citymemory.data.module.User;
+import com.juhezi.citymemory.other.Config;
 import com.juhezi.citymemory.util.PersonDialog;
 
 import java.util.List;
@@ -30,6 +33,8 @@ public class SearchUserFragment extends Fragment implements SearchUserContract.V
     private RecyclerView mRvList;
     private SUAdapter mAdapter;
 
+    private Intent mCovIntent;
+
     private View rootView;
 
     private PersonDialog mPersonDialog;
@@ -41,8 +46,21 @@ public class SearchUserFragment extends Fragment implements SearchUserContract.V
         mRvList = (RecyclerView) rootView.findViewById(R.id.rv_search_user_list);
         mPbSearchUser = (ProgressBar) rootView.findViewById(R.id.pb_search_user);
         mPersonDialog = new PersonDialog(getContext());
+
         initRecyclerView();
+
+        initEvent();
+
         return rootView;
+    }
+
+    private void initEvent() {
+        mPersonDialog.setClickListener(new PersonDialog.ClickListener() {
+            @Override
+            public void onMessageBtnClicked(User user) {
+                turn2CovActivity(user);
+            }
+        });
     }
 
     private void initRecyclerView() {
@@ -91,5 +109,14 @@ public class SearchUserFragment extends Fragment implements SearchUserContract.V
     @Override
     public void showData(List<User> list) {
         mAdapter.setData(list);
+    }
+
+    @Override
+    public void turn2CovActivity(User user) {
+        if (null == mCovIntent) {
+            mCovIntent = new Intent(getContext(), ConversationActivity.class);
+        }
+        mCovIntent.putExtra(Config.USER_KEY, user);
+        startActivity(mCovIntent);
     }
 }

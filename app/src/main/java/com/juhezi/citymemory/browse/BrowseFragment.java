@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.amap.api.maps.model.LatLng;
 import com.avos.avoscloud.AVUser;
 import com.juhezi.citymemory.R;
+import com.juhezi.citymemory.conversation.ConversationActivity;
 import com.juhezi.citymemory.data.module.Memory;
 import com.juhezi.citymemory.data.module.MemoryStream;
 import com.juhezi.citymemory.data.module.User;
@@ -67,7 +68,10 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
     private LatLng mLatLng;
 
     private Intent mSignIntent;
+    private Intent mConversationIntent;
+
     private PersonDialog mPersonDialog;
+
 
     @Nullable
     @Override
@@ -265,10 +269,14 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
 
             }
         });
-        mPersonDialog.setOnClickListener(new View.OnClickListener() {
+        mPersonDialog.setClickListener(new PersonDialog.ClickListener() {
             @Override
-            public void onClick(View v) {
-                Log.i(TAG, "onClick: Hello");
+            public void onMessageBtnClicked(User user) {
+                if (user != null) {
+                    turn2ConversationActivity(user);
+                } else {
+                    showToast("未知错误");
+                }
             }
         });
     }
@@ -350,6 +358,16 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
         mSignIntent = new Intent(getContext(), SignActivity.class);
         startActivity(mSignIntent);
     }
+
+    @Override
+    public void turn2ConversationActivity(User user) {
+        if (mConversationIntent == null) {
+            mConversationIntent = new Intent(getContext(), ConversationActivity.class);
+        }
+        mConversationIntent.putExtra(Config.USER_KEY, user);
+        startActivity(mConversationIntent);
+    }
+
 
     @Override
     public void showAddress(String address) {

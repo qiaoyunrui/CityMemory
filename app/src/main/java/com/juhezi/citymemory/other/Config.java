@@ -16,6 +16,7 @@ public class Config {
     public final static double QUERY_LIMIT_RADIUS = 0.05;
 
     public final static String LOCATION_KEY = "locationKey";
+    public final static String USER_KEY = "userKey";
 
     public final static String APP_ID = "mDW4SvkuYabyVszGjr5OaDaP-gzGzoHsz";
     public final static String APP_KEY = "okuts7OPubh9pRlEiF6BJChM";
