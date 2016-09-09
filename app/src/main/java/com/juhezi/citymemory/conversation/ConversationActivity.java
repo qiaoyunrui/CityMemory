@@ -10,6 +10,8 @@ import android.view.MenuItem;
 
 import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.data.module.Coversation;
+import com.juhezi.citymemory.data.user.UserResponse;
+import com.juhezi.citymemory.data.user.UserSource;
 
 /**
  * Created by qiaoyunrui on 16-9-4.
@@ -22,6 +24,8 @@ public class ConversationActivity extends AppCompatActivity {
 
     private ConversationFragment mFragment;
     private ConversationPresenter mPresenter;
+
+    private UserSource mUserSource;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +47,7 @@ public class ConversationActivity extends AppCompatActivity {
     }
 
     private void initFragment() {
+        mUserSource = UserResponse.getInstance(this);
         mFragment = (ConversationFragment) getSupportFragmentManager().findFragmentById(R.id.rl_coversation_frag);
         if (null == mFragment) {
             mFragment = new ConversationFragment();
@@ -51,7 +56,7 @@ public class ConversationActivity extends AppCompatActivity {
                     .add(R.id.rl_coversation_frag, mFragment)
                     .commit();
         }
-        mPresenter = new ConversationPresenter(mFragment);
+        mPresenter = new ConversationPresenter(mFragment, mUserSource);
     }
 
     public void setActionBarTitle(String title) {

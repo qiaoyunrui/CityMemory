@@ -77,5 +77,4 @@ public interface DataSource {
      */
     void getCoverRecords(String username,
                          OperateCallback<Observable<List<Coversation>>> callback);
-
 }

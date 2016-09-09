@@ -8,13 +8,14 @@ import java.io.Serializable;
 
 /**
  * 盛装对话的数据结构
- * <p>
+ * <p/>
  * Created by qiaoyunrui on 16-9-5.
  */
 public class Coversation implements Serializable {
 
     private static final String TAG = "Coversation";
 
+    private String id;
     private String ownId;   //自己的ID
     private String chaterId;    //对方的ID
     private String pickname;

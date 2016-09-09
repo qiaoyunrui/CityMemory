@@ -43,6 +43,7 @@ public class Config {
     public final static String MEMORY_STREAM_MEMORY_COUNT = "memoryCount";
     public final static String MEMORY_STREAM_WHERE_CREATED = "whereCreated";
 
+    public final static String COVER_ID = "coverId";
     public final static String COVER_OWN_ID = "coverOwnId";
     public final static String COVER_CHATER_ID = "coverChaterId";
     public final static String COVER_PICKNAME = "coverPickname";
