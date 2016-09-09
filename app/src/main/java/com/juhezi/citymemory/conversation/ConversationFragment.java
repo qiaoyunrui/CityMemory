@@ -47,20 +47,6 @@ public class ConversationFragment extends Fragment implements ConversationContra
         mRvList.setLayoutManager(layoutManager);
         mAdapter = new CovAdapter();
         mRvList.setAdapter(mAdapter);
-        List list = new ArrayList<>();
-        Cov cov1 = new Cov();
-        cov1.setType(1);
-        cov1.setMessage("你好");
-        cov1.setAvatar("http://www.iconpng.com/download/png/100981");
-        Cov cov2 = new Cov();
-        cov2.setType(1);
-        cov2.setMessage("你好");
-        cov2.setAvatar("http://www.iconpng.com/download/png/100983");
-        for (int i = 0; i < 10; i++) {
-            list.add(cov1);
-            list.add(cov2);
-        }
-        mAdapter.setList(list);
     }
 
     @Override

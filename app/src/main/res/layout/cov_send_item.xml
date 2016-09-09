@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/serach_item_margin"
-        android:layout_toLeftOf="@+id/iv_cov_send_avatar"
+        android:layout_toLeftOf="@+id/img_cov_send_avatar"
         android:background="@drawable/ic_cov_send"
         android:gravity="center_vertical"
         android:text="Hello"
