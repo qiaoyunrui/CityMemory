@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 /**
  * 盛装对话的数据结构
- * <p/>
+ * <p>
  * Created by qiaoyunrui on 16-9-5.
  */
 public class Coversation implements Serializable {
@@ -62,6 +62,14 @@ public class Coversation implements Serializable {
         this.ownId = ownId;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     /**
      * 把当前数据结构转化为可以上传到服器的AVObject
      *
@@ -69,6 +77,7 @@ public class Coversation implements Serializable {
      */
     public AVObject toAvObject() {
         AVObject avObject = new AVObject(ownId + Config.COVERSATION);
+        avObject.put(Config.COVER_ID, id);
         avObject.put(Config.COVER_OWN_ID, ownId);
         avObject.put(Config.COVER_CHATER_ID, chaterId);
         avObject.put(Config.COVER_AVATAR, avatar);
@@ -79,11 +88,24 @@ public class Coversation implements Serializable {
 
     public static Coversation parseCoversation(AVObject avObject) {
         Coversation coversation = new Coversation();
+        coversation.setId(avObject.getString(Config.COVER_ID));
         coversation.setOwnId(avObject.getString(Config.COVER_OWN_ID));
         coversation.setChaterId(avObject.getString(Config.COVER_CHATER_ID));
         coversation.setPickname(avObject.getString(Config.COVER_PICKNAME));
         coversation.setContent(avObject.getString(Config.COVER_CONTENT));
         coversation.setAvatar(avObject.getString(Config.COVER_AVATAR));
         return coversation;
+    }
+
+    @Override
+    public String toString() {
+        return "Coversation{" +
+                "id='" + id + '\'' +
+                ", ownId='" + ownId + '\'' +
+                ", chaterId='" + chaterId + '\'' +
+                ", pickname='" + pickname + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", content='" + content + '\'' +
+                '}';
     }
 }

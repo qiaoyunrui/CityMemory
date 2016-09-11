@@ -38,9 +38,17 @@ public class ConversationPresenter implements ConversationContract.Presenter {
 
     public ConversationContract.View mView;
 
-    public ConversationPresenter(ConversationContract.View view, UserSource userSource) {
+    private Coversation cov;   //对话的唯一标识
+
+    private String covId;
+
+    private AVIMClient mClient = null;
+
+    public ConversationPresenter(ConversationContract.View view, UserSource userSource,
+                                 DataSource dataSource) {
         mView = view;
         mUserSource = userSource;
+        mDataSource = dataSource;
         mView.setPresenter(this);
     }
 
@@ -55,8 +63,36 @@ public class ConversationPresenter implements ConversationContract.Presenter {
     }
 
     @Override
-    public void getCovInfo(String receiver, OperateCallback<String> callback) {
+    public void getCovInfo(String sender, String receiver, OperateCallback<Coversation> callback) {
+        mDataSource.getCov(sender, receiver, callback);
+    }
 
+    @Override
+    public void addCoverRecord(Coversation coversation, OperateCallback<Exception> callback) {
+        mDataSource.addCoverRecord(coversation, callback);
+    }
+
+    /**
+     * 建立对话连接
+     *
+     * @param sender
+     * @param receiver
+     * @param callback
+     */
+    @Override
+    public void buildConnection(User sender, User receiver, final OperateCallback<AVIMClient> callback) {
+        mClient = AVIMClient.getInstance(sender.getUsername());
+        mClient.open(new AVIMClientCallback() {
+            @Override
+            public void done(AVIMClient avimClient, AVIMException e) {
+                if (e == null) {
+                    callback.onOperate(mClient);
+                } else {
+                    callback.onOperate(null);
+
+                }
+            }
+        });
     }
 
     /**
@@ -71,6 +107,55 @@ public class ConversationPresenter implements ConversationContract.Presenter {
         if (sender == null || receiver == null) {
             //showToast()
             return;
+        } else {
+            //首先获取聊天记录
+            getCovInfo(sender.getUsername(), receiver.getUsername(),
+                    new OperateCallback<Coversation>() {
+                        @Override
+                        public void onOperate(Coversation coversation) {
+                            cov = coversation;
+                        }
+                    });
+            if (cov == null) {   //没有聊天记录，先与对方建立链接，要先创建聊天记录（在两个表中）
+                buildConnection(sender, receiver, new OperateCallback<AVIMClient>() {
+                    @Override
+                    public void onOperate(AVIMClient client) {
+                        if (client != null) {    //连接成功
+                            mClient = client;
+                            covId = mClient.getClientId();
+                            //创建两个Conversation
+                            Coversation cov1 = createCoversation(sender, receiver, covId);
+                            addCoverRecord(cov1, new OperateCallback<Exception>() {
+                                @Override
+                                public void onOperate(Exception e) {
+                                    if (e != null) {    //创建聊天记录成功
+
+                                    } else {
+
+                                    }
+                                }
+                            });
+
+                        } else { //连接失败
+                            mClient = null;
+                            covId = null;
+                            //show unConnection Toast
+                        }
+                    }
+                });
+            }
         }
+    }
+
+    @Override
+    public Coversation createCoversation(User sender, User receiver, String covId) {
+        Coversation coversation = new Coversation();
+        coversation.setId(covId);
+        coversation.setOwnId(sender.getUsername());
+        coversation.setChaterId(receiver.getUsername());
+        coversation.setPickname(receiver.getPickName());
+        coversation.setAvatar(receiver.getAvatar());
+        coversation.setContent("");
+        return coversation;
     }
 }

@@ -2,6 +2,7 @@ package com.juhezi.citymemory.data.data;
 
 import com.amap.api.maps.model.LatLng;
 import com.avos.avoscloud.ProgressCallback;
+import com.juhezi.citymemory.data.module.Cov;
 import com.juhezi.citymemory.data.module.Coversation;
 import com.juhezi.citymemory.data.module.Memory;
 import com.juhezi.citymemory.data.module.MemoryStream;
@@ -77,4 +78,7 @@ public interface DataSource {
      */
     void getCoverRecords(String username,
                          OperateCallback<Observable<List<Coversation>>> callback);
+
+    void getCov(String sender, String receiver,
+                OperateCallback<Coversation> callback);
 }

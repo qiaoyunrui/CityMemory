@@ -9,6 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.juhezi.citymemory.R;
+import com.juhezi.citymemory.data.data.DataResponse;
+import com.juhezi.citymemory.data.data.DataSource;
 import com.juhezi.citymemory.data.module.Coversation;
 import com.juhezi.citymemory.data.user.UserResponse;
 import com.juhezi.citymemory.data.user.UserSource;
@@ -26,6 +28,7 @@ public class ConversationActivity extends AppCompatActivity {
     private ConversationPresenter mPresenter;
 
     private UserSource mUserSource;
+    private DataSource mDataSource;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +51,7 @@ public class ConversationActivity extends AppCompatActivity {
 
     private void initFragment() {
         mUserSource = UserResponse.getInstance(this);
+        mDataSource = DataResponse.getInstance(this);
         mFragment = (ConversationFragment) getSupportFragmentManager().findFragmentById(R.id.rl_coversation_frag);
         if (null == mFragment) {
             mFragment = new ConversationFragment();
@@ -56,7 +60,7 @@ public class ConversationActivity extends AppCompatActivity {
                     .add(R.id.rl_coversation_frag, mFragment)
                     .commit();
         }
-        mPresenter = new ConversationPresenter(mFragment, mUserSource);
+        mPresenter = new ConversationPresenter(mFragment, mUserSource, mDataSource);
     }
 
     public void setActionBarTitle(String title) {

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,11 @@ import android.view.ViewGroup;
 import com.avos.avoscloud.AVUser;
 import com.juhezi.citymemory.R;
 import com.juhezi.citymemory.data.module.Cov;
+import com.juhezi.citymemory.data.module.Coversation;
 import com.juhezi.citymemory.data.module.User;
 import com.juhezi.citymemory.map.MapPresenter;
 import com.juhezi.citymemory.other.Config;
+import com.juhezi.citymemory.util.OperateCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,8 @@ public class ConversationFragment extends Fragment implements ConversationContra
     private User receiver; //对话接收者
     private User sender;    //对话发送者
     private AVUser currAVUser;    //当前用户
+
+
 
     @Nullable
     @Override

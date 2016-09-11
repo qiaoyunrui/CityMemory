@@ -309,4 +309,30 @@ public class DataResponse implements DataSource {
         });
     }
 
+    /**
+     * 根据sender 和 receiver 获取其聊天ID
+     *
+     * @param sender
+     * @param receiver
+     * @param callback
+     */
+    @Override
+    public void getCov(String sender, String receiver, final OperateCallback<Coversation> callback) {
+        String className = sender + Config.COVERSATION;
+        AVQuery<AVObject> query = new AVQuery<>(className);
+        query.setLimit(50);     //限制为50条
+        query.orderByAscending("updatedAt");
+        query.whereEqualTo(Config.COVER_ID, receiver);
+        query.findInBackground(new FindCallback<AVObject>() {
+            @Override
+            public void done(List<AVObject> list, AVException e) {
+                if (list != null && list.size() != 0) {
+                    callback.onOperate(Coversation.parseCoversation(list.get(0)));
+                } else {    //数据查询失败
+                    callback.onOperate(null);
+                }
+            }
+        });
+    }
+
 }

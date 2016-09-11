@@ -37,6 +37,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
         Glide.with(holder.itemView.getContext())
                 .load(list.get(position).getAvatar())
                 .crossFade()
+                .error(R.drawable.ic_avatar_primary)
                 .into(holder.mImgAvatar);
         holder.mTvName.setText(list.get(position).getPickname());
         holder.mTvContent.setText(list.get(position).getContent());
@@ -48,7 +49,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
     }
 
     public void setList(List<Coversation> list) {
-        this.list = list;
+        this.list.clear();
+        this.list.addAll(list);
+        notifyDataSetChanged();
     }
 
     class MessageHolder extends RecyclerView.ViewHolder {
