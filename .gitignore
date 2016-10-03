@@ -9,3 +9,5 @@
 将删除 src/main/java/com/juhezi/citymemory/data/
 将删除 src/main/java/com/juhezi/citymemory/other/
 将删除 src/main/java/com/juhezi/citymemory/util/
+gen/
+.idea
