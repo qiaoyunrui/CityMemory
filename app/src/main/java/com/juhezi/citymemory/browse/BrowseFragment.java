@@ -39,6 +39,7 @@ import java.util.UUID;
 
 import rx.Observable;
 import rx.Observer;
+import rx.functions.Action1;
 
 /**
  * Created by qiaoyunrui on 16-8-27.
@@ -203,19 +204,10 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
                         , new OperateCallback<Observable<List<Memory>>>() {
                             @Override
                             public void onOperate(Observable<List<Memory>> listObservable) {
-                                listObservable.subscribe(new Observer<List<Memory>>() {
+
+                                listObservable.subscribe(new Action1<List<Memory>>() {
                                     @Override
-                                    public void onCompleted() {
-
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-
-                                    }
-
-                                    @Override
-                                    public void onNext(List<Memory> memories) {
+                                    public void call(List<Memory> memories) {
                                         mAdapter.setList(memories);
                                         hideProgressbar();
                                         if (memories.size() == 0) {
@@ -224,8 +216,7 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
                                             hideEmptyView();
                                         }
                                     }
-                                })
-                                        .unsubscribe();
+                                }).unsubscribe();
                                 mSrlRefresh.setRefreshing(false);
                             }
                         });
@@ -269,11 +260,25 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
 
             }
         });
+        /**
+         * 人物信息对话框私信按钮的监听事件
+         */
         mPersonDialog.setClickListener(new PersonDialog.ClickListener() {
             @Override
             public void onMessageBtnClicked(User user) {
-                if (user != null) {
-                    turn2ConversationActivity(user);
+                if (user != null) {     //该User是私信对象
+                    if (currentUser == null) {   //未登录
+                        showSnackBar("未登录无法添加回忆,请先登录.", "登录", new Action() {
+                            @Override
+                            public void onAction() {
+                                turn2SignActivity();
+                                getActivity().finish();
+                            }
+                        });
+
+                    } else {
+                        turn2ConversationActivity(user);
+                    }
                 } else {
                     showToast("未知错误");
                 }
