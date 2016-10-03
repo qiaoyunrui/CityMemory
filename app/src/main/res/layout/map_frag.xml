@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/img_place"
             android:layout_centerHorizontal="true"
-            android:background="@android:color/white"
+            android:background="@drawable/rounded_rectangle_style"
             android:clickable="true"
             android:elevation="@dimen/action_evelation"
             android:foreground="?android:attr/selectableItemBackground">

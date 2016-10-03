@@ -30,6 +30,8 @@
     <dimen name="person_dialog_height">400dp</dimen>
     <dimen name="person_dialog_name_size">30sp</dimen>
     <dimen name="person_dialog_avatar_margin_top">20dp</dimen>
-    <dimen name="person_dialog_board_height">100dp</dimen>
+    <dimen name="person_dialog_board_height">110dp</dimen>
     <dimen name="cov_send_btn_width">60dp</dimen>
+    <dimen name="nav_header_tag_size">25dp</dimen>
+    <dimen name="rounded_rectangle_radius">30dp</dimen>
 </resources>
