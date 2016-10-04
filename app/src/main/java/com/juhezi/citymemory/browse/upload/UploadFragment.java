@@ -96,13 +96,7 @@ public class UploadFragment extends Fragment implements UploadContract.View {
         initDialog();
         mMemoryStream = (MemoryStream) getArguments()
                 .getSerializable(Config.MEMORY_STREAM_TAG);
-        Log.i(TAG, "onStart: " + (mMemoryStream == null));
-        mPresenter.getCurrentAddress(new OperateCallback<String>() {
-            @Override
-            public void onOperate(String s) {
-                setCurrAddress(s);
-            }
-        });
+        mPresenter.getCurrentAddress(s -> setCurrAddress(s));
     }
 
     private void initDialog() {
@@ -115,48 +109,31 @@ public class UploadFragment extends Fragment implements UploadContract.View {
                 .setView(dialogView)
                 .setTitle("获取图片的方式")
                 .create();
-        mBtnCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDialog.hide();
-                turn2CameraActivity();
-            }
+        mBtnCamera.setOnClickListener(v -> {
+            mDialog.hide();
+            turn2CameraActivity();
         });
-        mBtnGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDialog.hide();
-                turn2GalleryActivity();
-            }
+        mBtnGallery.setOnClickListener(v -> {
+            mDialog.hide();
+            turn2GalleryActivity();
         });
     }
 
     private void initEvent() {
-        mImgShow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog();
+        mImgShow.setOnClickListener(v -> showDialog());
+        mBtnUsePicLoc.setOnClickListener(v -> {
+            if (currentUri != null) {
+                //根据照片中所提取出的经纬度获取MemoryStream
             }
         });
-        mBtnUsePicLoc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentUri != null) {
-                    //根据照片中所提取出的经纬度获取MemoryStream
-                }
-            }
-        });
-        mBtnUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentUri != null) {
-                    mPresenter.uploadN(currentUri.getPath(), mMemoryStream, new ProgressCallback() {
-                        @Override
-                        public void done(Integer integer) {
-                            mPbUpload.setProgress(integer);
-                        }
-                    });
-                }
+        mBtnUpload.setOnClickListener(v -> {
+            if (currentUri != null) {
+                mPresenter.uploadN(mPresenter.uri2Path(currentUri), mMemoryStream, new ProgressCallback() {
+                    @Override
+                    public void done(Integer integer) {
+                        mPbUpload.setProgress(integer);
+                    }
+                });
             }
         });
     }
@@ -235,17 +212,23 @@ public class UploadFragment extends Fragment implements UploadContract.View {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * 隐藏上传按钮
+     */
     @Override
     public void banAllActions() {
         mBtnUpload.setVisibility(View.INVISIBLE);
-        mBtnUsePicLoc.setVisibility(View.INVISIBLE);
+//        mBtnUsePicLoc.setVisibility(View.INVISIBLE);
         mImgShow.setClickable(false);
     }
 
+    /**
+     * 显示上传按钮
+     */
     @Override
     public void allowAllActions() {
         mBtnUpload.setVisibility(View.VISIBLE);
-        mBtnUsePicLoc.setVisibility(View.VISIBLE);
+//        mBtnUsePicLoc.setVisibility(View.VISIBLE);
         mImgShow.setClickable(true);
     }
 
@@ -260,19 +243,14 @@ public class UploadFragment extends Fragment implements UploadContract.View {
             case Config.GALLERY_CODE:
                 if (data != null) {
                     currentUri = data.getData();
-                    showImage(data.getData());
+                    Log.i(TAG, "" + currentUri.getLastPathSegment());
+                    showImage(currentUri);
                     if (currentUri != null) {
                         LatLng latLng = mPresenter.getPicLocation(currentUri);
                         imgLatlngEnable = true;
                         if (latLng != null) {
                             mPresenter.getAddress(latLng
-                                    , new OperateCallback<String>() {
-                                        @Override
-                                        public void onOperate(String s) {
-                                            setPicAddress(s);
-                                            Log.i(TAG, "onOperate: ");
-                                        }
-                                    });
+                                    , s -> setPicAddress(s));
                         } else {
                             imgLatlngEnable = false;
                         }

@@ -1,8 +1,11 @@
 package com.juhezi.citymemory.browse.upload;
 
+import android.app.Activity;
+import android.database.Cursor;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import com.amap.api.maps.model.LatLng;
@@ -101,7 +104,7 @@ public class UploadPresenter implements UploadContract.Presenter {
     @Override
     public LatLng getPicLocation(Uri imageUri) {
         try {
-            ExifInterface exifInterface = new ExifInterface(imageUri.getPath());
+            ExifInterface exifInterface = new ExifInterface(uri2Path(imageUri));
             String lat = exifInterface.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
             String lon = exifInterface.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
             if (lat != null && lon != null) {
@@ -150,49 +153,33 @@ public class UploadPresenter implements UploadContract.Presenter {
     @Override
     public void upload(final String path, final MemoryStream memoryStream) {
         mView.showProgressbar();
-        mDataSource.uploadFile(path, new OperateCallback<String>() {
-            @Override
-            public void onOperate(final String s) {
-                if (memoryStream.isNew()) {
-                    mDataSource.addStreamToWarehouse(memoryStream, new Action() {
-                        @Override
-                        public void onAction() {
-                            final Memory memory = createNewMemory(s, memoryStream.getId());
-                            mDataSource.addMemoryStream(memory, new Action() {
-                                @Override
-                                public void onAction() {
-                                    mDataSource.addUserMemory(memory, new Action() {
-                                        @Override
-                                        public void onAction() {
-                                            if (memoryStream.getOwner().equals(memory.getCreater())) {
-                                                mUserSource.addOwnMemory(successAction, failAction);
-                                            } else {
-                                                mUserSource.addPipMemory(successAction, failAction);
-                                            }
-                                        }
-                                    }, failAction);
-                                }
-                            }, failAction);
-                        }
-                    }, failAction);
-                } else {
+        mDataSource.uploadFile(path, s -> {
+            if (memoryStream.isNew()) {
+                mDataSource.addStreamToWarehouse(memoryStream, () -> {
                     final Memory memory = createNewMemory(s, memoryStream.getId());
-                    mDataSource.addMemoryStream(memory, new Action() {
+                    mDataSource.addMemoryStream(memory, () -> mDataSource.addUserMemory(memory, new Action() {
                         @Override
                         public void onAction() {
-                            mDataSource.addUserMemory(memory, new Action() {
-                                @Override
-                                public void onAction() {
-                                    if (memoryStream.getOwner().equals(memory.getCreater())) {
-                                        mUserSource.addOwnMemory(successAction, failAction);
-                                    } else {
-                                        mUserSource.addPipMemory(successAction, failAction);
-                                    }
-                                }
-                            }, failAction);
+                            if (memoryStream.getOwner().equals(memory.getCreater())) {
+                                mUserSource.addOwnMemory(successAction, failAction);
+                            } else {
+                                mUserSource.addPipMemory(successAction, failAction);
+                            }
                         }
-                    }, failAction);
-                }
+                    }, failAction), failAction);
+                }, failAction);
+            } else {
+                final Memory memory = createNewMemory(s, memoryStream.getId());
+                mDataSource.addMemoryStream(memory, () -> mDataSource.addUserMemory(memory, new Action() {
+                    @Override
+                    public void onAction() {
+                        if (memoryStream.getOwner().equals(memory.getCreater())) {
+                            mUserSource.addOwnMemory(successAction, failAction);
+                        } else {
+                            mUserSource.addPipMemory(successAction, failAction);
+                        }
+                    }
+                }, failAction), failAction);
             }
         }, failAction);
     }
@@ -201,53 +188,31 @@ public class UploadPresenter implements UploadContract.Presenter {
     public void uploadN(String path, final MemoryStream memoryStream, ProgressCallback callback) {
         mView.showProgressbar();
         mView.banAllActions();
-        mDataSource.uploadFile(path, new OperateCallback<String>() {
-            @Override
-            public void onOperate(final String s) {
-                if (s == null) {
-                    failAction.onAction();
-                    return;
-                }
-                if (memoryStream.isNew()) {
-                    mDataSource.addStreamToWarehouse(memoryStream, new Action() {
-                        @Override
-                        public void onAction() {
-                            final Memory memory = createNewMemory(s, memoryStream.getId());
-                            mDataSource.addMemoryStream(memory, new Action() {
-                                @Override
-                                public void onAction() {
-                                    mDataSource.addUserMemory(memory, new Action() {
-                                        @Override
-                                        public void onAction() {
-                                            if (memoryStream.getOwner().equals(memory.getCreater())) {
-                                                mUserSource.addOwnMemory(successAction, failAction);
-                                            } else {
-                                                mUserSource.addPipMemory(successAction, failAction);
-                                            }
-                                        }
-                                    }, failAction);
-                                }
-                            }, failAction);
-                        }
-                    }, failAction);
-                } else {
+        mDataSource.uploadFile(path, s -> {
+            if (s == null) {
+                failAction.onAction();
+                return;
+            }
+            if (memoryStream.isNew()) {
+                mDataSource.addStreamToWarehouse(memoryStream, () -> {
                     final Memory memory = createNewMemory(s, memoryStream.getId());
-                    mDataSource.addMemoryStream(memory, new Action() {
-                        @Override
-                        public void onAction() {
-                            mDataSource.addUserMemory(memory, new Action() {
-                                @Override
-                                public void onAction() {
-                                    if (memoryStream.getOwner().equals(memory.getCreater())) {
-                                        mUserSource.addOwnMemory(successAction, failAction);
-                                    } else {
-                                        mUserSource.addPipMemory(successAction, failAction);
-                                    }
-                                }
-                            }, failAction);
+                    mDataSource.addMemoryStream(memory, () -> mDataSource.addUserMemory(memory, () -> {
+                        if (memoryStream.getOwner().equals(memory.getCreater())) {
+                            mUserSource.addOwnMemory(successAction, failAction);
+                        } else {
+                            mUserSource.addPipMemory(successAction, failAction);
                         }
-                    }, failAction);
-                }
+                    }, failAction), failAction);
+                }, failAction);
+            } else {
+                final Memory memory = createNewMemory(s, memoryStream.getId());
+                mDataSource.addMemoryStream(memory, () -> mDataSource.addUserMemory(memory, () -> {
+                    if (memoryStream.getOwner().equals(memory.getCreater())) {
+                        mUserSource.addOwnMemory(successAction, failAction);
+                    } else {
+                        mUserSource.addPipMemory(successAction, failAction);
+                    }
+                }, failAction), failAction);
             }
         }, callback);
     }
@@ -265,6 +230,15 @@ public class UploadPresenter implements UploadContract.Presenter {
         memory.setStreamId(memoryStreamId);
         memory.setDiscuss("");
         return memory;
+    }
+
+    @Override
+    public String uri2Path(Uri uri) {
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = ((Activity) mDataSource.getContext()).managedQuery(uri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
     }
 
 }

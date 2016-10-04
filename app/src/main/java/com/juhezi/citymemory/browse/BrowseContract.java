@@ -1,5 +1,7 @@
 package com.juhezi.citymemory.browse;
 
+import android.net.Uri;
+
 import com.amap.api.maps.model.LatLng;
 import com.avos.avoscloud.AVUser;
 import com.juhezi.citymemory.BasePresenter;

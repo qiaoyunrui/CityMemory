@@ -42,7 +42,6 @@ public class ConversationFragment extends Fragment implements ConversationContra
     private AVUser currAVUser;    //当前用户
 
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,6 +65,8 @@ public class ConversationFragment extends Fragment implements ConversationContra
         //获取两个用户
         Intent intent = getActivity().getIntent();
         receiver = (User) intent.getSerializableExtra(Config.USER_KEY);
+        setTitle(receiver.getPickName());   //将ActionBar上的title设置为对方的昵称
+
         currAVUser = mPresenter.getCurrentUser();
         sender = User.parseUser(currAVUser);
     }
@@ -109,5 +110,10 @@ public class ConversationFragment extends Fragment implements ConversationContra
     @Override
     public void showDailog() {
 
+    }
+
+    @Override
+    public void setTitle(String title) {
+        ((ConversationActivity) getActivity()).setTitle(title);
     }
 }

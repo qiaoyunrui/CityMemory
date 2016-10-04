@@ -52,6 +52,9 @@ public interface UploadContract {
         void uploadN(String path, MemoryStream memoryStream, ProgressCallback callback);
 
         Memory createNewMemory(String path, String streamId);
+
+        String uri2Path(Uri uri);
+
     }
 
     interface View extends BaseView<Presenter> {

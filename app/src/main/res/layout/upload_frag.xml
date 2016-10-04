@@ -62,7 +62,8 @@
             android:layout_weight="1"
             android:backgroundTint="@color/colorPrimary"
             android:text="@string/use_pic_location"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/btn_upload_upload"

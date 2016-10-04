@@ -24,6 +24,7 @@ import com.juhezi.citymemory.other.Config;
 import com.juhezi.citymemory.util.Action;
 import com.juhezi.citymemory.util.OperateCallback;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 
@@ -92,6 +93,7 @@ public class DataResponse implements DataSource {
     public void uploadFile(final String memoryPath, final OperateCallback<String> callback
             , final ProgressCallback progressCallback) {
         try {
+            File file = new File(memoryPath);
             final String name = System.currentTimeMillis() + "_IMG";
             final AVFile memory = AVFile.withAbsoluteLocalPath(name,
                     memoryPath);
@@ -106,9 +108,15 @@ public class DataResponse implements DataSource {
                 }
             }, progressCallback);
         } catch (FileNotFoundException e) {
+            Log.i(TAG, "uploadFile: error: " + e.getMessage());
             e.printStackTrace();
             callback.onOperate(null);
         }
+    }
+
+    @Override
+    public Context getContext() {
+        return mContext;
     }
 
     /**

@@ -15,7 +15,7 @@
     <string name="pick_name">昵称</string>
     <string name="sign_out">退出登录</string>
     <string name="input_your_discuss">评价这个记忆流</string>
-    <string name="upload">在当前位置上传</string>
+    <string name="upload">上传</string>
     <string name="use_pic_location">在照片地理位置上传</string>
     <string name="camera">拍照</string>
     <string name="gallery">相册</string>

@@ -49,6 +49,8 @@ public interface ConversationContract {
          */
         void showDailog();
 
+        void setTitle(String title);
+
     }
 
 }

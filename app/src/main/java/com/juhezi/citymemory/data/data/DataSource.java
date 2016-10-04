@@ -1,5 +1,7 @@
 package com.juhezi.citymemory.data.data;
 
+import android.content.Context;
+
 import com.amap.api.maps.model.LatLng;
 import com.avos.avoscloud.ProgressCallback;
 import com.juhezi.citymemory.data.module.Cov;
@@ -17,6 +19,8 @@ import rx.Observable;
  * Created by qiaoyunrui on 16-8-28.
  */
 public interface DataSource {
+
+    Context getContext();
 
     /**
      * 上传照片
