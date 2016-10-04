@@ -5,6 +5,7 @@ import android.util.Log;
 import com.avos.avoscloud.AVUser;
 import com.juhezi.citymemory.data.data.DataSource;
 import com.juhezi.citymemory.data.module.Coversation;
+import com.juhezi.citymemory.data.module.User;
 import com.juhezi.citymemory.data.user.UserSource;
 import com.juhezi.citymemory.util.OperateCallback;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 import rx.Observable;
 import rx.Observer;
+import rx.functions.Action1;
 
 /**
  * Created by qiaoyunrui on 16-9-4.
@@ -75,6 +77,29 @@ public class MessagePresenter implements MessageContract.Presenter {
                         mView.hideProgressBar();
                     }
                 }).unsubscribe();
+            }
+        });
+    }
+
+    @Override
+    public void getUser(String username, OperateCallback<User> callback) {
+        mView.showProgressBar();
+        mUserSource.queryUserByUsername(username, new OperateCallback<Observable<List<User>>>() {
+            @Override
+            public void onOperate(Observable<List<User>> observable) {
+                if (observable == null) {
+                    mView.showToast("用户信息加载失败。");
+                    mView.hideProgressBar();
+                }
+                observable
+                        .elementAt(0)
+                        .subscribe(new Action1<List<User>>() {
+                            @Override
+                            public void call(List<User> users) {
+                                mView.hideProgressBar();
+                                callback.onOperate(users.get(0));
+                            }
+                        }).unsubscribe();
             }
         });
     }

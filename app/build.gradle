@@ -12,6 +12,9 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
         multiDexEnabled true
+        jackOptions {
+            enabled true
+        }
     }
     buildTypes {
         release {
@@ -34,6 +37,10 @@ android {
         exclude 'META-INF/maven/com.google.code.gson/gson/pom.properties'
     }
 
+    compileOptions {
+        targetCompatibility org.gradle.api.JavaVersion.VERSION_1_8
+        sourceCompatibility org.gradle.api.JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {

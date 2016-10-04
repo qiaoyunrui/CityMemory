@@ -24,6 +24,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
 
     private List<Coversation> list = new ArrayList<>();
 
+    private ClickListener mClickListener;
+
     @Override
     public MessageHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -41,6 +43,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
                 .into(holder.mImgAvatar);
         holder.mTvName.setText(list.get(position).getPickname());
         holder.mTvContent.setText(list.get(position).getContent());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mClickListener != null) {
+                    mClickListener.onClick(list.get(position).getChaterId());
+                }
+            }
+        });
     }
 
     @Override
@@ -52,6 +62,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
         this.list.clear();
         this.list.addAll(list);
         notifyDataSetChanged();
+    }
+
+    public void setClickListener(ClickListener clickListener) {
+        this.mClickListener = clickListener;
+    }
+
+    interface ClickListener {
+        void onClick(String username);
     }
 
     class MessageHolder extends RecyclerView.ViewHolder {

@@ -15,8 +15,12 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.juhezi.citymemory.R;
+import com.juhezi.citymemory.conversation.ConversationActivity;
 import com.juhezi.citymemory.data.module.Coversation;
+import com.juhezi.citymemory.data.module.User;
+import com.juhezi.citymemory.other.Config;
 import com.juhezi.citymemory.util.DividerItemDecoration;
+import com.juhezi.citymemory.util.OperateCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +39,8 @@ public class MessageFragment extends Fragment implements MessageContract.View {
     private SwipeRefreshLayout mSrlRefresh;
     private RelativeLayout mRlEmptyView;
     private FloatingActionButton mFabAdd;
+
+    private Intent mConversationIntent;
 
     @Nullable
     @Override
@@ -70,6 +76,18 @@ public class MessageFragment extends Fragment implements MessageContract.View {
                 getContext(), LinearLayoutManager.VERTICAL));
         mAdapter = new MessageAdapter();
         mRvList.setAdapter(mAdapter);
+        mAdapter.setClickListener(username -> {
+            mPresenter.getUser(username, new OperateCallback<User>() {
+                @Override
+                public void onOperate(User user) {
+                    if (user == null) {
+                        showToast("用户数据加载失败");
+                        return;
+                    }
+                    turn2ConversationActivity(user);
+                }
+            });
+        });
     }
 
     @Override
@@ -119,6 +137,15 @@ public class MessageFragment extends Fragment implements MessageContract.View {
     @Override
     public void showToast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void turn2ConversationActivity(User user) {
+        if (mConversationIntent == null) {
+            mConversationIntent = new Intent(getContext(), ConversationActivity.class);
+        }
+        mConversationIntent.putExtra(Config.USER_KEY, user);
+        startActivity(mConversationIntent);
     }
 
 }

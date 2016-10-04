@@ -3,6 +3,8 @@ package com.juhezi.citymemory.message;
 import com.juhezi.citymemory.BasePresenter;
 import com.juhezi.citymemory.BaseView;
 import com.juhezi.citymemory.data.module.Coversation;
+import com.juhezi.citymemory.data.module.User;
+import com.juhezi.citymemory.util.OperateCallback;
 
 import java.util.List;
 
@@ -14,6 +16,13 @@ public interface MessageContract {
     interface Presenter extends BasePresenter {
 
         void loadData();
+
+        /**
+         * 根据用户名获取用户
+         * @param username
+         * @param callback
+         */
+        void getUser(String username, OperateCallback<User> callback);
 
     }
 
@@ -30,6 +39,8 @@ public interface MessageContract {
         void hideEmptyView();
 
         void showToast(String message);
+
+        void turn2ConversationActivity(User user);
 
     }
 

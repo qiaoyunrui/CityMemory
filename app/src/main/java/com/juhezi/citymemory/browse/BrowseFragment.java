@@ -268,7 +268,7 @@ public class BrowseFragment extends Fragment implements BrowseContract.View {
             public void onMessageBtnClicked(User user) {
                 if (user != null) {     //该User是私信对象
                     if (currentUser == null) {   //未登录
-                        showSnackBar("未登录无法添加回忆,请先登录.", "登录", new Action() {
+                        showSnackBar("未登录无法进行私信,请先登录.", "登录", new Action() {
                             @Override
                             public void onAction() {
                                 turn2SignActivity();
