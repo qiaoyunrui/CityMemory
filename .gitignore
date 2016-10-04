@@ -11,3 +11,4 @@
 将删除 src/main/java/com/juhezi/citymemory/util/
 gen/
 .idea
+*.hprof
